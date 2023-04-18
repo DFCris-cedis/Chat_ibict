@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatibict</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+
+    <link rel="stylesheet" href="/static/css/all.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div style="display: flex; justify-content: space-between">
+        <div style="display: flex; justify-content: space-between">
+          <div class="logout">
+            <i class="fas fa-arrow-right-from-bracket"></i>
+            <button class="logout-button" type="button" value="logout">
+              Sair
+            </button>
+          </div>
+        </div>
+        <img src="/static/img/chat_ibict.png" alt="chatibict" />
+      </div>
+
+      <form method="POST" class="form-container">
+        {% csrf_token %}
+
+        <div class="form-field campo-phrasetest">
+          {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+        </div>
+
+        <div style="text-align: center">
+          <label style="display: inline-block">Escolha uma opção:</label>
+          <select name="pesquisa" class="option" style="display: inline-block">
+            <option value="universidade">Universidade</option>
+            <option value="professor">Professor</option>
+            <option value="area">Área</option>
+          </select>
+        </div>
+
+        <button type="submit">Pesquisar</button>
+      </form>
+
+      <script>
+        document
+          .querySelector('button[value="logout"]')
+          .addEventListener("click", function () {
+            document.querySelector(".form-container").action =
+              "{% url 'logout_view' %}";
+            document.querySelector(".form-container").submit();
+          });
+      </script>
+
+      <footer>2023, Projeto DFCris - parceria CEDIS/UnB, Ibict e FAP/DF</footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+body {
+    margin:0px;
+    width: 100%;
+    height: 50px;
+}
+
+
+
+footer {
+
+    color: #d61b1b;
+    
+    background: #E6E6E6;
+    /* flex-direction: row; */
+    /* line-height: 50px; */
+    /* display: inline-flexbox; */
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    bottom: 0;
+    position: fixed;
+    
+      
+    
+    }
+
+
+.cont {
+    color: red;
+    background-color: #33426A;
+    height: 40px;
+    text-align: center;
+    
+   
+  
+}
+
+#img{
+    width: 350px;
+    
+    position:fixed;
+    float: right;
+    flex-direction: row;
+    
+}
+
+.btn{
+
+    flex-direction: row;
+    margin: 30px;
+    text-decoration: none;
+    color: #33426A;
+    
+}

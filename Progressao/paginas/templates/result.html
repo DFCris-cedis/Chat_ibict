@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatibict</title>
+    <link rel="stylesheet" href="/static/css/style2.css" />
+  </head>
+  <body>
+    <div class="container">
+      <img src="/static/img/chat_ibict.png" alt="chatibict" />
+      <div class="form-container">
+        <div class="form-field campo-phrasetest">
+          {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+        </div>
+        <div class="prevrf-field">
+          {% if show_prevrf %} {{ valor_prevrf }} {% endif %}
+        </div>
+      </div>
+      <footer>2023, Projeto DFCris - parceria CEDIS/UnB, Ibict e FAP/DF</footer>
+    </div>
+  </body>
+</html>

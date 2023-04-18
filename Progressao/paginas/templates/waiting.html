@@ -1,0 +1,21 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var check_result = setInterval(function () {
+            $.ajax({
+                url: '/get_message/',
+                method: 'POST',
+                data: {
+                    'message_id': '{{ result.idML }}',
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.success) {
+                        clearInterval(check_result);
+                        window.location.href = '/result/';
+                    }
+                }
+            });
+        }, 5000);
+    });
+</script>

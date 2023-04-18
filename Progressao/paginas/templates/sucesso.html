@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Sucesso!</h1>
+    
+    <h2>Lemas:</h2>
+    <ul>
+        {% for lemma in lemmas %}
+            <li>{{ lemma }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Palavras:</h2>
+    <ul>
+        {% for word in words %}
+            <li>{{ word }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Tags de POS:</h2>
+    <ul>
+        {% for pos_tag in pos_tags %}
+            <li>{{ pos_tag }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Tags de dependência:</h2>
+    <ul>
+        {% for dep_tag in dep_tags %}
+            <li>{{ dep_tag }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Entidades nomeadas:</h2>
+    <ul>
+        {% for named_entity in named_entities %}
+            <li>{{ named_entity }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Frases nominais:</h2>
+    <ul>
+        {% for noun_chunk in noun_chunks %}
+            <li>{{ noun_chunk }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Frases non:</h2>
+    <ul>
+        {% for noun in nouns %}
+            <li>{{ noun }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

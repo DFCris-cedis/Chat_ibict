@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>chatibict</title>
+    <link rel="stylesheet" href="/static/css/login.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="coluna_1">
+        <img src="/static/img/chat_ibict.png" alt="chatibict" class="imagem" />
+      </div>
+
+      <div class="coluna_2">
+        <div class="title"><h1>BEM-VINDO(A)!</h1></div>
+
+        <div class="inner-box">
+          <form method="post" class="form">
+            <div class="title"><h2>Cadastro</h2></div>
+
+<form method="post">
+  {% csrf_token %}
+  <label for="{{ form.first_name.id_for_label }}">First Name:</label>
+  {{ form.first_name }}
+  <br />
+  <label for="{{ form.last_name.id_for_label }}">Last Name:</label>
+  {{ form.last_name }}
+  <br />
+  <label for="{{ form.email.id_for_label }}">Email:</label>
+  {{ form.email }}
+  <br />
+  <label for="{{ form.password1.id_for_label }}">Password:</label>
+  {{ form.password1 }}
+  <br />
+  <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+  {{ form.password2 }}
+  <br />
+  <button type="submit">Register</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
