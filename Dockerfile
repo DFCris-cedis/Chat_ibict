@@ -23,6 +23,7 @@ COPY ./requirements /code/requirements/
 # atualiza o pip e instala as dependências do projeto
 RUN pip install --upgrade pip
 RUN pip install -r requirements/dev-requirements.txt
+RUN python3 -m spacy download pt_core_news_lg
 
 # copia o restante do projeto para o diretório de trabalho
 COPY . /code/
