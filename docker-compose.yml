@@ -6,7 +6,7 @@ services:
     container_name: char_ibict
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfiles/dockerfile.chat
     entrypoint: "tail -f /dev/null"
     volumes:
       - ".:/app"
@@ -20,7 +20,7 @@ services:
     container_name: postgres_container
     build: 
       context: .
-      dockerfile: postgresDockerFile
+      dockerfile: Dockerfiles/dockerfile.postgrees
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
