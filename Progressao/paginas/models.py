@@ -7,7 +7,6 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -29,6 +28,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
+
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -55,11 +55,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'user'
         verbose_name_plural = 'users'
 
-class Test(models.Model):
 
+class Test(models.Model):
     testId = models.AutoField(primary_key=True)
-    phraseTest =  models.CharField(max_length=1500)
-    # phraseResult = models.CharField(max_length=200)
+    phraseTest = models.CharField(max_length=1500)
+    idUser = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name='tests')
+
 
 class Noun(models.Model):
     nounId = models.AutoField(primary_key=True)
@@ -68,10 +70,10 @@ class Noun(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
 
-
 class DicionarioManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().using('postgres')
+
 
 class Dicionario(models.Model):
     IDunico = models.IntegerField(primary_key=True)
@@ -80,18 +82,10 @@ class Dicionario(models.Model):
 
     objects = DicionarioManager()
 
+
 class ResultML(models.Model):
     idML = models.IntegerField(primary_key=True)
     noun = models.CharField(max_length=1500)
     prevRFrang = models.CharField(max_length=1500)
     prevC50 = models.CharField(max_length=1500)
     prevRpart = models.CharField(max_length=1500)
-
-    # def __str__(self):
-    #     return self.prevRFtrad
-   
-
-
-
-
-   
