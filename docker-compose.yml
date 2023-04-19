@@ -6,10 +6,10 @@ services:
     container_name: char_ibict
     build:
       context: .
-      dockerfile: Dockerfiles/dockerfile.chat
+      dockerfile: ./Dockerfiles/Dockerfile.chat
     entrypoint: "tail -f /dev/null"
     volumes:
-      - ".:/app"
+      - ".:/code"
     depends_on:
       - db
     restart: always
@@ -17,14 +17,19 @@ services:
       - postgres-connection
 
   db:
-    container_name: postgres_container
+    container_name: chat_postgres_container
     build: 
       context: .
-      dockerfile: Dockerfiles/dockerfile.postgrees
+      dockerfile: ./Dockerfiles/Dockerfile.postgrees
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: SENHA
       PGDATA: /data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
     expose:
