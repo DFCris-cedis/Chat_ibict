@@ -28,7 +28,6 @@ ASGI_APPLICATION = "Progressao.asgi.application"
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -44,7 +43,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-   
+
     # 'usuarios',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,7 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'paginas.apps.PaginasConfig',
-    
+
     # 'nomedoapp.apps.NomedoappConfig'
 ]
 AUTH_USER_MODEL = 'paginas.CustomUser'
@@ -68,11 +67,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'seu_email@gmail.com'
 EMAIL_HOST_PASSWORD = 'sua_senha'
-
-
-
-
-
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -119,13 +113,13 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'teste',
-        'USER':'postgres',
-        'PASSWORD':'SENHA',
+        'NAME': 'teste2',
+        'USER': 'postgres',
+        'PASSWORD': 'SENHA',
         'HOST': 'localhost',
         'PORT': '5432',
     },
-    
+
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
@@ -133,9 +127,8 @@ DATABASES = {
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
         'PORT': '5432',
+    }
 }
-}
-
 
 
 # Password validation
@@ -176,7 +169,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # reconhece onde esta o arquivo estatico
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # reconhece onde esta o arquivo estatico
 # STATIC_ROOT= [os.path.join(BASE_DIR, 'static')]
 
 STATICFILES_DIRS = [
@@ -197,4 +190,3 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 # add the following line at the end of the file
-
