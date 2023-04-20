@@ -60,7 +60,7 @@ class Test(models.Model):
     testId = models.AutoField(primary_key=True)
     phraseTest = models.CharField(max_length=1500)
     idUser = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name='tests')
+        CustomUser, on_delete=models.CASCADE, default=1)
 
 
 class Noun(models.Model):
