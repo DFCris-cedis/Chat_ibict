@@ -1,5 +1,5 @@
-
-from django.contrib.auth.views import PasswordResetView
+from django.views.generic import FormView
+from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 from django.contrib.auth.forms import PasswordResetForm
@@ -51,12 +51,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserCreationTest
+from .forms import CustomUserCreationForm, CustomPasswordResetForm
 
 from .models import ResultML
 import spacy
@@ -64,34 +64,59 @@ from django.shortcuts import render
 from .forms import MeuForm
 from .models import Noun
 import time
-from .models import Test
+from .models import Test, CustomUser
 
 from django.shortcuts import render
 
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
 
 # def test_view(request):
 #     if request.method == 'POST':
 #         return redirect('test')
 #     else:
 #         return render(request, 'test.html')
-def test_view(request):
-    if request.method == 'POST':
-        form = CustomUserCreationTest(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = True
-            user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=user.email, password=raw_password)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'test.html', {'form': form})
 
 
-class MyPasswordResetView(PasswordResetView):
-    template_name = 'password_reset.html'
+from django.contrib.auth.views import PasswordResetView
+
+
+from django.contrib.auth.views import PasswordResetView
+from .forms import CustomPasswordResetForm
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'registration/password_reset_form.html'
+    email_template_name = 'registration/password_reset_email.html'
+    form_class = CustomPasswordResetForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        associated_users = CustomUser.objects.filter(email=email)
+        if associated_users.exists():
+            for user in associated_users:
+                subject = "Password Reset Requested"
+                email_template_name = "password_reset_email.html"
+                c = {
+                    "email": user.email,
+                    'domain': get_current_site(self.request).domain,
+                    'site_name': 'Website',
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "user": user,
+                    'token': default_token_generator.make_token(user),
+                    'protocol': 'http',
+                }
+                email = render_to_string(email_template_name, c)
+                send_mail(subject, email, 'noreply@website.com',
+                          [user.email], fail_silently=False)
+        return super().form_valid(form)
 
 
 def signup_view(request):

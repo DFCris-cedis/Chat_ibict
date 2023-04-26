@@ -12,8 +12,29 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.core.mail import send_mail
 
+email_user = os.environ.get('EMAIL_HOST_USER')
+email_password = os.environ.get('EMAIL_HOST_PASSWORD')
 
+send_mail(
+    'Assunto do e-mail',
+    'Corpo do e-mail',
+    email_user,
+    ['destinatario@example.com'],
+    fail_silently=False,
+    auth_user=email_user,
+    auth_password=email_password,
+)
+
+# Configurações de envio do e-mail
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "milenafaria1706@gmail.com"
+EMAIL_HOST_PASSWORD = "votereza17"
 # Defina o backend do Channels para o ASGI
 CHANNEL_LAYERS = {
     "default": {
@@ -61,14 +82,6 @@ AUTH_USER_MODEL = 'paginas.CustomUser'
 LOGIN_URL = 'accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seu_email@gmail.com'
-EMAIL_HOST_PASSWORD = 'sua_senha'
-DEFAULT_FROM_EMAIL = 'seu_email@gmail.com'
 
 
 CORS_ORIGIN_ALLOW_ALL = True
