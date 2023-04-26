@@ -1,7 +1,11 @@
+
+from django.utils.http import urlsafe_base64_encode
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.urls import reverse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.views import PasswordResetView
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
@@ -126,59 +130,6 @@ def logout_view(request):
     logout(request)
     logger.info('User logged out successfully')
     return redirect('login')
-
-
-User = get_user_model()
-
-
-def recuperar_senha(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            pass  # Lidar com o usuário não encontrado
-        else:
-            # Criar token de redefinição de senha
-            token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(str(user.pk).encode())
-
-            # Criar link de redefinição de senha
-            reset_link = f"{settings.BASE_URL}/password_reset_email/{uid}/{token}/"
-
-            # Renderizar o template de email de redefinição de senha
-            message = render_to_string('password_reset_email.html', {
-                'reset_link': reset_link,
-            })
-
-            # Enviar o email
-            send_mail(
-                'Recuperação de senha',
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
-            )
-            # Lidar com o email enviado com sucesso
-    else:
-        # Renderizar o formulário de recuperação de senha
-        return render(request, 'password_reset_email.html')
-
-
-class CustomPasswordResetForm(PasswordResetForm):
-    email = forms.EmailField(
-        max_length=254,
-        widget=forms.EmailInput(
-            attrs={'autocomplete': 'email', 'class': 'form-control'})
-    )
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        user_exists = User.objects.filter(email=email).exists()
-        if not user_exists:
-            raise forms.ValidationError(
-                'Este e-mail não está associado a nenhuma conta.')
-        return email
 
 
 nlp = spacy.load("pt_core_news_lg")
