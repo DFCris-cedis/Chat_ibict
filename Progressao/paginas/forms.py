@@ -27,48 +27,9 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
 
-class CustomPasswordResetForm(PasswordResetForm):
-    email = forms.EmailField(
-        max_length=254,
-        widget=forms.EmailInput(
-            attrs={'autocomplete': 'email', 'class': 'form-control', 'placeholder': 'E-mail'})
-    )
+class CustomUserCreationTest(UserCreationForm):
+    email = forms.EmailField(required=True)
 
-#     def clean_email(self):
-#         email = self.cleaned_data['email']
-#         user_exists = CustomUser.objects.filter(email=email).exists()
-#         if not user_exists:
-#             raise forms.ValidationError(
-#                 'Este e-mail não está associado a nenhuma conta.')
-#         return email
-
-
-# class CustomPasswordResetFormLayout(forms.Form):
-#     email = forms.EmailField(widget=forms.EmailInput(
-#         attrs={'autocomplete': 'email', 'class': 'form-control', 'placeholder': 'E-mail'}))
-
-
-# class CustomPasswordResetForm(PasswordResetForm):
-#     # Adicione quaisquer campos adicionais necessários ao formulário de redefinição de senha aqui
-#     pass
-
-
-# class CustomPasswordResetView(PasswordResetView):
-#     form_class = CustomPasswordResetForm
-#     email_template_name = 'password_reset_email.html'
-#     success_url = reverse_lazy('password_reset_done')
-#     template_name = 'password_reset.html'
-
-#     def form_valid(self, form):
-#         form.save(
-#             domain_override='example.com',
-#             subject_template_name='password_reset_subject.txt',
-#             use_https=self.request.is_secure(),
-#             request=self.request
-#         )
-#         return super().form_valid(form)
-
-
-# class PasswordResetDoneView(FormView):
-#     template_name = 'password_reset_done.html'
-#     success_url = reverse_lazy('login')
+    class Meta:
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')

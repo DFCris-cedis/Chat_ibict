@@ -1,4 +1,8 @@
 
+from django.contrib.auth.views import PasswordResetView
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
+from django.contrib.auth.forms import PasswordResetForm
 from django.utils.http import urlsafe_base64_encode
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
@@ -52,7 +56,7 @@ from django.contrib.auth import login, logout
 
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserCreationTest
 
 from .models import ResultML
 import spacy
@@ -61,6 +65,33 @@ from .forms import MeuForm
 from .models import Noun
 import time
 from .models import Test
+
+from django.shortcuts import render
+
+
+# def test_view(request):
+#     if request.method == 'POST':
+#         return redirect('test')
+#     else:
+#         return render(request, 'test.html')
+def test_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationTest(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = True
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(email=user.email, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'test.html', {'form': form})
+
+
+class MyPasswordResetView(PasswordResetView):
+    template_name = 'password_reset.html'
 
 
 def signup_view(request):
@@ -74,7 +105,6 @@ def signup_view(request):
             user = authenticate(email=user.email, password=raw_password)
             login(request, user)
             return redirect('home')
-           # return render(request, 'login.html', {'form': form})
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -132,6 +162,42 @@ def logout_view(request):
     return redirect('login')
 
 
+User = get_user_model()
+
+
+# def password_reset(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         try:
+#             user = User.objects.get(email=email)
+#         except User.DoesNotExist:
+#             user = None
+#         if user:
+#             # Generate a one-time use token and save it in the user's profile
+#             token = default_token_generator.make_token(user)
+#             user.password_reset_token = token
+#             user.save()
+
+#             # Build the password reset email
+#             subject = 'Password Reset'
+#             message = render_to_string('password_reset_email.html', {
+#                 'user': user,
+#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#                 'token': token,
+#             })
+#             from_email = 'from@example.com'
+#             recipient_list = [email]
+
+#             # Send the password reset email
+#             send_mail(subject, message, from_email, recipient_list)
+
+#         # Redirect to a confirmation page
+#         return redirect('password_reset_done')
+
+#     # Display the password reset form
+#     return render(request, 'password_reset.html')
+
+
 nlp = spacy.load("pt_core_news_lg")
 
 
@@ -180,4 +246,4 @@ def home(request):
         form = MeuForm()
     # Define o contexto para a página HTML
     context = {'form': form, 'show_prevrf': show_prevrf}
-    return render(request, 'form.html', context)
+    return render(request, 'home.html', context)

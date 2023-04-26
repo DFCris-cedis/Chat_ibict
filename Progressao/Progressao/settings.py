@@ -62,6 +62,14 @@ LOGIN_URL = 'accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'seu_email@gmail.com'
+EMAIL_HOST_PASSWORD = 'sua_senha'
+DEFAULT_FROM_EMAIL = 'seu_email@gmail.com'
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [
