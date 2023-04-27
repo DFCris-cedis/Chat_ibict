@@ -149,105 +149,31 @@ def logout_view(request):
 
 User = get_user_model()
 
+from django.contrib.auth.decorators import login_required
 
-# def password_reset(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         try:
-#             user = User.objects.get(email=email)
-#         except User.DoesNotExist:
-#             user = None
-#         if user:
-#             # Generate a one-time use token and save it in the user's profile
-#             token = default_token_generator.make_token(user)
-#             user.password_reset_token = token
-#             user.save()
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
-#             # Build the password reset email
-#             subject = 'Password Reset'
-#             message = render_to_string('password_reset_email.html', {
-#                 'user': user,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': token,
-#             })
-#             from_email = 'from@example.com'
-#             recipient_list = [email]
+from django.contrib.auth.views import PasswordResetConfirmView
 
-#             # Send the password reset email
-#             send_mail(subject, message, from_email, recipient_list)
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+from anonymous.decorators import anonymous_required
+from django.utils.decorators import method_decorator
 
-#         # Redirect to a confirmation page
-#         return redirect('password_reset_done')
-
-#     # Display the password reset form
-#     return render(request, 'password_reset.html')
-
-# class CustomPasswordResetView(PasswordResetView):
-#     form_class = CustomPasswordResetForm
-#     template_name = 'registration/password_reset_form.html'
-#     email_template_name = 'registration/password_reset_email.html'
-#     form_class = CustomPasswordResetForm
-
-# def form_valid(self, form):
-#     email = form.cleaned_data['email']
-#     associated_users = CustomUser.objects.filter(email=email)
-#     if associated_users.exists():
-#         for user in associated_users:
-#             subject = "Password Reset Requested"
-#             email_template_name = "password_reset_email.html"
-#             c = {
-#                 "email": user.email,
-#                 'domain': get_current_site(self.request).domain,
-#                 'site_name': 'Website',
-#                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-#                 "user": user,
-#                 'token': default_token_generator.make_token(user),
-#                 'protocol': 'http',
-#             }
-#             email = render_to_string(email_template_name, c)
-#             send_mail(subject, email, 'noreply@website.com',
-#                       [user.email], fail_silently=False)
-#     return super().form_valid(form)
+@method_decorator(csrf_protect, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+@method_decorator(anonymous_required, name='dispatch')
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    pass
 
 
-# class MyPasswordResetDone(PasswordResetDoneView):
-
-#     registration/password_reset_done.html
-
-# class MyPasswordResetConfirm(PasswordResetConfirmView):
-#     '''
-#     Requer password_reset_confirm.html
-#     '''
-
-#     def form_valid(self, form):
-#         self.user.is_active = True
-#         self.user.save()
-#         return super(MyPasswordResetConfirm, self).form_valid(form)
 
 
-# class MyPasswordResetComplete(PasswordResetCompleteView):
-#     '''
-#     Requer password_reset_complete.html
-#     '''
-#     ...
-
-
-# class MyPasswordReset(PasswordResetView):
-#     '''
-#     Requer
-#     registration/password_reset_form.html
-#     registration/password_reset_email.html
-#     registration/password_reset_subject.txt  Opcional
-#     '''
-#     ...
-
-
-# class MyPasswordResetDone(PasswordResetDoneView):
-#     '''
-#     Requer
-#     registration/password_reset_done.html
-#     '''
-#     ...
 
 
 nlp = spacy.load("pt_core_news_lg")
