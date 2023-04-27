@@ -1,3 +1,4 @@
+
 from django.views.generic import FormView
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
@@ -56,7 +57,7 @@ from django.contrib.auth import login, logout
 
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomPasswordResetForm
+from .forms import CustomUserCreationForm
 
 from .models import ResultML
 import spacy
@@ -68,7 +69,7 @@ from .models import Test, CustomUser
 
 from django.shortcuts import render
 
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView, PasswordResetConfirmView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
@@ -76,47 +77,6 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
-
-# def test_view(request):
-#     if request.method == 'POST':
-#         return redirect('test')
-#     else:
-#         return render(request, 'test.html')
-
-
-from django.contrib.auth.views import PasswordResetView
-
-
-from django.contrib.auth.views import PasswordResetView
-from .forms import CustomPasswordResetForm
-
-
-class CustomPasswordResetView(PasswordResetView):
-    form_class = CustomPasswordResetForm
-    template_name = 'registration/password_reset_form.html'
-    email_template_name = 'registration/password_reset_email.html'
-    form_class = CustomPasswordResetForm
-
-    def form_valid(self, form):
-        email = form.cleaned_data['email']
-        associated_users = CustomUser.objects.filter(email=email)
-        if associated_users.exists():
-            for user in associated_users:
-                subject = "Password Reset Requested"
-                email_template_name = "password_reset_email.html"
-                c = {
-                    "email": user.email,
-                    'domain': get_current_site(self.request).domain,
-                    'site_name': 'Website',
-                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                    "user": user,
-                    'token': default_token_generator.make_token(user),
-                    'protocol': 'http',
-                }
-                email = render_to_string(email_template_name, c)
-                send_mail(subject, email, 'noreply@website.com',
-                          [user.email], fail_silently=False)
-        return super().form_valid(form)
 
 
 def signup_view(request):
@@ -221,6 +181,73 @@ User = get_user_model()
 
 #     # Display the password reset form
 #     return render(request, 'password_reset.html')
+
+# class CustomPasswordResetView(PasswordResetView):
+#     form_class = CustomPasswordResetForm
+#     template_name = 'registration/password_reset_form.html'
+#     email_template_name = 'registration/password_reset_email.html'
+#     form_class = CustomPasswordResetForm
+
+# def form_valid(self, form):
+#     email = form.cleaned_data['email']
+#     associated_users = CustomUser.objects.filter(email=email)
+#     if associated_users.exists():
+#         for user in associated_users:
+#             subject = "Password Reset Requested"
+#             email_template_name = "password_reset_email.html"
+#             c = {
+#                 "email": user.email,
+#                 'domain': get_current_site(self.request).domain,
+#                 'site_name': 'Website',
+#                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+#                 "user": user,
+#                 'token': default_token_generator.make_token(user),
+#                 'protocol': 'http',
+#             }
+#             email = render_to_string(email_template_name, c)
+#             send_mail(subject, email, 'noreply@website.com',
+#                       [user.email], fail_silently=False)
+#     return super().form_valid(form)
+
+
+# class MyPasswordResetDone(PasswordResetDoneView):
+
+#     registration/password_reset_done.html
+
+# class MyPasswordResetConfirm(PasswordResetConfirmView):
+#     '''
+#     Requer password_reset_confirm.html
+#     '''
+
+#     def form_valid(self, form):
+#         self.user.is_active = True
+#         self.user.save()
+#         return super(MyPasswordResetConfirm, self).form_valid(form)
+
+
+# class MyPasswordResetComplete(PasswordResetCompleteView):
+#     '''
+#     Requer password_reset_complete.html
+#     '''
+#     ...
+
+
+# class MyPasswordReset(PasswordResetView):
+#     '''
+#     Requer
+#     registration/password_reset_form.html
+#     registration/password_reset_email.html
+#     registration/password_reset_subject.txt  Opcional
+#     '''
+#     ...
+
+
+# class MyPasswordResetDone(PasswordResetDoneView):
+#     '''
+#     Requer
+#     registration/password_reset_done.html
+#     '''
+#     ...
 
 
 nlp = spacy.load("pt_core_news_lg")

@@ -6,8 +6,7 @@ class StaffOnlyMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        exceptions = ['/accounts/login/', '/accounts/signup/',
-                      '/test/', '/reset_password/']  # adicionar a URL de cadastro aqui
+        exceptions = ['/accounts/login/', '/accounts/signup/','/reset_password/', '/reset_password/done/','/reset/<uidb64>/<token>/','/reset/done/']  # adicionar a URL de cadastro aqui
         if not request.user.is_authenticated or not request.user.is_staff:
             if request.path not in exceptions:
                 return redirect('login')
