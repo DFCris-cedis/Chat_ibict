@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     # 'nomedoapp.apps.NomedoappConfig'
 ]
 AUTH_USER_MODEL = 'paginas.CustomUser'
-LOGIN_URL = 'accounts/login/'
+LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 
@@ -182,7 +182,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # add the following line at the end of the file
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

@@ -149,27 +149,13 @@ def logout_view(request):
 
 User = get_user_model()
 
-from django.contrib.auth.decorators import login_required
-
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-
 from django.contrib.auth.views import PasswordResetConfirmView
 
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth.decorators import login_required
-from anonymous.decorators import anonymous_required
-from django.utils.decorators import method_decorator
-
-@method_decorator(csrf_protect, name='dispatch')
-@method_decorator(login_required, name='dispatch')
-@method_decorator(anonymous_required, name='dispatch')
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    pass
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 
 
 
