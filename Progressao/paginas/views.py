@@ -150,10 +150,31 @@ def logout_view(request):
 User = get_user_model()
 
 from django.contrib.auth.views import PasswordResetConfirmView
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+from django.contrib.auth.views import PasswordResetConfirmView
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+
+    def get(self, request, *args, **kwargs):
+        # Define o atributo user no objeto de request
+        uidb64 = kwargs.get('uidb64')
+        token = kwargs.get('token')
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        setattr(request, 'user', user)
+
+        # Chama o método get() da superclasse
+        return super().get(request, *args, **kwargs)
 
 
 
