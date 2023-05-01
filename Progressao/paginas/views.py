@@ -176,6 +176,24 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
         # Chama o método get() da superclasse
         return super().get(request, *args, **kwargs)
 
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.contrib.auth.forms import PasswordResetForm
+
+@csrf_protect
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                from_email='from@example.com',
+                email_template_name='password_reset_email.html'
+            )
+            return render(request, 'password_reset_done.html')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'password_reset_form.html', {'form': form})
 
 
 
