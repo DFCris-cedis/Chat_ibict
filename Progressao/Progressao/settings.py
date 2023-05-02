@@ -100,21 +100,12 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'teste',
+        'NAME': 'test2',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
         'PORT': '5432',
     },
-
-    'postgres': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'SENHA',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
 }
 
 
