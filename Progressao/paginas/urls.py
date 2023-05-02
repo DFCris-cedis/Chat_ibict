@@ -1,15 +1,8 @@
-from django.urls import path, include
-from django.contrib.auth import views as auth_views
-from paginas import views as CustomPasswordResetView
-from paginas import views
-from django.urls import reverse_lazy
-from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from django.contrib.auth import views as auth_views 
 from paginas.views import MyPasswordResetConfirmView
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
+from paginas import views
+
 urlpatterns = [
     path('', include('paginas.urls', namespace='home')),
     path('login/', views.login_view, name='login'),
