@@ -1,82 +1,23 @@
-
-from django.views.generic import FormView
-from django.http import HttpResponseRedirect
-from django.core.exceptions import ValidationError
-from django.shortcuts import redirect
-from django.contrib.auth.forms import PasswordResetForm
-from django.utils.http import urlsafe_base64_encode
-from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
-from django.utils.encoding import force_bytes
-from django.urls import reverse
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.conf import settings
-from django.core.mail import send_mail
-from django.contrib.auth import get_user_model
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import logout
-import logging
-from django import forms
-from django.dispatch import receiver
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-# from .forms import CreateUserForm, LoginForm
-from paginas.models import Test, Noun, Dicionario
-import spacy
-from django.shortcuts import render
-from django.views.generic import ListView
-from .models import Test
-
-
-from django.shortcuts import render, redirect
-
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
-
-from django.shortcuts import render, redirect
+from paginas.forms import CustomPasswordResetConfirmForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout
-
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.contrib.auth.forms import PasswordResetForm
+from django.views.decorators.csrf import csrf_protect
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import views as auth_views
+from paginas.models import Test, Noun, Dicionario
 from paginas.forms import CustomUserCreationForm
-
-from .models import ResultML
-import spacy
-from django.shortcuts import render
+from django.contrib.auth import get_user_model
+from django.shortcuts import render, redirect
+from django.dispatch import receiver
+from django import forms
 from .forms import MeuForm
 from .models import Noun
-import time
-from .models import Test, CustomUser
-
-from django.shortcuts import render
-
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView, PasswordResetConfirmView
-from django.urls import reverse_lazy
-from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from django.contrib.auth.tokens import default_token_generator
+import logging
+import spacy
 
 
 def signup_view(request):
@@ -146,17 +87,8 @@ def logout_view(request):
     logger.info('User logged out successfully')
     return redirect('login')
 
-
 User = get_user_model()
 
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.decorators.debug import sensitive_post_parameters
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-
-from django.contrib.auth.views import PasswordResetConfirmView
 
 class MyPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
@@ -176,9 +108,6 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
         # Chama o método get() da superclasse
         return super().get(request, *args, **kwargs)
 
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.contrib.auth.forms import PasswordResetForm
 
 @csrf_protect
 def password_reset(request):
@@ -195,10 +124,6 @@ def password_reset(request):
         form = PasswordResetForm()
     return render(request, 'password_reset_form.html', {'form': form})
 
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import views as auth_views
-from paginas.forms import CustomPasswordResetConfirmForm
 
 def reset_confirm(request, uidb64, token):
     form_class = CustomPasswordResetConfirmForm
@@ -218,11 +143,6 @@ def reset_confirm(request, uidb64, token):
         else:
             form = form_class(user)
         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
-    # else:
-    #     return render(request, 'invalid_reset_link.html')
-
-
-
 
 
 nlp = spacy.load("pt_core_news_lg")
