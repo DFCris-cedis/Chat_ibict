@@ -19,11 +19,13 @@ body {
 .link {
   text-align: right;
   margin-right: 5rem;
+  font-weight: bold;
 }
 
 .link a:visited {
   text-decoration: none;
   color: inherit;
+  font-weight: bold;
 }
 
 .coluna_1 {

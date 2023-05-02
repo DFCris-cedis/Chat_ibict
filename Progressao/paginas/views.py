@@ -57,7 +57,7 @@ from django.contrib.auth import login, logout
 
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from paginas.forms import CustomUserCreationForm
 
 from .models import ResultML
 import spacy
@@ -196,6 +196,30 @@ def password_reset(request):
     return render(request, 'password_reset_form.html', {'form': form})
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import views as auth_views
+from paginas.forms import CustomPasswordResetConfirmForm
+
+def reset_confirm(request, uidb64, token):
+    form_class = CustomPasswordResetConfirmForm
+    validlink = True
+    user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+    if user is None:
+        validlink = False
+    else:
+        if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+            validlink = False
+    if validlink:
+        if request.method == 'POST':
+            form = form_class(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('password_reset_complete')
+        else:
+            form = form_class(user)
+        return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+    # else:
+    #     return render(request, 'invalid_reset_link.html')
 
 
 

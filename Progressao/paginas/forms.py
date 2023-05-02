@@ -23,4 +23,16 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
+from django.contrib.auth.forms import SetPasswordForm
 
+class CustomPasswordResetConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="Nova senha",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new_password', 'class': 'form-control'}),
+    )
+    new_password2 = forms.CharField(
+        label="Confirme a nova senha",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new_password', 'class': 'form-control'}),
+    )

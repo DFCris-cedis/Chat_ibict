@@ -2,7 +2,6 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from paginas import views as CustomPasswordResetView
 from paginas import views
-from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
@@ -19,7 +18,6 @@ urlpatterns = [
     path('home/', include('paginas.urls')),
     path('reset_password/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('reset_password/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-#    path('reset_password_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset_password_confirm/<uidb64>/<token>/', MyPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_complete'),
 
