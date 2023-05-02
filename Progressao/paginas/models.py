@@ -35,7 +35,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField
+    is_active = models.BooleanField(default=True)
+
 
     objects = CustomUserManager()
 
@@ -59,7 +60,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Test(models.Model):
     testId = models.AutoField(primary_key=True)
     phraseTest = models.CharField(max_length=1500)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=None)
+
 
 
 class Noun(models.Model):

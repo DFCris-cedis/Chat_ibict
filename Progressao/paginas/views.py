@@ -1,122 +1,23 @@
-from django.views.generic import FormView
-from django.http import HttpResponseRedirect
-from django.core.exceptions import ValidationError
-from django.shortcuts import redirect
-from django.contrib.auth.forms import PasswordResetForm
-from django.utils.http import urlsafe_base64_encode
-from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
-from django.utils.encoding import force_bytes
-from django.urls import reverse
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.conf import settings
-from django.core.mail import send_mail
-from django.contrib.auth import get_user_model
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import logout
-import logging
-from django import forms
-from django.dispatch import receiver
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-# from .forms import CreateUserForm, LoginForm
-from paginas.models import Test, Noun, Dicionario
-import spacy
-from django.shortcuts import render
-from django.views.generic import ListView
-from .models import Test
-
-
-from django.shortcuts import render, redirect
-
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
-
-from django.shortcuts import render, redirect
+from paginas.forms import CustomPasswordResetConfirmForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout
-
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import PasswordResetForm
+from django.views.decorators.csrf import csrf_protect
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import views as auth_views
+from paginas.models import Test, Noun, Dicionario
+from paginas.forms import CustomUserCreationForm
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomPasswordResetForm
-
-from .models import ResultML
-import spacy
-from django.shortcuts import render
+from django.dispatch import receiver
+from django import forms
 from .forms import MeuForm
 from .models import Noun
-import time
-from .models import Test, CustomUser
-
-from django.shortcuts import render
-
-from django.contrib.auth.views import PasswordResetView
-from django.urls import reverse_lazy
-from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from django.contrib.auth.tokens import default_token_generator
-
-# def test_view(request):
-#     if request.method == 'POST':
-#         return redirect('test')
-#     else:
-#         return render(request, 'test.html')
-
-
-from django.contrib.auth.views import PasswordResetView
-
-
-from django.contrib.auth.views import PasswordResetView
-from .forms import CustomPasswordResetForm
-
-
-class CustomPasswordResetView(PasswordResetView):
-    form_class = CustomPasswordResetForm
-    template_name = 'registration/password_reset_form.html'
-    email_template_name = 'registration/password_reset_email.html'
-    form_class = CustomPasswordResetForm
-
-    def form_valid(self, form):
-        email = form.cleaned_data['email']
-        associated_users = CustomUser.objects.filter(email=email)
-        if associated_users.exists():
-            for user in associated_users:
-                subject = "Password Reset Requested"
-                email_template_name = "password_reset_email.html"
-                c = {
-                    "email": user.email,
-                    'domain': get_current_site(self.request).domain,
-                    'site_name': 'Website',
-                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                    "user": user,
-                    'token': default_token_generator.make_token(user),
-                    'protocol': 'http',
-                }
-                email = render_to_string(email_template_name, c)
-                send_mail(subject, email, 'noreply@website.com',
-                          [user.email], fail_silently=False)
-        return super().form_valid(form)
+import logging
+import spacy
 
 
 def signup_view(request):
@@ -186,41 +87,62 @@ def logout_view(request):
     logger.info('User logged out successfully')
     return redirect('login')
 
-
 User = get_user_model()
 
 
-# def password_reset(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         try:
-#             user = User.objects.get(email=email)
-#         except User.DoesNotExist:
-#             user = None
-#         if user:
-#             # Generate a one-time use token and save it in the user's profile
-#             token = default_token_generator.make_token(user)
-#             user.password_reset_token = token
-#             user.save()
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
 
-#             # Build the password reset email
-#             subject = 'Password Reset'
-#             message = render_to_string('password_reset_email.html', {
-#                 'user': user,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': token,
-#             })
-#             from_email = 'from@example.com'
-#             recipient_list = [email]
+    def get(self, request, *args, **kwargs):
+        # Define o atributo user no objeto de request
+        uidb64 = kwargs.get('uidb64')
+        token = kwargs.get('token')
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
 
-#             # Send the password reset email
-#             send_mail(subject, message, from_email, recipient_list)
+        setattr(request, 'user', user)
 
-#         # Redirect to a confirmation page
-#         return redirect('password_reset_done')
+        # Chama o método get() da superclasse
+        return super().get(request, *args, **kwargs)
 
-#     # Display the password reset form
-#     return render(request, 'password_reset.html')
+
+@csrf_protect
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                from_email='from@example.com',
+                email_template_name='password_reset_email.html'
+            )
+            return render(request, 'password_reset_done.html')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'password_reset_form.html', {'form': form})
+
+
+def reset_confirm(request, uidb64, token):
+    form_class = CustomPasswordResetConfirmForm
+    validlink = True
+    user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+    if user is None:
+        validlink = False
+    else:
+        if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+            validlink = False
+    if validlink:
+        if request.method == 'POST':
+            form = form_class(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('password_reset_complete')
+        else:
+            form = form_class(user)
+        return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
 
 nlp = spacy.load("pt_core_news_lg")

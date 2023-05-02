@@ -1,11 +1,8 @@
-from django.contrib.auth.forms import PasswordResetForm
-from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from django import forms
 from .models import Test
-from django.contrib.auth.forms import UserCreationForm
-# from django.contrib.auth.models import User
+
 
 
 class MeuForm(forms.ModelForm):
@@ -25,11 +22,16 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
+from django.contrib.auth.forms import SetPasswordForm
 
-class CustomPasswordResetForm(PasswordResetForm):
-    email = forms.EmailField(
-        label='Endereço de e-mail',
-        widget=forms.EmailInput(
-            attrs={'autocomplete': 'email', 'class': 'form-control'}),
-        max_length=254,
+class CustomPasswordResetConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="Nova senha",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new_password', 'class': 'form-control'}),
+    )
+    new_password2 = forms.CharField(
+        label="Confirme a nova senha",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new_password', 'class': 'form-control'}),
     )
