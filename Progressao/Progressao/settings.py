@@ -98,16 +98,23 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test2',
+        'NAME': 'dfx',
+        'USER': 'postgres',
+        'PASSWORD': 'SENHA',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
+    'postgres': {
+     'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dfx',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
         'PORT': '5432',
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

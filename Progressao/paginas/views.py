@@ -37,8 +37,18 @@ def signup_view(request):
 
 
 @login_required
+# def home(request):
+#     return render(request, 'home.html')
 def home(request):
-    return render(request, 'home.html')
+    if request.method == 'POST':
+        phrase = request.POST.get('phrase', '')
+        # Pega o usuário logado
+        user = request.user
+        # Cria uma nova instância de Test com a foreign key do usuário
+        Test.objects.create(user=user, phraseTest=phrase)
+    
+    tests = Test.objects.filter(user=request.user)
+    return render(request, 'home.html', {'tests': tests})
 
 
 @receiver(user_logged_in)
@@ -53,18 +63,43 @@ def logout_success(sender, user, request, **kwargs):
     user.save()
 
 
-@login_required
+# @login_required
+# def login_view(request):
+#     if request.method == 'POST':
+#         form = CustomLoginForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             user.is_active = True
+#             user.save()
+#             return redirect('home')
+#         else:
+#             error_message = 'Nome de usuário ou senha inválidos.'
+#     else:
+#         form = CustomLoginForm()
+#         error_message = ''
+#     return render(request, 'login.html', {'form': form, 'error_message': error_message})
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+# from .forms import CustomLoginForm
+
+
 def login_view(request):
+    
     if request.method == 'POST':
         form = CustomLoginForm(data=request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            user.is_active = True
-            user.save()
-            return redirect('home')
-        else:
-            error_message = 'Nome de usuário ou senha inválidos.'
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                user.is_active = True
+                user.save()
+                return redirect('home')
+        error_message = 'Nome de usuário ou senha inválidos.'
     else:
         form = CustomLoginForm()
         error_message = ''
@@ -148,12 +183,66 @@ def reset_confirm(request, uidb64, token):
 nlp = spacy.load("pt_core_news_lg")
 
 
+# def home(request):
+#     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
+#     if request.method == 'POST':
+#         form = MeuForm(request.POST)
+#         if form.is_valid():
+#             form = form.save()  # Salva a mensagem no banco de dados
+
+#             phraseTest = form.phraseTest  # Salva o texto em uma variável Python
+#             phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
+
+#             # Processar o texto com o spaCy
+#             doc = nlp(phraseTest)
+
+#             # ## extrair as palavras e seus lemas
+#             lemmas = [token.lemma_ for token in doc if token.pos_ in [
+#                 'PROPN', 'NOUN']]
+#             words = [token.text for token in doc]
+#             pos_tags = [token.pos_ for token in doc]
+#             dep_tags = [token.dep_ for token in doc]
+
+#             # extrair as entidades nomeadas
+#             named_entities = [(ent.text, ent.label_) for ent in doc.ents]
+
+#             # extrair os sintagmas nominais
+#             noun_chunks = [np.text for np in doc.noun_chunks]
+
+#             for lemma in lemmas:
+#                 new_noun = Noun.objects.create(
+#                     nounText=lemma, test=form, idSignificado='')
+
+#                 words = new_noun.nounText.split()
+#                 for word in words:
+#                     dicionario = Dicionario.objects.filter(
+#                         Palavra=word).first()
+#                     if dicionario:
+#                         new_noun.idSignificado = dicionario.IDSignificado
+#                         new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
+#                         new_noun.save()
+#             context = {'form': form}  # Define o contexto para a página HTML
+
+#             return render(request, 'result.html', context)
+#     else:
+#         form = MeuForm()
+#     # Define o contexto para a página HTML
+#     context = {'form': form, 'show_prevrf': show_prevrf}
+#     return render(request, 'home.html', context)
+
+from django.shortcuts import render
+from paginas.forms import MeuForm
+from paginas.models import Noun, Dicionario, Test
+
+
 def home(request):
     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
     if request.method == 'POST':
         form = MeuForm(request.POST)
         if form.is_valid():
-            form = form.save()  # Salva a mensagem no banco de dados
+            form = form.save(commit=False)
+            form.user = request.user # Atribui o usuário atual ao atributo 'user'
+            form.save() 
 
             phraseTest = form.phraseTest  # Salva o texto em uma variável Python
             phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
@@ -184,6 +273,7 @@ def home(request):
                         Palavra=word).first()
                     if dicionario:
                         new_noun.idSignificado = dicionario.IDSignificado
+                        new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
                         new_noun.save()
 
             context = {'form': form}  # Define o contexto para a página HTML
