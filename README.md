@@ -5,7 +5,6 @@
   - Backend: Django
   - Frontend: HTML e CSS
   - banco de dados: Postgrees
-  - Container: Docker
  
 ## Pesquisadores
   - Sérgio Freitas
