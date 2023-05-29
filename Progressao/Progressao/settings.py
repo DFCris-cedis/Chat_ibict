@@ -30,7 +30,6 @@ SECRET_KEY = 'django-insecure-!ph7usvbsvm2k#f@%!%v=$ggv*s-f=&1(@rakrh+czsv*$6c9*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -54,6 +53,15 @@ AUTH_USER_MODEL = 'paginas.CustomUser'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['chatibict.ibict.br',]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://chatibict.ibict.br',
+# ]
+
+# CORS_ALLOWED_ORIGINS = [
+#     'https://chatibict.ibict.br',
+# ]
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -67,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'Progressao.middleware.StaffOnlyMiddleware',
+    # 'Progressao.middleware.LoginRedirectMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -100,7 +109,7 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dfx',
+        'NAME': 'testy',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
@@ -108,7 +117,7 @@ DATABASES = {
     },
     'postgres': {
      'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dfx',
+        'NAME': 'testy',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
@@ -160,7 +169,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
 
-STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),

@@ -235,6 +235,216 @@ from paginas.forms import MeuForm
 from paginas.models import Noun, Dicionario, Test
 
 
+# def home(request):
+#     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
+#     if request.method == 'POST':
+#         form = MeuForm(request.POST)
+#         if form.is_valid():
+#             form = form.save(commit=False)
+#             form.user = request.user # Atribui o usuário atual ao atributo 'user'
+#             form.save() 
+
+#             phraseTest = form.phraseTest  # Salva o texto em uma variável Python
+#             phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
+
+#             # Processar o texto com o spaCy
+#             doc = nlp(phraseTest)
+
+#             # ## extrair as palavras e seus lemas
+#             lemmas = [token.lemma_ for token in doc if token.pos_ in [
+#                 'PROPN', 'NOUN']]
+#             words = [token.text for token in doc]
+#             pos_tags = [token.pos_ for token in doc]
+#             dep_tags = [token.dep_ for token in doc]
+
+#             # extrair as entidades nomeadas
+#             named_entities = [(ent.text, ent.label_) for ent in doc.ents]
+
+#             # extrair os sintagmas nominais
+#             noun_chunks = [np.text for np in doc.noun_chunks]
+
+#             for lemma in lemmas:
+#                 new_noun = Noun.objects.create(
+#                     nounText=lemma, test=form, idSignificado='')
+
+#                 words = new_noun.nounText.split()
+#                 for word in words:
+#                     dicionario = Dicionario.objects.filter(
+#                         Palavra=word).first()
+#                     if dicionario:
+#                         new_noun.idSignificado = dicionario.IDSignificado
+#                         new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
+#                         new_noun.save()
+
+#             context = {'form': form}  # Define o contexto para a página HTML
+
+#             return render(request, 'result.html', context)
+#     else:
+#         form = MeuForm()
+#     # Define o contexto para a página HTML
+#     context = {'form': form, 'show_prevrf': show_prevrf}
+#     return render(request, 'home.html', context)
+nlp = spacy.load("pt_core_news_lg")
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.models import User
+
+# def home(request):
+#     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
+#     if request.method == 'POST':
+#         form = MeuForm(request.POST)
+#         if form.is_valid():
+#             form = form.save()  # Salva a mensagem no banco de dados
+
+#             phraseTest = form.phraseTest  # Salva o texto em uma variável Python
+#             phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
+
+#             # Processar o texto com o spaCy
+#             doc = nlp(phraseTest)
+
+#             # ## extrair as palavras e seus lemas
+#             lemmas = [token.lemma_ for token in doc if token.pos_ in [
+#                 'PROPN', 'NOUN']]
+#             words = [token.text for token in doc]
+#             pos_tags = [token.pos_ for token in doc]
+#             dep_tags = [token.dep_ for token in doc]
+
+# #             # extrair as entidades nomeadas
+#             named_entities = [(ent.text, ent.label_) for ent in doc.ents]
+
+#             # extrair os sintagmas nominais
+#             noun_chunks = [np.text for np in doc.noun_chunks]
+
+#             for lemma in lemmas:
+#                 new_noun = Noun.objects.create(
+#                     nounText=lemma, test=form, idSignificado='')
+
+#                 words = new_noun.nounText.split()
+#                 for word in words:
+#                     dicionario = Dicionario.objects.filter(
+#                         Palavra=word).first()
+#                     if dicionario:
+#                         new_noun.idSignificado = dicionario.IDSignificado
+#                         new_noun.user = request.user # Atribui o usuário atual à coluna 'user'
+#                         new_noun.save()
+
+           
+#             context = {'form': form}  # Define o contexto para a página HTML
+
+#             return render(request, 'result.html', context)
+#     else:
+#         form = MeuForm()
+#      # Define o contexto para a página HTML
+#     context = {'form': form, 'show_prevrf': show_prevrf}
+#     return render(request, 'home.html', context)
+
+
+#------------------------------------------------------------------------teste
+
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2 import robjects
+import pandas as pd
+import psycopg2
+import h2o
+
+# ...
+
+def prevNN(abstract):
+    localH2o = h2o.init(nthreads = -1)
+    
+    Modelo = h2o.load_model('Modelos/DeepLearning_model_R_1670582405235_1')
+    prevNN = Modelo.predict(h2o.H2OFrame(abstract))
+    
+    return prevNN[0, 0]
+
+def prevC50(dados, str_modelo):
+    base = importr('base')
+    utils = importr('utils') 
+    C50 = importr('C50')
+    
+    robjects.r['load']('Modelos/' + str_modelo)
+    Modelo = robjects.r['Modelo']
+    
+    predict = robjects.r('predict')
+    
+    prevC50 = predict(Modelo, type = "class", newdata = dados)
+    
+    del C50
+    del utils
+    del base
+    del Modelo
+    del predict
+    
+    return prevC50.levels[prevC50[0]-1]
+
+def prevRFranger(dados, str_modelo):
+    base = importr('base')
+    utils = importr('utils')    
+    ranger = importr('ranger')
+    
+    robjects.r['load']('Modelos/' + str_modelo)
+    Modelo = robjects.r['Modelo']
+    
+    predict = robjects.r('predict')
+    
+    prevRF_ranger = predict(Modelo, data = dados)
+    prevRF_ranger = prevRF_ranger[0]
+    
+    del ranger
+    del utils
+    del base
+    del Modelo
+    del predict
+    
+    return prevRF_ranger.levels[prevRF_ranger[0]-1]
+
+def prevRFtrad(dados, str_modelo):
+    base = importr('base')
+    utils = importr('utils')    
+    rf = importr('randomForest')
+    
+    robjects.r['load']('Modelos/' + str_modelo)
+    Modelo = robjects.r['Modelo']
+    
+    predict = robjects.r('predict')
+    
+    prevRF_trad = predict(Modelo, data = dados)
+    
+    del rf
+    del utils
+    del base
+    del Modelo
+    del predict
+    
+    return prevRF_trad.levels[prevRF_trad[0]-1]
+
+def prevRpart(dados, str_modelo):
+    base = importr('base')
+    utils = importr('utils')    
+    rpart= importr('rpart')
+    
+    robjects.r['load']('Modelos/' + str_modelo)
+    Modelo = robjects.r['Modelo']
+    
+    predict = robjects.r('predict')
+    
+    prevRpart = predict(Modelo, data = dados, type="class")
+    
+    del rpart
+    del utils
+    del base
+    del Modelo
+    del predict
+    
+    prevRpart.levels[prevRpart[0]-1]
+
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import login_required
+
+@login_required  # Requer autenticação do usuário
 def home(request):
     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
     if request.method == 'POST':
@@ -243,7 +453,7 @@ def home(request):
             form = form.save(commit=False)
             form.user = request.user # Atribui o usuário atual ao atributo 'user'
             form.save() 
-
+            
             phraseTest = form.phraseTest  # Salva o texto em uma variável Python
             phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
 
@@ -276,11 +486,61 @@ def home(request):
                         new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
                         new_noun.save()
 
-            context = {'form': form}  # Define o contexto para a página HTML
+                # Executar código adicional
+            try:
+                base = importr('base')
+                utils = importr('utils')
 
-            return render(request, 'result.html', context)
+                robjects.r['load']('Modelos/df.100x1x100.Ocorrencias.Rdata')
+                dados_df = robjects.r['dados.df']
+
+                with localconverter(robjects.default_converter + pandas2ri.converter):
+                    df = robjects.conversion.rpy2py(dados_df)
+
+                entrada = df.loc[['eef474adc4c2d494dca53fa6b3bd8211']]
+                del entrada['Status']
+
+                modelos = get_best_models(area)
+
+                with localconverter(robjects.default_converter + pandas2ri.converter):
+                    dados = robjects.conversion.py2rpy(entrada)
+
+                subareas = []
+
+                for i in modelos.index:
+                    str_modelo = "Modelo." + str(modelos['Tipo'][i]) + "." + str(modelos['Subtipo'][i]) + "." + str(modelos['MinDocs'][i]) + "x" + str(modelos['RangeDocs'][i]) + ".Ocorrencias.ResearchAreaSA." + area + ".RData"
+
+                    if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
+                        prev_sub = prevRFranger(dados, str_modelo)
+                        subareas.append(prev_sub)
+
+                    if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
+                        str_modelo = "Modelo." + str(modelos['Tipo'][i]) + "." + str(modelos['Subtipo'][i]) + "." + str(modelos['MinDocs'][i]) + "x" + str(modelos['RangeDocs'][i]) + ".Ocorrencias.RData"
+
+                        prev_sub = prevRFtrad(dados, str_modelo)
+                        subareas.append(prev_sub)
+
+                    if(str(modelos['Tipo'][i]) == "C50"):
+                        prev_sub = prevC50(dados, str_modelo)
+                        subareas.append(prev_sub)
+
+                    if(str(modelos['Tipo'][i]) == "RPART"):
+                        prev_sub = prevRpart(dados, str_modelo)
+                        subareas.append(prev_sub)
+
+                show_prevrf = True  # Define show_prevrf como True para exibir os resultados
+                print(subareas)
+
+            except Exception as e:
+                print("Erro durante a execução do código:", e)
+
     else:
         form = MeuForm()
-    # Define o contexto para a página HTML
-    context = {'form': form, 'show_prevrf': show_prevrf}
+
+    context = {
+        'form': form,
+        'show_prevrf': show_prevrf,
+    }
+
     return render(request, 'home.html', context)
+ 
