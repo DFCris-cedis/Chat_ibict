@@ -349,12 +349,68 @@ import pandas as pd
 import psycopg2
 import h2o
 
-# ...
+def get_best_models(area):
+    try:
+        connection = psycopg2.connect(
+            database="testy",
+            user="postgres",
+            password="SENHA",
+            host="localhost",
+            port="5432"
+        )
+
+        # Cria um cursor para executar consultas
+        cursor = connection.cursor()
+
+        # Executa a consulta
+        query = f"""
+                SELECT "Tipo", "Subtipo", "MinDocs", "RangeDocs", COUNT(*)
+                FROM(
+                    SELECT * FROM public.models
+                    WHERE ("Subarea", "F1") IN (
+
+                      SELECT "Subarea", MAX("F1") AS max_f1
+
+                      FROM public.models
+                      WHERE "Area" = '{area}' AND "Subtipo" != 'ranger'
+
+                      GROUP BY "Subarea"
+
+                    )
+                    ORDER BY "F1" DESC
+                ) as tabela
+
+                GROUP BY "Tipo", "Subtipo", "MinDocs", "RangeDocs"
+                ORDER BY COUNT(*) DESC
+                LIMIT 3
+                """
+        cursor.execute(query)
+
+        # Recupera os resultados da consulta como uma lista de tuplas
+        results = cursor.fetchall()
+
+        # Cria um DataFrame pandas com os resultados
+        df = pd.DataFrame(results, columns=[desc[0] for desc in cursor.description])
+
+        # Fecha o cursor e a conexão
+        cursor.close()
+
+    except psycopg2.Error as error:
+        print("Erro ao conectar ao PostgreSQL:", error)
+
+    finally:
+        # Fecha a conexão com o banco de dados
+        if 'connection' in locals():
+            connection.close()
+        
+        return df
+
+
 
 def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
-    Modelo = h2o.load_model('Modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
     return prevNN[0, 0]
@@ -364,7 +420,7 @@ def prevC50(dados, str_modelo):
     utils = importr('utils') 
     C50 = importr('C50')
     
-    robjects.r['load']('Modelos/' + str_modelo)
+    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/Modelos/' + str_modelo)
     Modelo = robjects.r['Modelo']
     
     predict = robjects.r('predict')
@@ -384,7 +440,7 @@ def prevRFranger(dados, str_modelo):
     utils = importr('utils')    
     ranger = importr('ranger')
     
-    robjects.r['load']('Modelos/' + str_modelo)
+    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/Modelos/' + str_modelo)
     Modelo = robjects.r['Modelo']
     
     predict = robjects.r('predict')
@@ -405,7 +461,7 @@ def prevRFtrad(dados, str_modelo):
     utils = importr('utils')    
     rf = importr('randomForest')
     
-    robjects.r['load']('Modelos/' + str_modelo)
+    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/Modelos/' + str_modelo)
     Modelo = robjects.r['Modelo']
     
     predict = robjects.r('predict')
@@ -425,7 +481,7 @@ def prevRpart(dados, str_modelo):
     utils = importr('utils')    
     rpart= importr('rpart')
     
-    robjects.r['load']('Modelos/' + str_modelo)
+    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/Modelos/' + str_modelo)
     Modelo = robjects.r['Modelo']
     
     predict = robjects.r('predict')
@@ -443,6 +499,11 @@ def prevRpart(dados, str_modelo):
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.decorators import login_required
+
+
+# Chamar a função prevNN
+
+
 
 @login_required  # Requer autenticação do usuário
 def home(request):
@@ -499,7 +560,7 @@ def home(request):
 
                 entrada = df.loc[['eef474adc4c2d494dca53fa6b3bd8211']]
                 del entrada['Status']
-
+                print(area)
                 modelos = get_best_models(area)
 
                 with localconverter(robjects.default_converter + pandas2ri.converter):
