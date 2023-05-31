@@ -366,43 +366,38 @@ def prevNN(abstract):
     return prevNN[0, 0]
 
 
-import rpy2
-import pandas
+import importlib
+import threading
+import rpy2.robjects as ro
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+import pandas as pd
+from queue import Queue
+from rpy2.robjects.conversion import localconverter
+import threading
+import rpy2.robjects as robjects
+import threading
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
 
 import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
 
-from rpy2.robjects.pandas2ri import pandas2ri
+import pandas as pd
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
 
-from rpy2.robjects.packages import importr
+def process_rpy2():
+    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
+    dados_df = robjects.r['dados.df']
 
-
-
-def process_rpy2(queue):
-    import importlib
-    rpy2 = importlib.import_module("rpy2")
-    robjects = rpy2.robjects
-
-    from rpy2.robjects.packages import importr
-    import rpy2.robjects as ro
-    from rpy2.robjects import pandas2ri
-    from rpy2.robjects import robjects
-
-
-    # Load in R libraries 
-    pandas2ri.activate()
-
-    pandas2ri.py2ri(df)
-
-    # Carregar o arquivo Rdata dentro do contexto do rpy2
     with localconverter(robjects.default_converter + pandas2ri.converter):
-        with robjects.conversion.localconverter(robjects.default_converter + pandas2ri.converter) as cv:
-            pandas2ri.activate()
-            robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
-            dados_df = robjects.r['dados.df']
-            df = robjects.conversion.rpy2py(dados_df)
-            cv.cleanup()
+        df = robjects.conversion.rpy2py(dados_df)
 
-    # Resto do código...
     entrada = df.loc[['eef474adc4c2d494dca53fa6b3bd8211']]
     del entrada['Status']
 
@@ -432,67 +427,67 @@ def process_rpy2(queue):
     subtipo3 = modelos['Subtipo'][2]
     mindocs3 = modelos['MinDocs'][2]
     rangedocs3 = modelos['RangeDocs'][2]
-        
+    
     indicadores1 = get_indicadores(area1, subarea1, tipo1, subtipo1, mindocs1, rangedocs1)
     indicadores2 = get_indicadores(area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
     indicadores3 = get_indicadores(area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
-        
+    
     count_indicadores1 = (indicadores1 > indicadores2).sum()
     count_indicadores2 = (indicadores2 > indicadores1).sum()
 
     count_indicadores1_2 = (indicadores1 > indicadores2).sum()
     count_indicadores1_3 = (indicadores1 > indicadores3).sum()
-        
+    
     count_indicadores2_1 = (indicadores2 > indicadores1).sum()
     count_indicadores2_3 = (indicadores2 > indicadores3).sum()
-        
+    
     count_indicadores3_1 = (indicadores3 > indicadores1).sum()
     count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
     if vetor_strings[0] == vetor_strings[1] and vetor_strings[1] == vetor_strings[2]:
-        print("As três strings são iguais: " + vetor_strings[0])
-        
+        return "As três strings são iguais: " + vetor_strings[0]
+    
     elif vetor_strings[0] == vetor_strings[1]:
-        print("A primeira e segunda string são iguais.")
-        
+        result = "A primeira e segunda string são iguais."
+    
         if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-            print(vetor_strings[2])
+            return result + vetor_strings[2]
         else:
-            print(vetor_strings[0])
-        
+            return result + vetor_strings[0]
+    
     elif vetor_strings[0] == vetor_strings[2]:
-        print("A primeira e terceira string são iguais.")
-        
+        result = "A primeira e terceira string são iguais."
+    
         if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-            print(vetor_strings[1])
+            return result + vetor_strings[1]
         else:
-            print(vetor_strings[0])
-        
+            return result + vetor_strings[0]
+    
     elif vetor_strings[1] == vetor_strings[2]:
-        print("A segunda e terceira string são iguais.")
-        
+        result = "A segunda e terceira string são iguais."
+    
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-            print(vetor_strings[0])
+            return result + vetor_strings[0]
         else:
-            print(vetor_strings[2])
-            
+            return result + vetor_strings[2]
+        
     else:
-        print("As três strings são diferentes.")
-        
+        result = "As três strings são diferentes."
+    
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-            print(vetor_strings[0])
+            return result + vetor_strings[0]
         elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-            print(vetor_strings[1])
+            return result + vetor_strings[1]
         elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
-            print(vetor_strings[2])
+            return result + vetor_strings[2]
         else:
-            print(vetor_strings[0])
+            return result + vetor_strings[0]
 
-    #     # Armazene os resultados em uma variável
-        
-        resultado = "Exemplo de resultado"  # Exemplo de resultado retornado pela função
-        queue.put(resultado)
+# Call the function within the main thread
+output = process_rpy2()
 
+# Use the output as needed
+print(output)  # You can replace this with the function you want to return the result to
 
 def home(request):
     def home(request):
@@ -543,15 +538,12 @@ def home(request):
                         new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
                         new_noun.save()
 
-            # Código adicional
-            queue = Queue()  # Inicializar a queue para comunicação com o processo
-            rpy2_process = threading.Thread(target=process_rpy2, args=(queue,))
-            rpy2_process.start()
+            # Call the function and store the result in a variable
+            resultado = process_rpy2()
 
-            # Restante do código...
+# Display the result to the user
+            print(resultado)
 
-            rpy2_process.join()
-            resultado = queue.get()
         
         # Passar os resultados para o template renderizado
         context = {
@@ -567,11 +559,3 @@ def home(request):
     context = {'form': form, 'show_prevrf': show_prevrf}
     return render(request, 'home.html', context)
         
-
-    
-    
-    # else:
-    #     form = MeuForm()
-    #  # Define o contexto para a página HTML
-    # context = {'form': form, 'show_prevrf': show_prevrf}
-    # return render(request, 'home.html', context)
