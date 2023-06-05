@@ -1,96 +1,16 @@
-body{
-    background-color: #EFF6FB;
-    font-family: 'Roboto', sans-serif;
-    text-decoration: none;
-    color: #EFF6FB;
+body {
+  background-image: linear-gradient(135deg, #170932, #241148,
+      #3d1e5c, #854b9c, #aa5eb6);
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none;
+  /* color: #EFF6FB; */
 }
 
 
-  button {
-
-    border-radius: 10px;
-    border-color: #18355A;;
-    background-color : #18355A;;
-    color: white;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px white;
-    border-bottom: white;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-top: 4.5rem;
-    
-  }
-
-form {
-    /* background-color: #8093F1; */
-    padding: 20px;
-    border-radius: 10px;
-  }
-
-footer{
-  margin-top: 3.5rem;
-  font-size: 1.1rem;
-  color: #0d223b;
-}
-
-img{
-  
-    margin-top: 3rem;
-    max-width:25rem;
-    max-height:25rem;
-    width: auto;
-    height: auto;
- 
-    
-}
-div#option {
-  width: 100%;
-  text-align: center;
-  padding: 1rem;
-  font-size: 1.3rem;
-  color: #18355A;
- }
-
-.textarea {
-
-    background-color: white;
-    height: 200px;
-    border-radius: 20px;
-    padding: 1rem;
-    margin: 20px 0;
-    resize: none;
-    width: 25rem;
-    box-shadow: 5px 10px #18355A;
-    font-size: 1.2rem;
-    margin-top: 1rem;
-
-  }
-
-.campo-phrasetest label {
-    display: none;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-
-  }
-  label {
-    font-size: 20px; /* aqui você pode ajustar o tamanho do texto conforme desejado */
-    color:#18355A;
-  }
-  
-.option{
-  display: inline-block;
+button {
   border-radius: 10px;
-  border-color: #18355A;
-  background-color : #18355A;
+  border-color: #943e8e;
+  background-color: #241148;
   color: white;
   display: block;
   margin-left: auto;
@@ -100,7 +20,90 @@ div#option {
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 0.9rem;
-  margin-top: 1.2rem;
+  margin-top: 4rem;
+
+}
+
+form {
+  /* background-color: #8093F1; */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+footer {
+  margin-top: 3.5rem;
+  font-size: 1.1rem;
+}
+
+img {
+
+  margin-top: 2rem;
+  max-width: 25rem;
+  max-height: 25rem;
+  width: auto;
+  height: auto;
+
+
+}
+
+div#option {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.3rem;
+  color: #18355A;
+}
+
+.textarea {
+
+  background-color: white;
+  border-radius: 10px;
+  border-color: #943e8e;
+  height: 200px;
+  border-radius: 20px;
+  padding: 1rem;
+  margin: 20px 0;
+  resize: none;
+  width: 25rem;
+  font-size: 1.2rem;
+
+
+}
+
+.campo-phrasetest label {
+  display: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+label {
+  font-size: 20px;
+  /* aqui você pode ajustar o tamanho do texto conforme desejado */
+  /* color: #18355A; */
+}
+
+.option {
+  display: inline-block;
+  border-radius: 10px;
+  border-color: #943e8e;
+  /* background-color: #18355A; */
+  background-color: #241148;
+  color: white;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px white;
+  border-bottom: white;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  /* margin-top: 1.2rem; */
 
 }
 
@@ -116,12 +119,12 @@ div#option {
 }
 
 .logout i {
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
   text-align: center;
   align-items: center;
   margin-right: 0.5rem;
   color: #18355A;
-  
+
 
 }
 
@@ -130,11 +133,10 @@ div#option {
   align-items: center;
   margin: auto;
   margin-left: 0.5rem;
- 
+
 }
 
 .link {
   text-align: right;
   margin-right: 5rem;
-} 
-
+}
