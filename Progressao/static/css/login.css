@@ -187,12 +187,14 @@ body {
   text-align: right;
   margin-right: 7rem;
   font-weight: bold;
+  color: white
 }
 
 .link a:visited {
   text-decoration: none;
   color: inherit;
   font-weight: bold;
+  color: white;
 }
 
 .coluna_1 {
@@ -211,6 +213,7 @@ body {
   align-items: center;
   color: white;
   padding: 0.5rem 0.5rem;
+  text-decoration: white;
 
 
 }
