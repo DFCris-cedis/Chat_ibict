@@ -18,29 +18,6 @@ from .forms import MeuForm
 from .models import Noun
 import logging
 import spacy
-import threading
-import rpy2.robjects as ro
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2.robjects.conversion import localconverter
-import pandas as pd
-from queue import Queue
-from rpy2.robjects.conversion import localconverter
-import threading
-import rpy2.robjects as robjects
-import threading
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
-
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
-
-import pandas as pd
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
 
 from multiprocessing import Process, Queue
 import threading
@@ -388,111 +365,38 @@ def prevNN(abstract):
     
     return prevNN[0, 0]
 
-def prevC50(dados, str_modelo):
-    base = importr('base')
-    utils = importr('utils') 
-    C50 = importr('C50')
-    
-    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/Modelos/' + str_modelo)
-    Modelo = robjects.r['Modelo']
-    
-    predict = robjects.r('predict')
-    
-    prevC50 = predict(Modelo, type = "class", newdata = dados)
-    
-    del C50
-    del utils
-    del base
-    del Modelo
-    del predict
-    
-    return prevC50.levels[prevC50[0]-1]
 
-def prevRFranger(dados, str_modelo):
-    base = importr('base')
-    utils = importr('utils')    
-    ranger = importr('ranger')
-    
-    robjects.r['load']('Modelos/' + str_modelo)
-    Modelo = robjects.r['Modelo']
-    
-    predict = robjects.r('predict')
-    
-    prevRF_ranger = predict(Modelo, data = dados)
-    prevRF_ranger = prevRF_ranger[0]
-    
-    del ranger
-    del utils
-    del base
-    del Modelo
-    del predict
-    
-    return prevRF_ranger.levels[prevRF_ranger[0]-1]
+import importlib
+import threading
+import rpy2.robjects as ro
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+import pandas as pd
+from queue import Queue
+from rpy2.robjects.conversion import localconverter
+import threading
+import rpy2.robjects as robjects
+import threading
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
 
-def prevRFtrad(dados, str_modelo):
-    base = importr('base')
-    utils = importr('utils')    
-    rf = importr('randomForest')
-    
-    robjects.r['load']('Modelos/' + str_modelo)
-    Modelo = robjects.r['Modelo']
-    
-    predict = robjects.r('predict')
-    
-    prevRF_trad = predict(Modelo, data = dados)
-    
-    del rf
-    del utils
-    del base
-    del Modelo
-    del predict
-    
-    return prevRF_trad.levels[prevRF_trad[0]-1]
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
 
-def prevRpart(dados, str_modelo):
-    base = importr('base')
-    utils = importr('utils')    
-    rpart= importr('rpart')
-    
-    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/Modelos/' + str_modelo)
-    Modelo = robjects.r['Modelo']
-    
-    predict = robjects.r('predict')
-    
-    prevRpart = predict(Modelo, data = dados, type="class")
-    
-    del rpart
-    del utils
-    del base
-    del Modelo
-    del predict
-    
-    return prevRpart.levels[prevRpart[0]-1]
-
-import h2o
+import pandas as pd
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
 
 def process_rpy2():
-    # h2o.init(nthreads=-1)
-
-    # # Verificar se o H2O está em execução
-    # if not h2o.cluster().is_running():
-    #     h2o.cluster().shutdown()
-    #     h2o.init(nthreads=-1)
-
-    # # Carregar o modelo
-    # try:
-    #     Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-    # except Exception as e:
-    #     print("Erro ao carregar o modelo do H2O:", str(e))
-    #     return None
-
-
-# Chamar a função prevNN
     robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
-    dados = robjects.r['dados.df']
+    dados_df = robjects.r['dados.df']
 
     with localconverter(robjects.default_converter + pandas2ri.converter):
-        df = robjects.conversion.rpy2py(dados)
+        df = robjects.conversion.rpy2py(dados_df)
 
     entrada = df.loc[['eef474adc4c2d494dca53fa6b3bd8211']]
     del entrada['Status']
@@ -501,50 +405,24 @@ def process_rpy2():
 
     modelos = get_best_models(area)
 
-    subareas = []
+    vetor_strings = ["NEUROLOGIA, CIENCIAS DA SAUDE", "PEDIATRIA, CIENCIAS DA SAUDE", "PROTESE DENTARIA, CIENCIAS DA SAUDE"]
 
-    from rpy2.robjects import r
-
-    for i in modelos.index:
-        str_modelo = "Modelo." + str(modelos['Tipo'][i]) + "." + str(modelos['Subtipo'][i]) + "." + str(modelos['MinDocs'][i]) + "x" + str(modelos['RangeDocs'][i]) + ".Ocorrencias.ResearchAreaSA." + area + ".RData"
-        
-        if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
-            prev_sub =  prevRFranger(dados, str_modelo)
-            subareas.append(prev_sub)
-        
-        if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
-            str_modelo = "Modelo." + str(modelos['Tipo'][i]) + "." + str(modelos['Subtipo'][i]) + "." + str(modelos['MinDocs'][i]) + "x" + str(modelos['RangeDocs'][i]) + ".Ocorrencias.RData"
-            
-            prev_sub =  prevRFtrad(dados, str_modelo)
-            subareas.append(prev_sub)
-    
-    # if(str(modelos['Tipo'][i]) == "C50"):
-    #     prev_sub =  prevC50(dados, str_modelo)
-    #     subareas.append(prev_sub)
-        
-    if(str(modelos['Tipo'][i]) == "RPART"):
-        prev_sub =  prevRpart(dados, str_modelo)
-        subareas.append(prev_sub)
-    
-    print(subareas)
-    # subareas = ["NEUROLOGIA, CIENCIAS DA SAUDE", "PEDIATRIA, CIENCIAS DA SAUDE", "PROTESE DENTARIA, CIENCIAS DA SAUDE"]
-
-    area1 = subareas[0].split(',')[1].strip()
-    subarea1 = subareas[0].split(',')[0].strip()
+    area1 = vetor_strings[0].split(',')[1].strip()
+    subarea1 = vetor_strings[0].split(',')[0].strip()
     tipo1 = modelos['Tipo'][0]
     subtipo1 = modelos['Subtipo'][0]
     mindocs1 = modelos['MinDocs'][0]
     rangedocs1 = modelos['RangeDocs'][0]
     
-    area2 = subareas[1].split(',')[1].strip()
-    subarea2 = subareas[1].split(',')[0].strip()
+    area2 = vetor_strings[1].split(',')[1].strip()
+    subarea2 = vetor_strings[1].split(',')[0].strip()
     tipo2 = modelos['Tipo'][1]
     subtipo2 = modelos['Subtipo'][1]
     mindocs2 = modelos['MinDocs'][1]
     rangedocs2 = modelos['RangeDocs'][1]
 
-    area3 = subareas[2].split(',')[1].strip()
-    subarea3 = subareas[2].split(',')[0].strip()
+    area3 = vetor_strings[2].split(',')[1].strip()
+    subarea3 = vetor_strings[2].split(',')[0].strip()
     tipo3 = modelos['Tipo'][2]
     subtipo3 = modelos['Subtipo'][2]
     mindocs3 = modelos['MinDocs'][2]
@@ -566,51 +444,50 @@ def process_rpy2():
     count_indicadores3_1 = (indicadores3 > indicadores1).sum()
     count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
-    if subareas[0] == subareas[1] and subareas[1] == subareas[2]:
-        return "As três strings são iguais: " + subareas[0]
+    if vetor_strings[0] == vetor_strings[1] and vetor_strings[1] == vetor_strings[2]:
+        return "As três strings são iguais: " + vetor_strings[0]
     
-    elif subareas[0] == subareas[1]:
+    elif vetor_strings[0] == vetor_strings[1]:
         result = "A primeira e segunda string são iguais."
     
         if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-            return result + subareas[2]
+            return result + vetor_strings[2]
         else:
-            return result + subareas[0]
+            return result + vetor_strings[0]
     
-    elif subareas[0] == subareas[2]:
+    elif vetor_strings[0] == vetor_strings[2]:
         result = "A primeira e terceira string são iguais."
     
         if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-            return result + subareas[1]
+            return result + vetor_strings[1]
         else:
-            return result + subareas[0]
+            return result + vetor_strings[0]
     
-    elif subareas[1] == subareas[2]:
+    elif vetor_strings[1] == vetor_strings[2]:
         result = "A segunda e terceira string são iguais."
     
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-            return result + subareas[0]
+            return result + vetor_strings[0]
         else:
-            return result + subareas[2]
+            return result + vetor_strings[2]
         
     else:
         result = "As três strings são diferentes."
     
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-            return result + subareas[0]
+            return result + vetor_strings[0]
         elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-            return result + subareas[1]
+            return result + vetor_strings[1]
         elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
-            return result + subareas[2]
+            return result + vetor_strings[2]
         else:
-            return result + subareas[0]
+            return result + vetor_strings[0]
 
 # Call the function within the main thread
 output = process_rpy2()
 
 # Use the output as needed
 print(output)  # You can replace this with the function you want to return the result to
-
 
 def home(request):
     def home(request):
