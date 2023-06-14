@@ -15,12 +15,12 @@ button {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 20px white;
+  margin-bottom: 20vh white;
   border-bottom: white;
-  padding: 0.5rem 1rem;
+  padding: 0.5vh 1vh;
   cursor: pointer;
   font-size: 0.9rem;
-  margin-top: 4rem;
+  margin-top: 2vh;
 
 }
 
@@ -31,42 +31,57 @@ form {
 }
 
 footer {
-  margin-top: 3.5rem;
-  font-size: 1.1rem;
+  /* align-items: center;
+  margin-left: auto;
+  margin-right: auto; */
+  margin-top: 2.1rem;
+  text-align: center;
 }
 
-img {
+.imagem {
+  width: 9vh;
+  align-items: center;
+  margin-right: 1rem;
 
-  margin-top: 2rem;
-  max-width: 25rem;
-  max-height: 25rem;
+  /* Ajuste o tamanho da imagem conforme necessário */
+
+}
+
+
+.chatibict {
+
+  /* margin-top: 2rem; */
+  max-width: 50vh;
+  max-height: 50vhvh;
   width: auto;
   height: auto;
 
 
 }
 
+
+
 div#option {
   width: 100%;
   text-align: center;
-  padding: 1rem;
-  font-size: 1.3rem;
+  padding: 1vh;
+  font-size: 1.3vh;
   color: #18355A;
 }
 
 .textarea {
 
   background-color: white;
-  border-radius: 10px;
-  border: 2px solid #943e8e;
+  border-radius: 1vh;
+  border: 0.1vh solid #943e8e;
   border-color: #943e8e;
-  height: 200px;
-  border-radius: 20px;
-  padding: 1rem;
-  margin: 20px 0;
+  height: 20vh;
+  border-radius: 1vh;
+  padding: 1vh;
+  margin: 1vh 0;
   resize: none;
-  width: 25rem;
-  font-size: 1.2rem;
+  width: 45vh;
+  font-size: 1.2vh;
 
 
 }
