@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dividindo a tela verticalmente</title>
+    <link rel="stylesheet" href="/static/css/login.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="coluna_1">
+        <img src="/static/img/chat_ibict.png" alt="chatibict" class="imagem" />
+      </div>
+
+      <div class="coluna_2">
+        <h1>BEM VINDO!</h1>
+
+        <div class="inner-box">
+          <form method="post" class="form">
+            {% csrf_token %} {{ form.as_p }}
+
+            <button type="submit">ENTRAR</button>
+          </form>
+        </div>
+        <a href="{% url 'signup' %}">Não tem uma conta? Cadastre-se aqui</a>
+
+        <a href="{% url 'password_reset' %}">Esqueceu a sua senha?</a>
+      </div>
+    </div>
+  </body>
+</html>
