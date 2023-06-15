@@ -375,6 +375,7 @@ from rpy2.robjects.conversion import localconverter
 import pandas as pd
 from queue import Queue
 from rpy2.robjects.conversion import localconverter
+#teste
 import threading
 import rpy2.robjects as robjects
 import threading
