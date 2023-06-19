@@ -7,3 +7,5 @@ from paginas.models import MyUser
 def create_myuser(sender, instance, created, **kwargs):
     if created:
         MyUser.objects.create(user=instance)
+
+        #add
