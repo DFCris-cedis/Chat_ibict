@@ -18,7 +18,7 @@ import os
 ASGI_APPLICATION = "Progressao.asgi.application"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(_file_).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,6 +30,7 @@ SECRET_KEY = 'django-insecure-!ph7usvbsvm2k#f@%!%v=$ggv*s-f=&1(@rakrh+czsv*$6c9*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -53,12 +54,7 @@ AUTH_USER_MODEL = 'paginas.CustomUser'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
-ALLOWED_HOSTS = ['chatibict.ibict.br', '172.16.17.41']
-CSRF_TRUSTED_ORIGINS = ['http://chatibict.ibict.br']
-""" CORS_ALLOWED_ORIGINS = [
-    'https://chatibict.ibict.br',
-]
- """
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [
@@ -71,7 +67,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'Progressao.middleware.StaffOnlyMiddleware',
-    'Progressao.middleware.LoginRedirectMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -105,11 +100,7 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< Updated upstream
         'NAME': 'testy',
-=======
-        'NAME': 'teste',
->>>>>>> Stashed changes
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
@@ -117,11 +108,7 @@ DATABASES = {
     },
     'postgres': {
      'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< Updated upstream
         'NAME': 'testy',
-=======
-        'NAME': 'teste',
->>>>>>> Stashed changes
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',

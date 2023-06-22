@@ -6,13 +6,17 @@
   </head>
   <body>
     <div class="container">
-      <img src="/static/img/chat_ibict.png" alt="chatibict" />
+      <img src="/static/img/contextus2.png" alt="chatibict" />
       <div class="form-container">
         <div class="form-field campo-phrasetest">
-          <p>O resultado retornado foi: {{ resultado }}</p>
+          {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+        </div>
+        <div class="prevrf-field">
+          {% if show_prevrf %} {{ valor_prevrf }} {% endif %}
         </div>
       </div>
       <footer>2023, Projeto DFCris - parceria CEDIS/UnB, Ibict e FAP/DF</footer>
     </div>
   </body>
 </html>
+

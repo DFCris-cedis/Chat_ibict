@@ -1,4 +1,5 @@
 
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
@@ -35,8 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
+    is_active = models.BooleanField
 
     objects = CustomUserManager()
 
@@ -60,11 +60,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Test(models.Model):
     testId = models.AutoField(primary_key=True)
     phraseTest = models.CharField(max_length=1500)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, to_field='email')
-    # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.phraseTest
+    idUser = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, default=1)
 
 
 class Noun(models.Model):
@@ -93,6 +90,3 @@ class ResultML(models.Model):
     prevRFrang = models.CharField(max_length=1500)
     prevC50 = models.CharField(max_length=1500)
     prevRpart = models.CharField(max_length=1500)
-
-    # def __str__(self):
-    #     return self.prevRFtrad

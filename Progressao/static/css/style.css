@@ -76,11 +76,11 @@ div#option {
   border: 0.1vh solid #943e8e;
   border-color: #943e8e;
   height: 20vh;
-  border-radius: 1vh;
+  border-radius: 10vh;
   padding: 1vh;
-  margin: 1vh 0;
+  margin: 10vh 0;
   resize: none;
-  width: 45vh;
+  width: 25vh;
   font-size: 1.2vh;
 
 
@@ -155,4 +155,5 @@ label {
 .link {
   text-align: right;
   margin-right: 5rem;
+
 }
