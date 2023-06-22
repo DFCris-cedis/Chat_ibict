@@ -360,7 +360,7 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
-    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
     return prevNN[0, 0]
@@ -393,7 +393,7 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 
 def process_rpy2():
-    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
+    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/df.100x1x100.Ocorrencias.Rdata')
     dados_df = robjects.r['dados.df']
 
     with localconverter(robjects.default_converter + pandas2ri.converter):
