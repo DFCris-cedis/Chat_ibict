@@ -66,3 +66,4 @@ class CustomPasswordResetForm(PasswordResetForm):
 class CustomPasswordResetFormLayout(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(
         attrs={'autocomplete': 'email', 'class': 'form-control', 'placeholder': 'E-mail'}))
+

@@ -14,18 +14,11 @@ from pathlib import Path
 import os
 
 
-# Defina o backend do Channels para o ASGI
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
-}
-
 # Adicione o ASGI_APPLICATION
 ASGI_APPLICATION = "Progressao.asgi.application"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(_file_).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -58,15 +51,9 @@ INSTALLED_APPS = [
     # 'nomedoapp.apps.NomedoappConfig'
 ]
 AUTH_USER_MODEL = 'paginas.CustomUser'
-LOGIN_URL = 'accounts/login/'
+LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'seu_email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'sua_senha'
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -111,25 +98,23 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'teste',
+        'NAME': 'testy',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
         'PORT': '5432',
     },
-
     'postgres': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+     'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'testy',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
         'HOST': 'localhost',
         'PORT': '5432',
-    }
+    },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -167,15 +152,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # reconhece onde esta o arquivo estatico
-# STATIC_ROOT= [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),  # comentei agr
+# ]
+STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -187,6 +176,15 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 
 # add the following line at the end of the file
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'milenafaria1706@gmail.com'
+EMAIL_HOST_PASSWORD = 'ckwktyijrxlltfjo'
