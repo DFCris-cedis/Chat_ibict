@@ -361,7 +361,7 @@ def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
         #diretorio Milena ubuntu
-    Modelo = h2o.load_model('/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
     #diretorio Milena Windows
     #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
    
