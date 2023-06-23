@@ -397,7 +397,7 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 
 def process_rpy2():
-    robjects.r['load']('/home/ubuntu/Chat_ibict/Progressao/static/modelos$/df.100x1x100.Ocorrencias.Rdata')
+    robjects.r['load']('/home/ubuntu/Chat_ibict/Progressao/static/modelos/df.100x1x100.Ocorrencias.Rdata')
     #robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
     dados_df = robjects.r['dados.df']
 
