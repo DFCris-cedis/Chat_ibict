@@ -2,7 +2,7 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-# from paginas.forms import CustomPasswordResetConfirmForm
+from paginas.forms import CustomPasswordResetConfirmForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.views.decorators.csrf import csrf_protect
@@ -176,24 +176,24 @@ def password_reset(request):
     return render(request, 'password_reset_form.html', {'form': form})
 
 
-# def reset_confirm(request, uidb64, token):
-#     form_class = CustomPasswordResetConfirmForm
-#     validlink = True
-#     user = auth_views.PasswordResetConfirmView().get_user(uidb64)
-#     if user is None:
-#         validlink = False
-#     else:
-#         if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
-#             validlink = False
-#     if validlink:
-#         if request.method == 'POST':
-#             form = form_class(user, request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('password_reset_complete')
-#         else:
-#             form = form_class(user)
-#         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+def reset_confirm(request, uidb64, token):
+    form_class = CustomPasswordResetConfirmForm
+    validlink = True
+    user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+    if user is None:
+        validlink = False
+    else:
+        if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+            validlink = False
+    if validlink:
+        if request.method == 'POST':
+            form = form_class(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('password_reset_complete')
+        else:
+            form = form_class(user)
+        return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
 
 nlp = spacy.load("pt_core_news_lg")
