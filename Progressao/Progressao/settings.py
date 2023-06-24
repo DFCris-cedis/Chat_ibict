@@ -34,8 +34,6 @@ ALLOWED_HOSTS = ['15.228.87.227']
 # CORS_ORIGIN_WHITELIST = [
 #     'http://15.228.87.227:80',
 # ]
-DEBUG = True
-PORT = 80
 
 
 # Application definition
