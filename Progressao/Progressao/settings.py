@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['15.228.87.227']
 CSRF_TRUSTED_ORIGINS = [
-    '15.228.87.227',
+    'https://15.228.87.227',
 ]
 
 
