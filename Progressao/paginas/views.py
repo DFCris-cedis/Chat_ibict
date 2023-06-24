@@ -196,7 +196,7 @@ def reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
 
-nlp = spacy.load("pt_core_news_pt")
+nlp = spacy.load("pt_core_news_sm")
 
 
 # def home(request):
