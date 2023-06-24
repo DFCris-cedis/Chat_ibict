@@ -83,7 +83,6 @@ class Dicionario(models.Model):
     IDunico = models.IntegerField(primary_key=True)
     IDSignificado = models.IntegerField()
     Palavra = models.CharField(max_length=1500)
-
     objects = DicionarioManager()
 
 
