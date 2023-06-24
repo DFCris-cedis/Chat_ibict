@@ -31,9 +31,12 @@ SECRET_KEY = 'django-insecure-!ph7usvbsvm2k#f@%!%v=$ggv*s-f=&1(@rakrh+czsv*$6c9*
 DEBUG = True
 
 ALLOWED_HOSTS = ['15.228.87.227']
-CORS_ORIGIN_WHITELIST = [
-    'http://15.228.87.227',
-]
+# CORS_ORIGIN_WHITELIST = [
+#     'http://15.228.87.227:80',
+# ]
+DEBUG = True
+PORT = 80
+
 
 # Application definition
 
