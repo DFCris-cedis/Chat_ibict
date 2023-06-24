@@ -314,9 +314,9 @@ def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
         #diretorio Milena ubuntu
-    #Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
     #diretorio Milena Windows
-    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
    
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
@@ -350,8 +350,8 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 
 def process_rpy2():
-    #robjects.r['load']('/home/ubuntu/Chat_ibict/Progressao/static/modelos/df.100x1x100.Ocorrencias.Rdata')
-    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
+    robjects.r['load']('/home/ubuntu/Chat_ibict/Progressao/static/modelos/df.100x1x100.Ocorrencias.Rdata')
+    #robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
     dados_df = robjects.r['dados.df']
 
     with localconverter(robjects.default_converter + pandas2ri.converter):
