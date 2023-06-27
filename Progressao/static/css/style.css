@@ -19,9 +19,9 @@ button {
   margin-right: auto;
   margin-bottom: 20vh white;
   border-bottom: white;
-  padding: 0.5vh 1vh;
+  padding: 0.8vh 1.2vh;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 2.3vh;
   margin-top: 2vh;
 
 }
@@ -38,10 +38,12 @@ footer {
   margin-right: auto; */
   margin-top: 2.1rem;
   text-align: center;
+  position: absolute;
+  bottom: 0;
 }
 
 .imagem {
-  width: 9vh;
+  width: 15vh;
   align-items: center;
   margin-right: 1rem;
 
@@ -77,13 +79,14 @@ div#option {
   border-radius: 1vh;
   border: 0.1vh solid #943e8e;
   border-color: #943e8e;
-  height: 20vh;
+  height: 32vh;
   border-radius: 1vh;
   padding: 1vh;
   margin: 1vh 0;
   resize: none;
-  width: 45vh;
-  font-size: 1.2vh;
+  width: 45wh;
+  font-size: 2.2vh;
+  margin-top: 5vh;
 
 
 }

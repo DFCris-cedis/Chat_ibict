@@ -27,14 +27,14 @@
           {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
         </div>
 
-        <div style="text-align: center">
+        {% comment %} <div style="text-align: center">
           <label style="display: inline-block">Escolha uma opção:</label>
           <select name="pesquisa" class="option" style="display: inline-block">
             <option value="universidade">Universidade</option>
             <option value="professor">Professor</option>
             <option value="area">Área</option>
           </select>
-        </div>
+        </div> {% endcomment %}
 
         <button type="submit">Pesquisar</button>
       </form>
@@ -43,15 +43,23 @@
         document
           .querySelector('button[value="logout"]')
           .addEventListener("click", function () {
-            document.querySelector(".form-container").action =
-              "{% url 'logout_view' %}";
+            document.querySelector(".form-container").action = "{% url 'logout_view' %}";
+            document.querySelector(".form-container").submit();
+          });
+      
+        document
+          .querySelector('i.fa-arrow-right-from-bracket')
+          .addEventListener("click", function () {
+            document.querySelector(".form-container").action = "{% url 'logout_view' %}";
             document.querySelector(".form-container").submit();
           });
       </script>
+      
 
       <footer > <img class="imagem" src="/static/img/fapdf.png" />
-        <img class="imagem" src="/static/img/ibict.png" />
         <img class="imagem" src="/static/img/cedis.png"/>
+        <img class="imagem" src="/static/img/ibict.png" />
+       
         
         
       </footer>
