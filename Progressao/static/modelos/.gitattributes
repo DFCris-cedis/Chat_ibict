@@ -1,0 +1,2 @@
+Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData filter=lfs diff=lfs merge=lfs -text
+Modelo.RF.trad.200x1x280.Ocorrencias.RData filter=lfs diff=lfs merge=lfs -text
