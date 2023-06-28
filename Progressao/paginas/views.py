@@ -350,7 +350,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         
-        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
         
@@ -554,8 +555,8 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
-    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-    #Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
    
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
@@ -653,14 +654,14 @@ def process_rpy2():
 
     for i in modelos.index:
         if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
-            # str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
-            str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            #str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
             prev_sub =  prevRFranger(entrada, str_modelo)
             vetor_strings.append(prev_sub)
         
         if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
-            # str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
-            str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            #str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             prev_sub =  prevRFtrad(entrada, str_modelo)
             vetor_strings.append(prev_sub)
         
@@ -671,8 +672,8 @@ def process_rpy2():
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
             
         if(str(modelos['Tipo'][i]) == "RPART"):
-            #str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            #str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             
             prev_sub =  prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""") 
