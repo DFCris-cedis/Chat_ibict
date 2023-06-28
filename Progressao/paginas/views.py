@@ -349,7 +349,7 @@ def get_df():
             results[id] = 'v'+results[id][0]
         # Fecha o cursor e a conexão
         cursor.close()
-        
+        #teste
         #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
