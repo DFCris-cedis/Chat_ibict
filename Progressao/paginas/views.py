@@ -369,7 +369,7 @@ def get_df():
             df[id] = df[id] + 1
         
         # Adiciona o prefixo 'v' antes do valor de cada coluna
-        df = df.rename(columns=lambda x: 'v' + str(x))
+        df.columns = ['v' + str(col) for col in df.columns]
         
         with localconverter(robjects.default_converter + pandas2ri.converter):
             df = robjects.conversion.py2rpy(df)
@@ -384,6 +384,7 @@ def get_df():
         
     # Retorna o DataFrame convertido para o formato R
     return df
+
 
 
 da = get_df()
