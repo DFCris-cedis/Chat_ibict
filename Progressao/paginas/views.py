@@ -307,9 +307,7 @@ def get_df():
             df[id] = df[id] +1
             
         with localconverter(robjects.default_converter + pandas2ri.converter):
-          df = robjects.conversion.py2rpy(df.transpose())
-
-        #   df = robjects.conversion.py2rpy(df)
+          df = robjects.conversion.py2rpy(df)
 
     except psycopg2.Error as error:
         print("Erro ao conectar ao PostgreSQL:", error)
