@@ -3,16 +3,26 @@
   <head>
     <title>Chatibict</title>
     <link rel="stylesheet" href="/static/css/style2.css" />
-  </head>
-  <body>
-    <div class="container">
-      <img src="/static/img/chat_ibict.png" alt="chatibict" />
+    <link rel="stylesheet" href="/static/css/all.min.css" />
+    <body>
+      <div class="container">
+          <img class="chatibict" src="/static/img/contextus2.png" alt="chatibict"/>
+      </div>
+      
       <div class="form-container">
         <div class="form-field campo-phrasetest">
-          <p>O resultado retornado foi: {{ resultado }}</p>
+          <p> {{ resultado }}</p>
         </div>
       </div>
-      <footer>2023, Projeto DFCris - parceria CEDIS/UnB, Ibict e FAP/DF</footer>
+      <button type="submit">Pesquisar</button>
+    </form>
+
+
+      <footer > <img class="imagem" src="/static/img/fapdf.png" />
+        <img class="imagem" src="/static/img/cedis.png"/>
+        <img class="imagem" src="/static/img/ibict.png" />
+
+      </footer>
     </div>
   </body>
 </html>
