@@ -289,7 +289,7 @@ def get_df():
         cursor.close()
         
         # file = open("C:/Users/milen/OneDrive/Documentos/DF/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open(r"home\ubuntu\Chat_ibict\Progressao\static\modelos\todos_IDSignificados.Ocorrencias.csv", "r")
 
 
         idsignificado = list(csv.reader(file, delimiter=","))
@@ -317,7 +317,7 @@ def get_df():
         if 'connection' in locals():
             connection.close()
         #sai com data frame r
-        return df
+    return df
 
 da = get_df()
 
