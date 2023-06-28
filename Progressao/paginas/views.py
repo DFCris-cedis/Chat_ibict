@@ -255,9 +255,72 @@ import numpy as np
 import csv
 import numpy as np
 
+# def get_df():
+#     try:
+        
+#         connection = psycopg2.connect(
+#             database="testy",
+#             user="postgres",
+#             password="SENHA",
+#             host="localhost",
+#             port="5432"
+#         )
+        
+#         # Cria um cursor para executar consultas
+#         cursor = connection.cursor()
+
+#         # Executa a consulta
+#         query = f"""
+#                 SELECT "idSignificado"
+#                 FROM paginas_noun
+#                 WHERE test_id = (
+#                     SELECT MAX("test_id")
+#                     FROM paginas_noun); 
+#                 """
+#         cursor.execute(query)
+
+#         # Recupera os resultados da consulta como uma lista de tuplas
+#         results = cursor.fetchall()
+#         print(results)
+
+#         for id in range(len(results)):
+#             results[id] = 'v'+results[id][0]
+#         # Fecha o cursor e a conexão
+#         cursor.close()
+        
+#         # file = open("C:/Users/milen/OneDrive/Documentos/DF/todos_IDSignificados.Ocorrencias.csv", "r")
+#         file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+
+
+#         idsignificado = list(csv.reader(file, delimiter=","))
+#         file.close()
+        
+#         idsignificado = [row[0] for row in idsignificado]
+        
+#         for id in range(len(idsignificado)):
+#             idsignificado[id] = 'v'+idsignificado[id]
+        
+#         df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns = idsignificado)
+#         df = df.astype(int)
+        
+#         for id in results:
+#             df[id] = df[id] +1
+            
+#         with localconverter(robjects.default_converter + pandas2ri.converter):
+#           df = robjects.conversion.py2rpy(df)
+
+#     except psycopg2.Error as error:
+#         print("Erro ao conectar ao PostgreSQL:", error)
+
+#     finally:
+#         # Fecha a conexão com o banco de dados
+#         if 'connection' in locals():
+#             connection.close()
+#         #sai com data frame r
+#     return df
+
 def get_df():
     try:
-        
         connection = psycopg2.connect(
             database="testy",
             user="postgres",
@@ -271,12 +334,13 @@ def get_df():
 
         # Executa a consulta
         query = f"""
-                SELECT "idSignificado"
+            SELECT "idSignificado"
+            FROM paginas_noun
+            WHERE test_id = (
+                SELECT MAX("test_id")
                 FROM paginas_noun
-                WHERE test_id = (
-                    SELECT MAX("test_id")
-                    FROM paginas_noun); 
-                """
+            ); 
+        """
         cursor.execute(query)
 
         # Recupera os resultados da consulta como uma lista de tuplas
@@ -284,30 +348,31 @@ def get_df():
         print(results)
 
         for id in range(len(results)):
-            results[id] = 'v'+results[id][0]
+            results[id] = 'v' + results[id][0]
+        
         # Fecha o cursor e a conexão
         cursor.close()
         
-        # file = open("C:/Users/milen/OneDrive/Documentos/DF/todos_IDSignificados.Ocorrencias.csv", "r")
         file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-
-
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
         
         idsignificado = [row[0] for row in idsignificado]
         
         for id in range(len(idsignificado)):
-            idsignificado[id] = 'v'+idsignificado[id]
+            idsignificado[id] = 'v' + idsignificado[id]
         
-        df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns = idsignificado)
+        df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns=idsignificado)
         df = df.astype(int)
         
         for id in results:
-            df[id] = df[id] +1
-            
+            df[id] = df[id] + 1
+        
+        # Adiciona o prefixo 'v' antes do valor de cada coluna
+        df = df.rename(columns=lambda x: 'v' + str(x))
+        
         with localconverter(robjects.default_converter + pandas2ri.converter):
-          df = robjects.conversion.py2rpy(df)
+            df = robjects.conversion.py2rpy(df)
 
     except psycopg2.Error as error:
         print("Erro ao conectar ao PostgreSQL:", error)
@@ -316,8 +381,10 @@ def get_df():
         # Fecha a conexão com o banco de dados
         if 'connection' in locals():
             connection.close()
-        #sai com data frame r
+        
+    # Retorna o DataFrame convertido para o formato R
     return df
+
 
 da = get_df()
 
