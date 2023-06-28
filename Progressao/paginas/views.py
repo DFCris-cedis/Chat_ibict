@@ -353,7 +353,8 @@ def get_df():
         df = pd.DataFrame(0, columns=idsignificado, index=[0])
 
         for id in results:
-            df[id[0]] += 1
+            if id[0] in df.columns:
+                df[id[0]] += 1
 
         # Fecha o cursor e a conexão
         cursor.close()
@@ -371,6 +372,7 @@ def get_df():
 
     # Retorna o DataFrame convertido para o formato R
     return df
+
 
 
 
