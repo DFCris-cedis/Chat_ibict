@@ -36,6 +36,45 @@ import psycopg2
 import h2o
 import concurrent.futures
 from multiprocessing import Process
+
+
+import importlib
+import threading
+import rpy2.robjects as ro
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+import pandas as pd
+from queue import Queue
+from rpy2.robjects.conversion import localconverter
+#teste
+import threading
+import rpy2.robjects as robjects
+import threading
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
+
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
+
+import pandas as pd
+import rpy2.robjects as robjects
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects import pandas2ri
+
+
+from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
+from rpy2.robjects.conversion import localconverter
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2 import robjects
+import pandas as pd
+import psycopg2
+import h2o
+
+
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -196,8 +235,6 @@ def reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
 
-nlp = spacy.load("pt_core_news_sm")
-
 
 from django.shortcuts import render
 from paginas.forms import MeuForm
@@ -210,13 +247,84 @@ import pandas as pd
 import psycopg2
 import h2o
 
+
+import csv
+import numpy as np
+
+import csv
+import numpy as np
+
+def get_df():
+    try:
+        
+        connection = psycopg2.connect(
+            database="testy",
+            user="postgres",
+            password="SENHA",
+            host="localhost",
+            port="5432"
+        )
+        
+        # Cria um cursor para executar consultas
+        cursor = connection.cursor()
+
+        # Executa a consulta
+        query = f"""
+                SELECT "idSignificado"
+                FROM paginas_noun
+                WHERE test_id = (
+                    SELECT MAX("test_id")
+                    FROM paginas_noun); 
+                """
+        cursor.execute(query)
+
+        # Recupera os resultados da consulta como uma lista de tuplas
+        results = cursor.fetchall()
+        print(results)
+
+        for id in range(len(results)):
+            results[id] = 'v'+results[id][0]
+        # Fecha o cursor e a conexão
+        cursor.close()
+        
+        file = open("C:/Users/milen/OneDrive/Documentos/DF/todos_IDSignificados.Ocorrencias.csv", "r")
+        idsignificado = list(csv.reader(file, delimiter=","))
+        file.close()
+        
+        idsignificado = [row[0] for row in idsignificado]
+        
+        for id in range(len(idsignificado)):
+            idsignificado[id] = 'v'+idsignificado[id]
+        
+        df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns = idsignificado)
+        df = df.astype(int)
+        
+        for id in results:
+            df[id] = df[id] +1
+            
+        with localconverter(robjects.default_converter + pandas2ri.converter):
+          df = robjects.conversion.py2rpy(df)
+
+    except psycopg2.Error as error:
+        print("Erro ao conectar ao PostgreSQL:", error)
+
+    finally:
+        # Fecha a conexão com o banco de dados
+        if 'connection' in locals():
+            connection.close()
+        #sai com data frame r
+        return df
+
+da = get_df()
+
+
 def get_best_models(area):
     try:
         connection = psycopg2.connect(
             database="testy",
             user="postgres",
             password="SENHA",
-            host="localhost",
+            host="127.0.0.1",
             port="5432"
         )
 
@@ -233,7 +341,7 @@ def get_best_models(area):
                       SELECT "Subarea", MAX("F1") AS max_f1
 
                       FROM public.models
-                      WHERE "Area" = '{area}'
+                      WHERE "Area" = '{area}' AND "Subtipo" != 'ranger'
 
                       GROUP BY "Subarea"
 
@@ -251,7 +359,7 @@ def get_best_models(area):
         results = cursor.fetchall()
 
         # Cria um DataFrame pandas com os resultados
-        df = pd.DataFrame(results, columns=[desc[0] for desc in cursor.description])
+        df_modelos = pd.DataFrame(results, columns=[desc[0] for desc in cursor.description])
 
         # Fecha o cursor e a conexão
         cursor.close()
@@ -264,7 +372,7 @@ def get_best_models(area):
         if 'connection' in locals():
             connection.close()
         
-        return df
+        return df_modelos
 
 def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
     try:
@@ -272,7 +380,7 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
             database="testy",
             user="postgres",
             password="SENHA",
-            host="localhost",
+            host="127.0.0.1",
             port="5432"
         )
 
@@ -313,141 +421,212 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
-        #diretorio Milena ubuntu
-    #Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
-    #diretorio Milena Windows
     Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-   
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
     return prevNN[0, 0]
 
+def prevC50(dados, str_modelo):
+    base = importr('base')
+    C50 = importr('C50')
+    
+    c50_model = robjects.r['load'](str_modelo)
+    c50_model = base.get(c50_model[0])
+    
+    prevC50 = C50.predict_C5_0(c50_model, newdata = dados)
+    
+    del base
+    del C50
+    del c50_model
+    
+    return prevC50.levels[prevC50[0]-1]
 
-import importlib
-import threading
-import rpy2.robjects as ro
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2.robjects.conversion import localconverter
-import pandas as pd
-from queue import Queue
-from rpy2.robjects.conversion import localconverter
-#teste
-import threading
-import rpy2.robjects as robjects
-import threading
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
+def prevRFranger(dados, str_modelo):
+    base = importr('base')
+    
+    robjects.r['load'](str_modelo)
+    
+    predict_r_code = """
+    predict_rf <- function(model, data) {
+        library(ranger)
+        predict(Modelo, data)
+    }
+    """
+    predict_r = SignatureTranslatedAnonymousPackage(predict_r_code, "predict_rf")
+    
+    modelo = robjects.globalenv['Modelo']
+    previsoes_r = predict_r.predict_rf(modelo, dados)
+    previsoes = previsoes_r.rx2('predictions')
+    
+    del base
+    del modelo
+    del predict_r_code
+    
+    return previsoes.levels[previsoes[0]-1]
 
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
+def prevRFtrad(dados, str_modelo):
+    base = importr('base')  
+    rf = importr('randomForest')
+    
+    robjects.r['load'](str_modelo)
+    Modelo = robjects.r['Modelo']
+    
+    predict = robjects.r('predict')
+    
+    prevRF_trad = predict(Modelo, data = dados)
+    
+    del rf
+    del base
+    del Modelo
+    del predict
+    
+    return prevRF_trad.levels[prevRF_trad[0]-1]
 
-import pandas as pd
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
+def prevRpart(dados, str_modelo):
+    base = importr('base')  
+    rpart= importr('rpart')
+    
+    robjects.r['load'](str_modelo)
+    Modelo = robjects.r['Modelo']
+    
+    predict = robjects.r('predict')
+    
+    prevRpart = predict(Modelo, data = dados, type="class")
+    
+    del rpart
+    del base
+    del Modelo
+    del predict
+    
+    prevRpart.levels[prevRpart[0]-1]
+
+
 
 def process_rpy2():
-    #robjects.r['load']('/home/ubuntu/Chat_ibict/Progressao/static/modelos/df.100x1x100.Ocorrencias.Rdata')
-    robjects.r['load']('C:/Users/milen/OneDrive/Documentos/DF/DFs/df.100x1x100.Ocorrencias.Rdata')
-    dados_df = robjects.r['dados.df']
+
+    entrada = da
+    print(da)
 
     with localconverter(robjects.default_converter + pandas2ri.converter):
-        df = robjects.conversion.rpy2py(dados_df)
+        entrada_h2o = robjects.conversion.rpy2py(entrada)
 
-    entrada = df.loc[['eef474adc4c2d494dca53fa6b3bd8211']]
-    del entrada['Status']
-
-    area = prevNN(entrada)
+    area = prevNN(entrada_h2o)
 
     modelos = get_best_models(area)
 
-    vetor_strings = ["NEUROLOGIA, CIENCIAS DA SAUDE", "PEDIATRIA, CIENCIAS DA SAUDE", "PROTESE DENTARIA, CIENCIAS DA SAUDE"]
+    vetor_strings = []
 
-    area1 = vetor_strings[0].split(',')[1].strip()
-    subarea1 = vetor_strings[0].split(',')[0].strip()
+    for i in modelos.index:
+        if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            
+            prev_sub =  prevRFranger(entrada, str_modelo)
+            vetor_strings.append(prev_sub)
+        
+        if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            prev_sub =  prevRFtrad(entrada, str_modelo)
+            vetor_strings.append(prev_sub)
+        
+        if(str(modelos['Tipo'][i]) == "C50"):
+            str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            prev_sub =  prevC50(entrada, str_modelo)
+            vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
+            
+        if(str(modelos['Tipo'][i]) == "RPART"):
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            prev_sub =  prevRpart(entrada, str_modelo)
+            vetor_strings.append(f"""c("{prev_sub}", "{area}")""") 
+
+
+    f"""c("{prev_sub}", "{area}")"""
+    vetor_strings
+
+    area1 = vetor_strings[0].split('",')[1].strip()
+    subarea1 = vetor_strings[0].split('",')[0].strip()
     tipo1 = modelos['Tipo'][0]
     subtipo1 = modelos['Subtipo'][0]
     mindocs1 = modelos['MinDocs'][0]
     rangedocs1 = modelos['RangeDocs'][0]
-    
-    area2 = vetor_strings[1].split(',')[1].strip()
-    subarea2 = vetor_strings[1].split(',')[0].strip()
+        
+    area2 = vetor_strings[1].split('",')[1].strip()
+    subarea2 = vetor_strings[1].split('",')[0].strip()
     tipo2 = modelos['Tipo'][1]
     subtipo2 = modelos['Subtipo'][1]
     mindocs2 = modelos['MinDocs'][1]
     rangedocs2 = modelos['RangeDocs'][1]
 
-    area3 = vetor_strings[2].split(',')[1].strip()
-    subarea3 = vetor_strings[2].split(',')[0].strip()
+    area3 = vetor_strings[2].split('",')[1].strip()
+    subarea3 = vetor_strings[2].split('",')[0].strip()
     tipo3 = modelos['Tipo'][2]
     subtipo3 = modelos['Subtipo'][2]
     mindocs3 = modelos['MinDocs'][2]
     rangedocs3 = modelos['RangeDocs'][2]
-    
+        
     indicadores1 = get_indicadores(area1, subarea1, tipo1, subtipo1, mindocs1, rangedocs1)
     indicadores2 = get_indicadores(area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
     indicadores3 = get_indicadores(area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
-    
+        
     count_indicadores1 = (indicadores1 > indicadores2).sum()
     count_indicadores2 = (indicadores2 > indicadores1).sum()
 
     count_indicadores1_2 = (indicadores1 > indicadores2).sum()
     count_indicadores1_3 = (indicadores1 > indicadores3).sum()
-    
+        
     count_indicadores2_1 = (indicadores2 > indicadores1).sum()
     count_indicadores2_3 = (indicadores2 > indicadores3).sum()
-    
+        
     count_indicadores3_1 = (indicadores3 > indicadores1).sum()
     count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
     if vetor_strings[0] == vetor_strings[1] and vetor_strings[1] == vetor_strings[2]:
-        return "As três strings são iguais: " + vetor_strings[0]
-    
-    elif vetor_strings[0] == vetor_strings[1]:
-        result = "A primeira e segunda string são iguais."
-    
-        if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-            return result + vetor_strings[2]
-        else:
-            return result + vetor_strings[0]
-    
-    elif vetor_strings[0] == vetor_strings[2]:
-        result = "A primeira e terceira string são iguais."
-    
-        if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-            return result + vetor_strings[1]
-        else:
-            return result + vetor_strings[0]
-    
-    elif vetor_strings[1] == vetor_strings[2]:
-        result = "A segunda e terceira string são iguais."
-    
-        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-            return result + vetor_strings[0]
-        else:
-            return result + vetor_strings[2]
+        print("As três strings são iguais: " + vetor_strings[0])
         
-    else:
-        result = "As três strings são diferentes."
-    
-        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-            return result + vetor_strings[0]
-        elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-            return result + vetor_strings[1]
-        elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
-            return result + vetor_strings[2]
+    elif vetor_strings[0] == vetor_strings[1]:
+        print("A primeira e segunda string são iguais.")
+        
+        if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
+            return vetor_strings[2]
         else:
-            return result + vetor_strings[0]
+            return vetor_strings[0]
+        
+    elif vetor_strings[0] == vetor_strings[2]:
+        print("A primeira e terceira string são iguais.")
+        
+        if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
+            return vetor_strings[1]
+        else:
+            return vetor_strings[0]
+        
+    elif vetor_strings[1] == vetor_strings[2]:
+        print("A segunda e terceira string são iguais.")
+        
+        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
+            return vetor_strings[0]
+        else:
+            return vetor_strings[2]
+            
+    else:
+        print("As três strings são diferentes.")
+        
+        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
+            return vetor_strings[0]
+        
+        elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
+            return vetor_strings[1]
+        
+        elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
+            return vetor_strings[2]
+        else:
+            return vetor_strings[0]
+            
 
 # Call the function within the main thread
 output = process_rpy2()
 
 # Use the output as needed
 print(output)  # You can replace this with the function you want to return the result to
-
+nlp = spacy.load("pt_core_news_lg")
 def home(request):
     def home(request):
     # Importação movida para dentro da função
@@ -502,7 +681,7 @@ def home(request):
             #resultado = 'ok'
 
 # Display the result to the user
-            print(resultado)
+            # print(resultado)
 
         
         # Passar os resultados para o template renderizado
