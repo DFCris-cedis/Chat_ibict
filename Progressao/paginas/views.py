@@ -666,8 +666,8 @@ def process_rpy2():
             vetor_strings.append(prev_sub)
         
         if(str(modelos['Tipo'][i]) == "C50"):
-            #str_modelo = f"""/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
-            str_modelo = f"""C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            str_modelo = f"""/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            #str_modelo = f"""C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             prev_sub =  prevC50(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
             
