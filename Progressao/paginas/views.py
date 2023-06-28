@@ -18,7 +18,8 @@ from .forms import MeuForm
 from .models import Noun
 import logging
 import spacy
-
+import csv
+import numpy as np
 from multiprocessing import Process, Queue
 import threading
 from rpy2.robjects.conversion import localconverter
@@ -316,7 +317,7 @@ def get_df():
         if 'connection' in locals():
             connection.close()
         #sai com data frame r
-    return df
+        return df
 
 da = get_df()
 
