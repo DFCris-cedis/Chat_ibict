@@ -316,7 +316,7 @@ def get_df():
         if 'connection' in locals():
             connection.close()
         #sai com data frame r
-        return df
+    return df
 
 da = get_df()
 
