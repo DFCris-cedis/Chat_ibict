@@ -304,7 +304,9 @@ def get_df():
         df = df.astype(int)
         
         for id in results:
-            df[id] = df[id] +1
+            col_name = 'v' + id[0]
+            df[col_name] = df[col_name] + 1
+
             
         with localconverter(robjects.default_converter + pandas2ri.converter):
           df = robjects.conversion.py2rpy(df)
