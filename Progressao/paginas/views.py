@@ -328,7 +328,7 @@ def get_df():
             host="localhost",
             port="5432"
         )
-        
+
         # Cria um cursor para executar consultas
         cursor = connection.cursor()
 
@@ -347,30 +347,17 @@ def get_df():
         results = cursor.fetchall()
         print(results)
 
-        for id in range(len(results)):
-            results[id] = 'v' + results[id][0]
-        
+        idsignificado = pd.read_csv("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", header=None)
+        idsignificado = ['v' + str(id) for id in idsignificado.iloc[0]]
+
+        df = pd.DataFrame(0, columns=idsignificado, index=[0])
+
+        for id in results:
+            df[id[0]] += 1
+
         # Fecha o cursor e a conexão
         cursor.close()
-        
-        file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        idsignificado = list(csv.reader(file, delimiter=","))
-        file.close()
-        
-        idsignificado = [row[0] for row in idsignificado]
-        
-        for id in range(len(idsignificado)):
-            idsignificado[id] = 'v' + idsignificado[id]
-        
-        df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns=idsignificado)
-        df = df.astype(int)
-        
-        for id in results:
-            df[id] = df[id] + 1
-        
-        # Adiciona o prefixo 'v' antes do valor de cada coluna
-        df.columns = ['v' + str(col) for col in df.columns]
-        
+
         with localconverter(robjects.default_converter + pandas2ri.converter):
             df = robjects.conversion.py2rpy(df)
 
@@ -381,9 +368,10 @@ def get_df():
         # Fecha a conexão com o banco de dados
         if 'connection' in locals():
             connection.close()
-        
+
     # Retorna o DataFrame convertido para o formato R
     return df
+
 
 
 
