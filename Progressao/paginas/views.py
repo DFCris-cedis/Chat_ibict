@@ -1,5 +1,8 @@
 from django.contrib.auth.signals import user_logged_in, user_logged_out
+from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
 from django.contrib.auth.views import PasswordResetConfirmView
+import re
+
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from paginas.forms import CustomPasswordResetConfirmForm
@@ -26,9 +29,9 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 from django.shortcuts import render
 from multiprocessing import Process, Queue
-from django.contrib.auth.views import PasswordResetConfirmView
 
-from rpy2.robjects.conversion import localconverter
+
+
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
 from rpy2 import robjects
@@ -42,31 +45,15 @@ from multiprocessing import Process
 import importlib
 import threading
 import rpy2.robjects as ro
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2.robjects.conversion import localconverter
+
 import pandas as pd
 from queue import Queue
-from rpy2.robjects.conversion import localconverter
-#teste
 import threading
-import rpy2.robjects as robjects
-import threading
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
-
-import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
-
 import pandas as pd
 import rpy2.robjects as robjects
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
 
 
-from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
+
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
@@ -74,6 +61,17 @@ from rpy2 import robjects
 import pandas as pd
 import psycopg2
 import h2o
+from django.shortcuts import render
+from paginas.forms import MeuForm
+from paginas.models import Noun, Dicionario, Test
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2 import robjects
+import pandas as pd
+import psycopg2
+import h2o
+import csv
+import numpy as np
 
 
 def signup_view(request):
@@ -119,23 +117,6 @@ def logout_success(sender, user, request, **kwargs):
     user.save()
 
 
-# @login_required
-# def login_view(request):
-#     if request.method == 'POST':
-#         form = CustomLoginForm(data=request.POST)
-#         if form.is_valid():
-#             user = form.get_user()
-#             login(request, user)
-#             user.is_active = True
-#             user.save()
-#             return redirect('home')
-#         else:
-#             error_message = 'Nome de usuário ou senha inválidos.'
-#     else:
-#         form = CustomLoginForm()
-#         error_message = ''
-#     return render(request, 'login.html', {'form': form, 'error_message': error_message})
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -143,6 +124,7 @@ from django.shortcuts import render, redirect
 
 
 def login_view(request):
+    error_message = ''
     
     if request.method == 'POST':
         form = CustomLoginForm(data=request.POST)
@@ -155,11 +137,14 @@ def login_view(request):
                 user.is_active = True
                 user.save()
                 return redirect('home')
-        error_message = 'Nome de usuário ou senha inválidos.'
+            else:
+                error_message = 'Nome de usuário ou senha inválidos.'
+                form.add_error(None, error_message)
     else:
         form = CustomLoginForm()
-        error_message = ''
+    
     return render(request, 'login.html', {'form': form, 'error_message': error_message})
+
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -236,86 +221,6 @@ def reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
 
-
-from django.shortcuts import render
-from paginas.forms import MeuForm
-from paginas.models import Noun, Dicionario, Test
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2 import robjects
-import pandas as pd
-import psycopg2
-import h2o
-
-
-import csv
-import numpy as np
-
-
-# def get_df():
-#     try:
-        
-#         connection = psycopg2.connect(
-#             database="testy",
-#             user="postgres",
-#             password="SENHA",
-#             host="localhost",
-#             port="5432"
-#         )
-        
-#         # Cria um cursor para executar consultas
-#         cursor = connection.cursor()
-
-#         # Executa a consulta
-#         query = f"""
-#                 SELECT "idSignificado"
-#                 FROM paginas_noun
-#                 WHERE test_id = (
-#                     SELECT MAX("test_id")
-#                     FROM paginas_noun); 
-#                 """
-#         cursor.execute(query)
-
-#         # Recupera os resultados da consulta como uma lista de tuplas
-#         results = cursor.fetchall()
-#         print(results)
-
-#         for id in range(len(results)):
-#             results[id] = 'v'+results[id][0]
-#         # Fecha o cursor e a conexão
-#         cursor.close()
-        
-#         # file = open("C:/Users/milen/OneDrive/Documentos/DF/todos_IDSignificados.Ocorrencias.csv", "r")
-#         file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-
-
-#         idsignificado = list(csv.reader(file, delimiter=","))
-#         file.close()
-        
-#         idsignificado = [row[0] for row in idsignificado]
-        
-#         for id in range(len(idsignificado)):
-#             idsignificado[id] = 'v'+idsignificado[id]
-        
-#         df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns = idsignificado)
-#         df = df.astype(int)
-        
-#         for id in results:
-#             df[id] = df[id] +1
-            
-#         with localconverter(robjects.default_converter + pandas2ri.converter):
-#           df = robjects.conversion.py2rpy(df)
-
-#     except psycopg2.Error as error:
-#         print("Erro ao conectar ao PostgreSQL:", error)
-
-#     finally:
-#         # Fecha a conexão com o banco de dados
-#         if 'connection' in locals():
-#             connection.close()
-#         #sai com data frame r
-#     return df
 def get_df():
    
     try:
@@ -378,76 +283,6 @@ def get_df():
             connection.close()
         
     return df
-# def get_df():
-#     try:
-#         connection = psycopg2.connect(
-#             database="testy",
-#             user="postgres",
-#             password="SENHA",
-#             host="localhost",
-#             port="5432"
-#         )
-        
-#         # Cria um cursor para executar consultas
-#         cursor = connection.cursor()
-
-#         # Executa a consulta
-#         query = f"""
-#                 SELECT "idSignificado"
-#                 FROM paginas_noun
-#                 WHERE test_id = (
-#                     SELECT MAX("test_id")
-#                     FROM paginas_noun); 
-#                 """
-#         cursor.execute(query)
-
-#         # Recupera os resultados da consulta como uma lista de tuplas
-#         results = cursor.fetchall()
-#         print(results)
-
-#         for id in range(len(results)):
-#             results[id] = 'v' + results[id][0]
-            
-#         # Fecha o cursor e a conexão
-#         cursor.close()
-        
-#         # Abre o arquivo CSV
-#         # file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-#         file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-#         idsignificado = list(csv.reader(file, delimiter=","))
-#         file.close()
-        
-#         idsignificado = [row[0] for row in idsignificado]
-        
-#         for id in range(len(idsignificado)):
-#             idsignificado[id] = 'v' + idsignificado[id]
-        
-#         # Cria um DataFrame com zeros
-#         df = pd.DataFrame(np.zeros((1, len(idsignificado))), columns=idsignificado)
-#         df = df.astype(int)
-        
-#         for id in results:
-#             col_name = 'v' + id[0]
-#             if col_name in df.columns:
-#                 df[col_name] += 1
-#             else:
-#                 df[col_name] = 1
-            
-#         with localconverter(robjects.default_converter + pandas2ri.converter):
-#             df = robjects.conversion.py2rpy(df)
-
-#     except psycopg2.Error as error:
-#         print("Erro ao conectar ao PostgreSQL:", error)
-
-#     finally:
-#         # Fecha a conexão com o banco de dados
-#         if 'connection' in locals():
-#             connection.close()
-    
-#     # Retorna o DataFrame convertido
-#     return df
-
-
 
 da = get_df()
 
@@ -775,14 +610,14 @@ def home(request):
     # Restante do código...
 
         from django.contrib.auth.forms import User
-
     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
     if request.method == 'POST':
         form = MeuForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.user = request.user # Atribui o usuário atual ao atributo 'user'
-            form.save() 
+            form.user = request.user  # Atribui o usuário atual ao atributo 'user'
+            form.phraseTest = form.phraseTest.lower()  # Converte o campo em minúsculas
+            form.save()
 
             phraseTest = form.phraseTest  # Salva o texto em uma variável Python
             phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
@@ -802,23 +637,43 @@ def home(request):
 
             # extrair os sintagmas nominais
             noun_chunks = [np.text for np in doc.noun_chunks]
-
             for lemma in lemmas:
                 new_noun = Noun.objects.create(
-                    nounText=lemma, test=form, idSignificado='')
+                nounText=lemma.lower(),  # Converte o lemma em minúsculas
+                test=form,
+                idSignificado=''
+    )
 
                 words = new_noun.nounText.split()
                 for word in words:
-                    dicionario = Dicionario.objects.filter(
-                        Palavra=word).first()
-                    if dicionario:
-                        new_noun.idSignificado = dicionario.IDSignificado
-                        new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
-                        new_noun.save()
+                    dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()  # Converte a palavra em minúsculas
+                if dicionario:
+                    new_noun.idSignificado = dicionario.IDSignificado
+                    new_noun.user = request.user
+                    new_noun.save()
+
+            # for lemma in lemmas:
+            #     new_noun = Noun.objects.create(
+            #         nounText=lemma, test=form, idSignificado='')
+
+            #     words = new_noun.nounText.split()
+            #     for word in words:
+            #         dicionario = Dicionario.objects.filter(
+            #             Palavra=word).first()
+            #         if dicionario:
+            #             new_noun.idSignificado = dicionario.IDSignificado
+            #             new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
+            #             new_noun.save()
 
             # Call the function and store the result in a variable
             resultado = process_rpy2()
-            #resultado = 'ok'
+            resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+            # Divide a string em duas partes usando a vírgula como separador
+            partes = resultado_limpo.split(',')
+
+            # Remove espaços em branco adicionais
+            subarea = partes[0].strip()  # "HISTORIA"
+            area = partes[1].strip()  # "CIENCIAS HUMANAS"
 
 # Display the result to the user
             # print(resultado)
@@ -826,7 +681,8 @@ def home(request):
         
         # Passar os resultados para o template renderizado
         context = {
-            'resultado': resultado,
+            'area': area,
+            'subarea': subarea,
         }
 
         # Renderizar o template e retornar a resposta

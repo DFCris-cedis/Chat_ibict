@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/static/css/login.css" />
   </head>
   <body>
+
     <div class="container">
       <div class="coluna_1">
         <img src="/static/img/contextus2.png" alt="chatibict" class="imagem" />
@@ -12,7 +13,7 @@
 
       <div class="coluna_2">
         <div class="title"><h1>BEM-VINDO(A)!</h1></div>
-
+        
         <div class="inner-box">
           <form method="post" class="form">
             <div class="title"><h2>Login</h2></div>
@@ -30,10 +31,18 @@
               <label
                 for="{{ form.password.id_for_label }}"
                 style="display: block"
-                >Senha:</label
-              >
+                >Senha:</label>
               {{ form.password }} {{ form.password.errors }}
             </div>
+              {% if messages %}
+              <ul class="messages">
+              {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+
 
             <button type="submit">ENTRAR</button>
           </form>

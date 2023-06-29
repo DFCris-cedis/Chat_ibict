@@ -26,17 +26,7 @@ button {
 
 }
 
-form {
-  /* background-color: #8093F1; */
-  padding: 20px;
-  border-radius: 10px;
-}
-
 footer {
-  /* align-items: center;
-  margin-left: auto;
-  margin-right: auto; */
-  /* margin-top: 2.1rem; */
   text-align: center;
   position: absolute;
   bottom: 0;
@@ -48,46 +38,16 @@ footer {
   align-items: center;
   margin-right: 1rem;
 
-  /* Ajuste o tamanho da imagem conforme necessário */
 
 }
 
 
 .chatibict {
 
-  /* margin-top: 2rem; */
   max-width: 50vh;
   max-height: 50vhvh;
   width: auto;
   height: auto;
-
-
-}
-
-
-
-div#option {
-  width: 100%;
-  text-align: center;
-  padding: 1vh;
-  font-size: 1.3vh;
-  color: #18355A;
-}
-
-.textarea {
-
-  background-color: white;
-  border-radius: 1vh;
-  border: 0.1vh solid #943e8e;
-  border-color: #943e8e;
-  height: 32vh;
-  border-radius: 1vh;
-  padding: 1vh;
-  margin: 1vh 0;
-  resize: none;
-  width: 45wh;
-  font-size: 2.2vh;
-  margin-top: 5vh;
 
 
 }
@@ -101,43 +61,35 @@ div#option {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: none;
+  background-color: none;
 
 }
 
 .form-container {
   display: flex;
+  background-color: white;
+  border-radius: 1vh;
+  border: 0.2vh solid #943e8e;
+  border-color: #943e8e;
+  height: 32vh;
+  width: 45vh;
+  border-radius: 1vh;
+  padding: 1vh;
+  margin: 1vh 0;
+  resize: none;
+  font-size: 2.2vh;
+  margin-top: 5vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 5vh;
-
+  text-align: center;
 }
+
 
 label {
   font-size: 20px;
-  /* aqui você pode ajustar o tamanho do texto conforme desejado */
-  /* color: #18355A; */
 }
-
-.option {
-  display: inline-block;
-  border-radius: 10px;
-  border-color: #943e8e;
-  /* background-color: #18355A; */
-  background-color: #241148;
-  color: white;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px white;
-  border-bottom: white;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  /* margin-top: 1.2rem; */
-
-}
-
 
 .logout {
   display: flex;
