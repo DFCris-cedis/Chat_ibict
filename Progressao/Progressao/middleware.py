@@ -15,7 +15,7 @@ class StaffOnlyMiddleware:
         ]  # adicionar a URL de cadastro aqui
 
         if not request.user.is_authenticated or not request.user.is_staff:
-            if request.path not in exceptions and '/accounts/reset_password_confirm/' not in request.path:
+            if request.path not in exceptions and 'http://15.228.87.227:8000/accounts/reset_password/' not in request.path:
                 return redirect('login')
 
         response = self.get_response(request)
