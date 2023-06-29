@@ -6,7 +6,7 @@ class StaffOnlyMiddleware:
 
     def __call__(self, request):
         exceptions = [
-    
+            'http://15.228.87.227/'
             '/accounts/login/',
             '/accounts/signup/',
             '/accounts/reset_password/',
@@ -15,7 +15,7 @@ class StaffOnlyMiddleware:
         ]  # adicionar a URL de cadastro aqui
 
         if not request.user.is_authenticated or not request.user.is_staff:
-            if request.path not in exceptions and 'http://15.228.87.227:8000/accounts/reset_password/' not in request.path:
+            if request.path not in exceptions and '/accounts/reset_password/' not in request.path:
                 return redirect('login')
 
         response = self.get_response(request)
