@@ -6,7 +6,7 @@ class StaffOnlyMiddleware:
 
     def __call__(self, request):
         exceptions = [
-            'http://15.228.87.227/'
+            
             '/accounts/login/',
             '/accounts/signup/',
             '/accounts/reset_password/',
