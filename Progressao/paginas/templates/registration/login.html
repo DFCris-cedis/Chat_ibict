@@ -18,41 +18,33 @@
           <form method="post" class="form">
             <div class="title"><h2>Login</h2></div>
 
-            {% csrf_token %}
-            <div class="form-group">
-              <label
-                for="{{ form.username.id_for_label }}"
-                style="display: block"
-                >Email:</label
-              >
-              {{ form.username }} {{ form.username.errors }}
-            </div>
-            <div class="form-group">
-              <label
-                for="{{ form.password.id_for_label }}"
-                style="display: block"
-                >Senha:</label>
-              {{ form.password }} {{ form.password.errors }}
-            </div>
-              {% if messages %}
-              <ul class="messages">
-              {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+              {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.username.id_for_label }}" style="display: block">Email:</label>
+      {{ form.username }} {{ form.username.errors }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.password.id_for_label }}" style="display: block">Senha:</label>
+      {{ form.password }} {{ form.password.errors }}
+    </div>
 
+    {% for message in messages %}
+    <div class="error-message">{{ message }}</div>
+    {% endfor %}
+    <button type="submit">ENTRAR</button>
+  </form>
+</div>
 
+    
 
-            <button type="submit">ENTRAR</button>
-          </form>
-        </div>
         <div class="link">
           <a href="{% url 'signup' %}">Não tem uma conta? Cadastre-se aqui</a>
           <p>
             <a href="{% url "password_reset" %}">Esqueceu a sua senha?</a>
           </p>
         </div>
+        
+        
       </div>
     </div>
   </body>
