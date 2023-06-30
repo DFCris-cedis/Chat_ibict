@@ -160,37 +160,35 @@ USE_TZ = True
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),  # comentei agr
-# ]
+# Importe a biblioteca os no início do arquivo
+import os
+
+# ...
+
+# Configurações estáticas
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
-
-STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
+# Configurações de banco de dados
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTHENTICATION_BACKENDS = (
+# Configuração de autenticação
+AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-)
+]
 
+# Configuração de redirecionamento após login e logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
-# add the following line at the end of the file
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+# Configurações de email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
-EMAIL_PORT = 465
+EMAIL_PORT = 587  # Altere a porta para 587
 EMAIL_HOST_USER = 'milenafaria1706@gmail.com'
 EMAIL_HOST_PASSWORD = 'ckwktyijrxlltfjo'
-
 
