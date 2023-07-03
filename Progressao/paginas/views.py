@@ -476,7 +476,6 @@ def prevRpart(dados, str_modelo):
 def process_rpy2():
 
     entrada = da
-    print(da)
 
     with localconverter(robjects.default_converter + pandas2ri.converter):
         entrada_h2o = robjects.conversion.rpy2py(entrada)
@@ -566,7 +565,7 @@ def process_rpy2():
             return vetor_strings[0]
         
     elif vetor_strings[0] == vetor_strings[2]:
-        print("A primeira e terceira string são iguais.")
+        # print("A primeira e terceira string são iguais.")
         
         if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
             return vetor_strings[1]
