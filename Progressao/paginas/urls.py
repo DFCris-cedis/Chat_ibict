@@ -1,6 +1,5 @@
 from paginas.views import MyPasswordResetConfirmView
 from django.contrib.auth import views as auth_views
-from django.views.generic import RedirectView
 from paginas.views import search_view
 from django.urls import path, include
 from paginas import views
@@ -10,7 +9,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout_view'),
-    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
     path('search/', search_view, name='search_view'),
     path('home/', include('paginas.urls')),
     path('reset_password/', auth_views.PasswordResetView.as_view(), name='password_reset'),

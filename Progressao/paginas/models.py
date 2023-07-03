@@ -59,7 +59,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Test(models.Model):
     testId = models.AutoField(primary_key=True)
-    phraseTest = models.CharField(max_length=1500)
+    phraseTest = models.CharField()
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, to_field='email')
     # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
