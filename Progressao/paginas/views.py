@@ -474,6 +474,10 @@ def prevRpart(dados, str_modelo):
 
 
 def process_rpy2():
+
+    area = ''
+    subarea = ''
+    
     entrada = da
     with localconverter(robjects.default_converter + pandas2ri.converter):
         entrada_h2o = robjects.conversion.rpy2py(entrada)
@@ -644,7 +648,7 @@ def home(request):
                     new_noun.idSignificado = dicionario.IDSignificado
                     new_noun.user = request.user
                     new_noun.save()
-                    
+
             area = ''
             subarea = ''
         
