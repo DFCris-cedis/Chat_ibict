@@ -255,8 +255,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         #teste
-        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("/home/ubuntu/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
         
@@ -390,8 +390,8 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads = -1)
     
-    #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-    Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    #Modelo = h2o.load_model('/home/ubuntu/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
    
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
@@ -469,52 +469,40 @@ def prevRpart(dados, str_modelo):
     del Modelo
     del predict
     
-    prevRpart.levels[prevRpart[0]-1]
+    return prevRpart.levels[prevRpart[0]-1]
 
 
 
 def process_rpy2():
-
     entrada = da
-
     with localconverter(robjects.default_converter + pandas2ri.converter):
         entrada_h2o = robjects.conversion.rpy2py(entrada)
-
     area = prevNN(entrada_h2o)
-
     modelos = get_best_models(area)
-
     vetor_strings = []
 
     for i in modelos.index:
         if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
-            str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            
             prev_sub =  prevRFranger(entrada, str_modelo)
             vetor_strings.append(prev_sub)
         
         if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
-            str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             prev_sub =  prevRFtrad(entrada, str_modelo)
             vetor_strings.append(prev_sub)
         
         if(str(modelos['Tipo'][i]) == "C50"):
-            str_modelo = f"""/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
-            #str_modelo = f"""C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             prev_sub =  prevC50(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
             
         if(str(modelos['Tipo'][i]) == "RPART"):
-            str_modelo = "/home/ubuntu/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             prev_sub =  prevRpart(entrada, str_modelo)
-            vetor_strings.append(f"""c("{prev_sub}", "{area}")""") 
+            vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
-
-    f"""c("{prev_sub}", "{area}")"""
-    vetor_strings
 
     area1 = vetor_strings[0].split('",')[1].strip()
     subarea1 = vetor_strings[0].split('",')[0].strip()
@@ -543,7 +531,11 @@ def process_rpy2():
         
     count_indicadores1 = (indicadores1 > indicadores2).sum()
     count_indicadores2 = (indicadores2 > indicadores1).sum()
-
+    count_indicadores2_1 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_3 = (indicadores2 > indicadores3).sum()
+        
+    count_indicadores3_1 = (indicadores3 > indicadores1).sum()
+    count_indicadores3_2 = (indicadores3 > indicadores2).sum()
     count_indicadores1_2 = (indicadores1 > indicadores2).sum()
     count_indicadores1_3 = (indicadores1 > indicadores3).sum()
         
@@ -554,45 +546,43 @@ def process_rpy2():
     count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
     if vetor_strings[0] == vetor_strings[1] and vetor_strings[1] == vetor_strings[2]:
-        print("As três strings são iguais: " + vetor_strings[0])
+        return(vetor_strings[0])
         
     elif vetor_strings[0] == vetor_strings[1]:
         print("A primeira e segunda string são iguais.")
         
         if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-            return vetor_strings[2]
+            return(vetor_strings[2])
         else:
-            return vetor_strings[0]
+            return(vetor_strings[0])
         
     elif vetor_strings[0] == vetor_strings[2]:
-        # print("A primeira e terceira string são iguais.")
+        print("A primeira e terceira string são iguais.")
         
         if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-            return vetor_strings[1]
+            return(vetor_strings[1])
         else:
-            return vetor_strings[0]
+            return(vetor_strings[0])
         
     elif vetor_strings[1] == vetor_strings[2]:
         print("A segunda e terceira string são iguais.")
         
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-            return vetor_strings[0]
+            return(vetor_strings[0])
         else:
-            return vetor_strings[2]
+            return(vetor_strings[2])
             
     else:
         print("As três strings são diferentes.")
         
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-            return vetor_strings[0]
-        
+            return(vetor_strings[0])
         elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-            return vetor_strings[1]
-        
+            return(vetor_strings[1])
         elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
-            return vetor_strings[2]
+            return(vetor_strings[2])
         else:
-            return vetor_strings[0]
+            return(vetor_strings[0])
             
 
 # Call the function within the main thread
@@ -601,6 +591,7 @@ output = process_rpy2()
 # Use the output as needed
 print(output)  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
+
 def home(request):
     def home(request):
     # Importação movida para dentro da função
@@ -680,8 +671,8 @@ def home(request):
         
         # Passar os resultados para o template renderizado
         context = {
-            'area': area,
-            'subarea': subarea,
+            'area':area,
+            'subarea':subarea,
         }
 
         # Renderizar o template e retornar a resposta
