@@ -475,9 +475,6 @@ def prevRpart(dados, str_modelo):
 
 def process_rpy2():
 
-    area = ''
-    subarea = ''
-    
     entrada = da
     with localconverter(robjects.default_converter + pandas2ri.converter):
         entrada_h2o = robjects.conversion.rpy2py(entrada)
@@ -552,8 +549,18 @@ def process_rpy2():
     count_indicadores3_1 = (indicadores3 > indicadores1).sum()
     count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
-    if vetor_strings[0] == vetor_strings[1] and vetor_strings[1] == vetor_strings[2]:
-        return(vetor_strings[0])
+    if vetor_strings[0] == vetor_strings[1]:
+    # ...
+        return vetor_strings[0]
+
+    elif vetor_strings[0] == vetor_strings[2]:
+        # ...
+        return vetor_strings[0]
+
+    elif vetor_strings[1] == vetor_strings[2]:
+        # ...
+        return vetor_strings[2]
+
         
     elif vetor_strings[0] == vetor_strings[1]:
         print("A primeira e segunda string são iguais.")
