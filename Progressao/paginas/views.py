@@ -596,13 +596,13 @@ print(output)  # You can replace this with the function you want to return the r
 nlp = spacy.load("pt_core_news_lg")
 
 def home(request):
-    def home(request):
+
     # Importação movida para dentro da função
-        from django.contrib.auth.views import PasswordResetConfirmView
+    from django.contrib.auth.views import PasswordResetConfirmView
 
     # Restante do código...
 
-        from django.contrib.auth.forms import User
+    from django.contrib.auth.forms import User
     show_prevrf = False  # Inicialmente, a variável show_prevrf é False
     if request.method == 'POST':
         form = MeuForm(request.POST)
@@ -645,20 +645,7 @@ def home(request):
                     new_noun.user = request.user
                     new_noun.save()
 
-            # for lemma in lemmas:
-            #     new_noun = Noun.objects.create(
-            #         nounText=lemma, test=form, idSignificado='')
-
-            #     words = new_noun.nounText.split()
-            #     for word in words:
-            #         dicionario = Dicionario.objects.filter(
-            #             Palavra=word).first()
-            #         if dicionario:
-            #             new_noun.idSignificado = dicionario.IDSignificado
-            #             new_noun.user = request.user  # Atribui o usuário atual à coluna 'user'
-            #             new_noun.save()
-
-            # Call the function and store the result in a variable
+        
             resultado = process_rpy2()
             resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
             # Divide a string em duas partes usando a vírgula como separador
