@@ -284,7 +284,6 @@ def get_df():
         
     return df
 
-da = get_df()
 
 
 def get_best_models(area):
@@ -474,7 +473,7 @@ def prevRpart(dados, str_modelo):
 
 
 def process_rpy2():
-
+    da = get_df()
     entrada = da
     with localconverter(robjects.default_converter + pandas2ri.converter):
         entrada_h2o = robjects.conversion.rpy2py(entrada)
