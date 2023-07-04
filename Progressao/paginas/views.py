@@ -644,7 +644,9 @@ def home(request):
                     new_noun.idSignificado = dicionario.IDSignificado
                     new_noun.user = request.user
                     new_noun.save()
-
+                    
+            area = ''
+            subarea = ''
         
             resultado = process_rpy2()
             resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
