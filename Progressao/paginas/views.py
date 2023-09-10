@@ -552,53 +552,43 @@ def process_rpy2():
     count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
     if vetor_strings[0] == vetor_strings[1]:
-    # ...
-        return vetor_strings[0]
-
-    elif vetor_strings[0] == vetor_strings[2]:
-        # ...
-        return vetor_strings[0]
-
-    elif vetor_strings[1] == vetor_strings[2]:
-        # ...
-        return vetor_strings[2]
-
-        
-    elif vetor_strings[0] == vetor_strings[1]:
         print("A primeira e segunda string são iguais.")
         
         if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-            return(vetor_strings[2])
+            return vetor_strings[2]
         else:
-            return(vetor_strings[0])
+            return vetor_strings[0]
         
     elif vetor_strings[0] == vetor_strings[2]:
         print("A primeira e terceira string são iguais.")
         
         if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-            return(vetor_strings[1])
+            return vetor_strings[1]
         else:
-            return(vetor_strings[0])
+            return vetor_strings[0]
         
     elif vetor_strings[1] == vetor_strings[2]:
         print("A segunda e terceira string são iguais.")
         
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-            return(vetor_strings[0])
+            return vetor_strings[0]
         else:
-            return(vetor_strings[2])
+            return vetor_strings[2]
             
     else:
         print("As três strings são diferentes.")
         
         if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-            return(vetor_strings[0])
+            return vetor_strings[0]
         elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-            return(vetor_strings[1])
+            return vetor_strings[1]
         elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
-            return(vetor_strings[2])
+            return vetor_strings[2]
         else:
-            return(vetor_strings[0])
+            return vetor_strings[0]
+   
+        
+    
             
 
 # Call the function within the main thread
