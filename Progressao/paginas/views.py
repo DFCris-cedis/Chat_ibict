@@ -507,7 +507,14 @@ def process_rpy2():
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
 
-    area1 = vetor_strings[0].split('",')[1].strip()
+        # Verifique se há pelo menos dois elementos na lista resultante da divisão
+    elements = vetor_strings[0].split('",')
+    if len(elements) > 1:
+        area1 = elements[1].strip()
+    else:
+        # Lide com o caso em que não há elemento de índice 1
+        area1 = 'Valor padrão'  # Ou qualquer valor padrão desejado
+
     subarea1 = vetor_strings[0].split('",')[0].strip()
     tipo1 = modelos['Tipo'][0]
     subtipo1 = modelos['Subtipo'][0]
