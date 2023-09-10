@@ -505,6 +505,27 @@ def process_rpy2():
             str_modelo = "/home/codic/Python-3.10.6/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             prev_sub =  prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
+    # Verifique se a lista não está vazia
+    if len(vetor_strings) > 1:
+        # Verifique se o índice é válido antes de acessar a lista
+        if 1 < len(vetor_strings):
+            # Acessar o segundo elemento da lista (índice 1)
+            elemento = vetor_strings[1]
+            # Faça algo com o elemento, por exemplo, divida-o
+            partes = elemento.split('",')
+            if len(partes) > 1:
+                area1 = partes[1].strip()
+            else:
+                # Lidar com o caso em que a divisão não produz o resultado esperado
+                area1 = "Valor inválido"
+        else:
+            # Lidar com o caso em que o índice não é válido
+            area1 = "Índice fora dos limites"
+    else:
+        # Lidar com o caso em que a lista está vazia
+        area1 = "A lista está vazia"
+
+    # Agora, você pode usar a variável 'area1' para fazer o que for necessário
 
     area1 = vetor_strings[0].split('",')[1].strip()
     subarea1 = vetor_strings[0].split('",')[0].strip()
