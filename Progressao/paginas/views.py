@@ -487,26 +487,28 @@ def process_rpy2():
             str_modelo ="/home/codic/Python-3.10.6/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
             prev_sub =  prevRFranger(entrada, str_modelo)
             vetor_strings.append(prev_sub)
+            print(vetor_strings)
         
         if(str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
             #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             str_modelo = "/home/codic/Python-3.10.6/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             prev_sub =  prevRFtrad(entrada, str_modelo)
             vetor_strings.append(prev_sub)
+            print(vetor_strings)
         
         if(str(modelos['Tipo'][i]) == "C50"):
             #str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             str_modelo = f"""/home/codic/Python-3.10.6/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             prev_sub =  prevC50(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
+            print(vetor_strings)
             
         if(str(modelos['Tipo'][i]) == "RPART"):
             #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             str_modelo = "/home/codic/Python-3.10.6/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             prev_sub =  prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
-
-    vetor_strings = [1,2,3]
+            print(vetor_strings)
 
     area1 = vetor_strings[0].split('",')[1].strip()
     subarea1 = vetor_strings[0].split('",')[0].strip()
