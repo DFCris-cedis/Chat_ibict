@@ -506,7 +506,7 @@ def process_rpy2():
             prev_sub =  prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
-
+    vetor_strings = 'casa,sim, carro'
     area1 = vetor_strings[0].split('",')[1].strip()
     subarea1 = vetor_strings[0].split('",')[0].strip()
     tipo1 = modelos['Tipo'][0]
