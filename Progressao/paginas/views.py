@@ -507,13 +507,7 @@ def process_rpy2():
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
 
-    if vetor_strings and len(vetor_strings) > 0:
-        elements = vetor_strings[0].split('",')
-    if len(elements) > 1:
-        area1 = elements[1].strip()
-    else:
-        area1 = 'Valor padrão'
-
+    area1 = vetor_strings[0].split('",')[1].strip()
     subarea1 = vetor_strings[0].split('",')[0].strip()
     tipo1 = modelos['Tipo'][0]
     subtipo1 = modelos['Subtipo'][0]
@@ -538,8 +532,8 @@ def process_rpy2():
     indicadores2 = get_indicadores(area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
     indicadores3 = get_indicadores(area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
         
-    # count_indicadores1 = (indicadores1 > indicadores2).sum()
-    # count_indicadores2 = (indicadores2 > indicadores1).sum()
+    count_indicadores1 = (indicadores1 > indicadores2).sum()
+    count_indicadores2 = (indicadores2 > indicadores1).sum()
     count_indicadores2_1 = (indicadores2 > indicadores1).sum()
     count_indicadores2_3 = (indicadores2 > indicadores3).sum()
         
