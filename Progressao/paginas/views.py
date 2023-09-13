@@ -512,95 +512,95 @@ def process_rpy2():
 
     # Agora, você pode usar a variável 'area1' para fazer o que for necessário
 
-        area1 = vetor_strings[0].split('",')[1].strip()
-        subarea1 = vetor_strings[0].split('",')[0].strip()
-        tipo1 = modelos['Tipo'][0]
-        subtipo1 = modelos['Subtipo'][0]
-        mindocs1 = modelos['MinDocs'][0]
-        rangedocs1 = modelos['RangeDocs'][0]
+    area1 = vetor_strings[0].split('",')[1].strip()
+    subarea1 = vetor_strings[0].split('",')[0].strip()
+    tipo1 = modelos['Tipo'][0]
+    subtipo1 = modelos['Subtipo'][0]
+    mindocs1 = modelos['MinDocs'][0]
+    rangedocs1 = modelos['RangeDocs'][0]
             
-        area2 = vetor_strings[1].split('",')[1].strip()
-        subarea2 = vetor_strings[1].split('",')[0].strip()
-        tipo2 = modelos['Tipo'][1]
-        subtipo2 = modelos['Subtipo'][1]
-        mindocs2 = modelos['MinDocs'][1]
-        rangedocs2 = modelos['RangeDocs'][1]
+    area2 = vetor_strings[1].split('",')[1].strip()
+    subarea2 = vetor_strings[1].split('",')[0].strip()
+    tipo2 = modelos['Tipo'][1]
+    subtipo2 = modelos['Subtipo'][1]
+    mindocs2 = modelos['MinDocs'][1]
+    rangedocs2 = modelos['RangeDocs'][1]
 
-        area3 = vetor_strings[2].split('",')[1].strip()
-        subarea3 = vetor_strings[2].split('",')[0].strip()
-        tipo3 = modelos['Tipo'][2]
-        subtipo3 = modelos['Subtipo'][2]
-        mindocs3 = modelos['MinDocs'][2]
-        rangedocs3 = modelos['RangeDocs'][2]
+    area3 = vetor_strings[2].split('",')[1].strip()
+    subarea3 = vetor_strings[2].split('",')[0].strip()
+    tipo3 = modelos['Tipo'][2]
+    subtipo3 = modelos['Subtipo'][2]
+    mindocs3 = modelos['MinDocs'][2]
+    rangedocs3 = modelos['RangeDocs'][2]
             
-        indicadores1 = get_indicadores(area1, subarea1, tipo1, subtipo1, mindocs1, rangedocs1)
-        indicadores2 = get_indicadores(area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
-        indicadores3 = get_indicadores(area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
+    indicadores1 = get_indicadores(area1, subarea1, tipo1, subtipo1, mindocs1, rangedocs1)
+    indicadores2 = get_indicadores(area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
+    indicadores3 = get_indicadores(area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
             
-        count_indicadores1 = (indicadores1 > indicadores2).sum()
-        count_indicadores2 = (indicadores2 > indicadores1).sum()
-        count_indicadores2_1 = (indicadores2 > indicadores1).sum()
-        count_indicadores2_3 = (indicadores2 > indicadores3).sum()
+    count_indicadores1 = (indicadores1 > indicadores2).sum()
+    count_indicadores2 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_1 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_3 = (indicadores2 > indicadores3).sum()
             
-        count_indicadores3_1 = (indicadores3 > indicadores1).sum()
-        count_indicadores3_2 = (indicadores3 > indicadores2).sum()
-        count_indicadores1_2 = (indicadores1 > indicadores2).sum()
-        count_indicadores1_3 = (indicadores1 > indicadores3).sum()
+    count_indicadores3_1 = (indicadores3 > indicadores1).sum()
+    count_indicadores3_2 = (indicadores3 > indicadores2).sum()
+    count_indicadores1_2 = (indicadores1 > indicadores2).sum()
+    count_indicadores1_3 = (indicadores1 > indicadores3).sum()
             
-        count_indicadores2_1 = (indicadores2 > indicadores1).sum()
-        count_indicadores2_3 = (indicadores2 > indicadores3).sum()
+    count_indicadores2_1 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_3 = (indicadores2 > indicadores3).sum()
             
-        count_indicadores3_1 = (indicadores3 > indicadores1).sum()
-        count_indicadores3_2 = (indicadores3 > indicadores2).sum()
+    count_indicadores3_1 = (indicadores3 > indicadores1).sum()
+    count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
-        if vetor_strings[0] == vetor_strings[1]:
-        # ...
-            return vetor_strings[0]
+    if vetor_strings[0] == vetor_strings[1]:
+        
+        return vetor_strings[0]
 
-        elif vetor_strings[0] == vetor_strings[2]:
-            # ...
-            return vetor_strings[0]
+    elif vetor_strings[0] == vetor_strings[2]:
+           
+        return vetor_strings[0]
 
-        elif vetor_strings[1] == vetor_strings[2]:
-            # ...
-            return vetor_strings[2]
+    elif vetor_strings[1] == vetor_strings[2]:
+            
+        return vetor_strings[2]
 
             
-        elif vetor_strings[0] == vetor_strings[1]:
-            print("A primeira e segunda string são iguais.")
+    elif vetor_strings[0] == vetor_strings[1]:
+        print("A primeira e segunda string são iguais.")
             
-            if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-                return(vetor_strings[2])
-            else:
-                return(vetor_strings[0])
-            
-        elif vetor_strings[0] == vetor_strings[2]:
-            print("A primeira e terceira string são iguais.")
-            
-            if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-                return(vetor_strings[1])
-            else:
-                return(vetor_strings[0])
-            
-        elif vetor_strings[1] == vetor_strings[2]:
-            print("A segunda e terceira string são iguais.")
-            
-            if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-                return(vetor_strings[0])
-            else:
-                return(vetor_strings[2])
-                
+        if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
+            return(vetor_strings[2])
         else:
-            print("As três strings são diferentes.")
+            return(vetor_strings[0])
             
-            if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-                return(vetor_strings[0])
-            elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-                return(vetor_strings[1])
-            elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
-                return(vetor_strings[2])
-            else:
-                return(vetor_strings[0])
+    elif vetor_strings[0] == vetor_strings[2]:
+        print("A primeira e terceira string são iguais.")
+            
+        if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
+            return(vetor_strings[1])
+        else:
+            return(vetor_strings[0])
+            
+    elif vetor_strings[1] == vetor_strings[2]:
+        print("A segunda e terceira string são iguais.")
+            
+        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
+            return(vetor_strings[0])
+        else:
+            return(vetor_strings[2])
+                
+    else:
+        print("As três strings são diferentes.")
+            
+        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
+            return(vetor_strings[0])
+        elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
+            return(vetor_strings[1])
+        elif pd.Series((count_indicadores3_1 > count_indicadores1_3),(count_indicadores3_2 > count_indicadores2_3)).all():
+            return(vetor_strings[2])
+        else:
+            return(vetor_strings[0])
             
 
 # Call the function within the main thread
