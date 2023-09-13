@@ -473,6 +473,8 @@ def prevRpart(dados, str_modelo):
 
 
 def process_rpy2():
+    nlp = spacy.load("pt_core_news_lg")
+
     da = get_df()
     entrada = da
     with localconverter(robjects.default_converter + pandas2ri.converter):
