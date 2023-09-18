@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-!ph7usvbsvm2k#f@%!%v=$ggv*s-f=&1(@rakrh+czsv*$6c9*
 DEBUG = True
 
 ALLOWED_HOSTS = ['contextus.ibict.br', '172.16.17.41']
-#CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ['172.16.17.41']
 
 
 # Application definition
