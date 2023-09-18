@@ -201,15 +201,47 @@ def password_reset(request):
     return render(request, 'password_reset_form.html', {'form': form})
 
 
+# def reset_confirm(request, uidb64, token):
+#     form_class = CustomPasswordResetConfirmForm
+#     validlink = True
+#     user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+#     if user is None:
+#         validlink = False
+#     else:
+#         if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+#             validlink = False
+#     if validlink:
+#         if request.method == 'POST':
+#             form = form_class(user, request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('password_reset_complete')
+#         else:
+#             form = form_class(user)
+#         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import get_user_model
+from django.shortcuts import redirect, render
+
+User = get_user_model()
+
 def reset_confirm(request, uidb64, token):
     form_class = CustomPasswordResetConfirmForm
     validlink = True
-    user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
     if user is None:
         validlink = False
     else:
-        if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+        if not default_token_generator.check_token(user, token):
             validlink = False
+
     if validlink:
         if request.method == 'POST':
             form = form_class(user, request.POST)
@@ -219,6 +251,10 @@ def reset_confirm(request, uidb64, token):
         else:
             form = form_class(user)
         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+    else:
+        # Trate os erros de link de redefinição inválido
+        # Exiba uma mensagem de erro amigável ao usuário
+        return render(request, 'password_reset_invalid_link.html')
 
 
 def get_df():
