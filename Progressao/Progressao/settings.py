@@ -184,9 +184,9 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Configurações de email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = False
-EMAIL_PORT = 587  # Altere a porta para 587
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server address
+EMAIL_PORT = 587  # Replace with your SMTP server port
+EMAIL_USE_TLS = True  # Use TLS for secure communication
 EMAIL_HOST_USER = 'milenafaria1706@gmail.com'
 EMAIL_HOST_PASSWORD = 'ckwktyijrxlltfjo'
 
