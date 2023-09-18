@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-!ph7usvbsvm2k#f@%!%v=$ggv*s-f=&1(@rakrh+czsv*$6c9*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['contextus.ibict.br', '172.16.17.41']
 #CSRF_TRUSTED_ORIGINS = ['*']
 
 
