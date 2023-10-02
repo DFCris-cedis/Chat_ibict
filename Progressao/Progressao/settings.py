@@ -34,11 +34,9 @@ DEBUG = True
 
 # settings.py
 
-ALLOWED_HOSTS = ['contextus.ibict.br', '172.16.17.41', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['contextus.ibict.br', '172.16.17.41']
 
 CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
-
-
 
 
 # Application definition
@@ -94,7 +92,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                
+
             ],
         },
     },
@@ -107,7 +105,7 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'testy',
         'USER': 'postgres',
@@ -116,7 +114,7 @@ DATABASES = {
         'PORT': '5432',
     },
     'postgres': {
-     'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'testy',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
@@ -166,7 +164,6 @@ USE_TZ = True
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),  # comentei agr
 # Importe a biblioteca os no início do arquivo
-import os
 
 # ...
 
@@ -196,4 +193,3 @@ EMAIL_PORT = 587  # Replace with your SMTP server port
 EMAIL_USE_TLS = True  # Use TLS for secure communication
 EMAIL_HOST_USER = 'milenafaria1706@gmail.com'
 EMAIL_HOST_PASSWORD = 'ckwktyijrxlltfjo'
-
