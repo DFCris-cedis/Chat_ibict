@@ -4,6 +4,7 @@
     <title>Contextus</title>
     
     <link rel="stylesheet" href="/static/css/signup.css" />
+    <link rel="stylesheet" href="/static/css/all.min.css" />
     
   </head>
 
@@ -12,10 +13,12 @@
         <div class="coluna_1">
           <img src="/static/img/contextus2.png" alt="chatibict" class="imagem" />
         </div>
-
-    <div class="coluna_2">
-      <h1>CADASTRE-SE!</h1>
         
+        <div class="link">
+          <a href="{% url 'auth:login' %}"><i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: white;"></i></a>
+          <a href="{% url 'auth:login' %}">Voltar</a>
+          </div>
+    <div class="coluna_2"> 
       <div class="inner-box">
         <form method="post" class="form">
             <div class="title"><h2>Cadastro</h2></div>
@@ -47,10 +50,6 @@
             <button type="submit">Cadastrar</button>
             </div>
           </form>
-      </div>
-
-      <div class="link">
-      <a href="{% url 'auth:login' %}">Login</a>
       </div>
 </div>
 </html>

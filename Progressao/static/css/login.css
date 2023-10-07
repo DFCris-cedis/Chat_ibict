@@ -7,7 +7,11 @@ body {
   text-decoration: none;
   color: inherit;
   height: 100vh;
-  width: 100wh;
+  width: 100vw;
+}
+
+input {
+  height: 1.5rem;
 }
 
 .container {
@@ -18,13 +22,26 @@ body {
   text-align: center;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+}
+
+a:hover {
+  text-decoration: underline;
+}
 
 .link {
   margin-top: 1rem;
   text-align: right;
-  margin-right: 11vh;
+  margin-right: 5.5vw;
   font-weight: bold;
-  color: white
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .coluna_1 {
@@ -120,8 +137,7 @@ button {
 
 .form-group input[type="text"],
 .form-group input[type="password"] {
-
-  padding: 0.6vh 0.1vh;
+  padding: 5px;
   font-size: 15px;
   border-radius: 10px;
 }
@@ -132,7 +148,6 @@ button {
   margin-bottom: 20px white;
   border-bottom: white;
   margin-top: 2vh;
-
 
 }
 

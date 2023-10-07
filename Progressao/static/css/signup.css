@@ -7,7 +7,7 @@ body {
   text-decoration: none;
   color: inherit;
   height: 100vh;
-  width: 100wh;
+  width: 100vw;
 }
 
 .container {
@@ -22,9 +22,10 @@ body {
 .link {
   margin-top: 1rem;
   text-align: right;
-  margin-right: 11vh;
+  margin-right: 5.5vw;
   font-weight: bold;
-  color: white
+  color: white;
+  text-decoration: none;
 }
 
 .coluna_1 {
@@ -36,20 +37,18 @@ body {
 }
 
 .coluna_2 {
-
   width: 40%;
   height: 80%;
   justify-content: center;
   align-items: center;
   color: white;
   padding: 0.5rem 0.5rem;
-  text-decoration: white;
-
-
 }
 
 .link {
   text-align: right;
+  position: absolute;
+  right: 0;
 }
 
 .link a:visited {
@@ -57,6 +56,18 @@ body {
   color: inherit;
   font-weight: bold;
   color: white;
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  width: 100%;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .title {
@@ -65,7 +76,6 @@ body {
 }
 
 .imagem {
-
   max-width: 100%;
   max-height: 100%;
 }
@@ -81,7 +91,7 @@ body {
 .inner-box {
   max-width: 65%;
   min-width: 15rem;
-  height: 35vw;
+  height: 100%;
   border-radius: 10px;
   border: 2px solid #943e8e;
   border-color: #943e8e;
@@ -98,10 +108,15 @@ body {
   padding: 20px;
   padding: 0.5rem 1rem;
   border-radius: 10px;
+  overflow: auto;
 }
 
 button {
   border-radius: 10px;
+  width: 25vw;
+  height: 6vh;
+  font-size: px;
+  font-weight: bold;
   border-color: #943e8e;
   background-color: #241148;
   color: white;
@@ -112,9 +127,11 @@ button {
   border-bottom: white;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 0.9rem;
   margin-top: 4vh;
+}
 
+button:hover {
+  filter: brightness(0.6);
 }
 
 .inner-box {
@@ -122,11 +139,7 @@ button {
 }
 
 .button-container {
-  position: absolute;
   bottom: 3%;
-  /* Ajuste essa margem conforme necessário */
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .custom-button {
@@ -137,17 +150,15 @@ button {
   display: block;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   margin-top: 4vh;
 }
 
 
 .input-group {
   display: flex;
-  font-size: 15px;
   width: 40%;
   padding: 0.6vh 0.1vh;
-  font-size: 15px;
   border-radius: 10px;
 }
 
@@ -158,7 +169,6 @@ button {
   gap: 10px;
   align-items: center;
   padding: 0.6vh 0.1vh;
-  font-size: 15px;
   border-radius: 10px;
 }
 
@@ -168,15 +178,80 @@ button {
   padding-top: 6px;
   margin-right: 5%;
   padding: 1rem 0rem;
-  font-size: 2vh;
   padding: 0.6vh 0.2vh;
-  font-size: 15px;
+  /* font-size: 15px; */
   border-radius: 10px;
 }
 
 .input-group input,
 .form-row input {
   border-radius: 10px;
-  padding: 0.6vh 0.1vh;
-  font-size: 15px;
+  padding: 5px;
+  border: none;
+  height: 1.5rem;
+}
+
+@media (max-width: 1250px) {
+
+  body {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  input {
+    font-size: 30px;
+    height: 3rem !important;
+  }
+
+  .link {
+    margin-top: 4rem;
+  }
+
+  a {
+    font-size: 40px;
+
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .coluna_1 {
+    margin-top: 5rem;
+    width: 100vw;
+  }
+
+  .coluna_2 {
+    width: 100vw;
+  }
+
+  .inner-box {
+    height: 55vh;
+    width: 80vw;
+    max-width: 1000px;
+  }
+
+  button {
+    width: 80vw;
+    height: 4vh;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 6rem;
+  }
+
+}
+
+@media (min-width: 1700px) {
+
+  .inner-box {
+    height: 60vh;
+  }
+
+  .coluna_2 {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    padding-top: 5vw;
+  }
+
 }
