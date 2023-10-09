@@ -10,6 +10,21 @@ body {
   width: 100vw;
 }
 
+.error-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f44336;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  z-index: 1000 !important;
+  display: none;
+}
+
+
+
 input {
   height: 1.5rem;
 }

@@ -94,7 +94,7 @@
       <div style="display: flex; justify-content: space-between">
         <div style="display: flex; justify-content: space-between">
           <div class="logout">
-            <i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: #241148;"></i>
+            <i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: white;"></i>
             <button class="logout-button" type="button" value="logout">
               Sair
             </button>
@@ -111,7 +111,8 @@
         </div>
 
         {% comment %} <button type="submit" onclick="showLoader()">Pesquisar</button> {% endcomment %}
-        <button type="submit" onclick="submitForm(event)">Pesquisar</button>
+        
+        <button class="pesquisar" type="submit" onclick="submitForm(event)">Pesquisar</button>
         <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
 
 
@@ -160,6 +161,7 @@
     window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de login
   });
 </script>   
+
 
       <footer>
         <img class="imagem" src="/static/img/fapdf.png" />

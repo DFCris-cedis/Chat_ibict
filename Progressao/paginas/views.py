@@ -5,6 +5,9 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
 from django.contrib.auth.views import PasswordResetConfirmView
 import re
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -73,6 +76,7 @@ import psycopg2
 import h2o
 import csv
 import numpy as np
+from django.contrib import messages
 
 
 def signup_view(request):
@@ -121,27 +125,48 @@ def logout_success(sender, user, request, **kwargs):
 # from .forms import CustomLoginForm
 
 
-def login_view(request):
-    error_message = ''
+# def login_view(request):
+#     if request.method == 'POST':
+#         form = CustomLoginForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data['email']
+#             password = form.cleaned_data['password']
+#             user = authenticate(request, email=email, password=password)
+#             if user is None:
+#                 messages.error(request, 'Nome de usuário ou senha inválidos.')
 
+#             if user:
+#                 login(request, user)
+#                 return redirect('home')
+#             else:
+#                 messages.error(request, 'Nome de usuário ou senha inválidos.')
+#     else:
+#         form = CustomLoginForm()
+
+#     return render(request, 'login.html', {'form': form})
+
+def login_view(request):
+    user = authenticate(request, email=email, password=password)
     if request.method == 'POST':
-        form = CustomLoginForm(data=request.POST)
+        form = CustomLoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                user.is_active = True
-                user.save()
-                return redirect('home')
+            context = {'form': form, 'auth_failed': False}
+
+            if user is None:
+                logger.error("Authentication failed for email: %s", email)
+                context['auth_failed'] = True
             else:
-                error_message = 'Nome de usuário ou senha inválidos.'
-                form.add_error(None, error_message)
+                logger.info("User authenticated with email: %s", email)
+                login(request, user)
+                return redirect('home')
+
     else:
         form = CustomLoginForm()
 
-    return render(request, 'login.html', {'form': form, 'error_message': error_message})
+    return render(request, 'login.html', {'form': form})
 
 
 class CustomLoginForm(AuthenticationForm):
