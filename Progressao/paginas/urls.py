@@ -6,7 +6,7 @@ from paginas import views
 
 urlpatterns = [
     path('', include('paginas.urls', namespace='home')),
-    path('login/', views.login_view, name='login'),
+    path('login/', views.custom_login, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout_view'),
     path('search/', search_view, name='search_view'),

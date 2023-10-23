@@ -1,157 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Contextus</title>
-    <link rel="stylesheet" href="/static/css/login.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  </head>
-  <body>
-    <div id="errorPopup" class="error-popup">
-      <span id="errorMessageContent"></span>
-  </div>
-        
-
-    <div class="container">
-      <div class="coluna_1">
-        <img src="/static/img/contextus2.png" alt="chatibict" class="imagem" />
-      </div>
-
-      <div class="coluna_2">
-        <div class="title"><h1>BEM-VINDO(A)!</h1></div>
-        
-        <div class="inner-box">
-          <form method="post" class="form">
-            <div class="title"><h2>Login</h2></div>
-
-              {% csrf_token %}
-    <div class="form-group">
-      <label for="{{ form.username.id_for_label }}" style="display: block">Email:</label>
-      {{ form.username }} {{ form.username.errors }}
-    </div>
-    <div class="form-group">
-      <label for="{{ form.password.id_for_label }}" style="display: block">Senha:</label>
-      {{ form.password }} {{ form.password.errors }}
-    </div>
-
-    {% for message in messages %}
-    <div class="error-message">{{ message }}</div>
-
-    
-    {% endfor %}
-    <button type="submit">ENTRAR</button>
-  </form>
-</div>
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-<script>
-  window.onload = function() {
-      var errorDiv = document.getElementById('errorMessage');
-      if (errorDiv) {
-          alert(errorDiv.textContent);
-      }
-  };
-</script>
-
-    
-
-        <div class="link">
-          <a href="{% url 'signup' %}">Não tem uma conta? Cadastre-se aqui</a>
-          <p>
-            <a href="{% url "password_reset" %}">Esqueceu a sua senha?</a>
-          </p>
-        </div>  
-      </div>
-    </div>
-    {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-  
-      
-  </body>
-  </html>
-{% comment %} 
-
- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        /* Estilos básicos */
-        .error-popup {
-            display: none;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background-color: #f44336; /* Vermelho */
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-        }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1;
-        }
-    </style>
+    <head>
+        <title>Contextus</title>
+        <link rel="stylesheet" href="/static/css/login.css" />
 </head>
 <body>
+    <div class="container">
 
-<!-- Formulário de login -->
-{% csrf_token %}
-<form id="loginForm">
-    <div class="form-group">
-      <label for="{{ form.username.id_for_label }}" style="display: block">Email:</label>
-      {{ form.username }} {{ form.username.errors }}
+        <div class="coluna_1">
+            <img src="/static/img/contextus2.png" alt="chatibict" class="imagem" />
+        </div>
+    
+        <div class="coluna_2">
+            <div class="title"><h1>BEM-VINDO(A)!</h1></div>
+    
+            <div class="inner-box">
+                <form method="post" action="{% url 'login' %}" class="form" id="login-form">
+                    <div class="title"><h2>Login</h2></div>
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <button type="submit">ENTRAR</button>
+            </form>
+        </div>
+        
+        <div class="link">
+            <a href="{% url 'signup' %}">Não tem uma conta? Cadastre-se aqui</a>
+            <p>
+                <a href="{% url 'password_reset' %}">Esqueceu a sua senha?</a>
+            </p>
+        </div>
     </div>
-    <div class="form-group">
-      <label for="{{ form.password.id_for_label }}" style="display: block">Senha:</label>
-      {{ form.password }} {{ form.password.errors }}
-    </div>
-    <button type="submit">ENTRAR</button>
-</form>
-
-<!-- Popup de erro -->
-<div class="overlay" id="errorOverlay"></div>
-<div class="error-popup" id="errorPopup">
-    Nome de usuário ou senha inválidos.
-    <button onclick="closeErrorPopup()">Fechar</button>
-</div>
-
-<script>
-  document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-    showErrorPopup();
-});
-{% if auth_failed %}
-<script>
-    showErrorPopup();
-</script>
-{% endif %}
 
 
-
-</script>
 
 </body>
 </html>
-
-  {% endcomment %}

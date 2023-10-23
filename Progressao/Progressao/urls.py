@@ -4,12 +4,11 @@ from django.urls import path, include
 from django.contrib import admin
 from paginas import views
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.home, name='home'),
     path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='auth')),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/login/', views.custom_login, name='login'),
     path('accounts/signup/', views.signup_view, name='signup'),
     path('accounts/logout/', views.logout_view, name='logout_view'),
     path('accounts/reset_password/', auth_views.PasswordResetView.as_view(), name='password_reset'),

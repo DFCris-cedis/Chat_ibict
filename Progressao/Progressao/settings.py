@@ -36,7 +36,7 @@ DEBUG = True
 
 #ALLOWED_HOSTS = ['contextus.ibict.br', '172.16.17.41']
 ALLOWED_HOSTS =['*']
-CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
+#CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
 #CSRF_TRUSTED_ORIGINS = ['*']
 
 
@@ -61,6 +61,7 @@ AUTH_USER_MODEL = 'paginas.CustomUser'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
+
 
 
 CORS_ORIGIN_ALLOW_ALL = True

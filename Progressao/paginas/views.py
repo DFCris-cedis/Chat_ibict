@@ -30,7 +30,6 @@ import spacy
 import csv
 import numpy as np
 from multiprocessing import Process, Queue
-import threading
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 from django.shortcuts import render
@@ -43,11 +42,9 @@ from rpy2 import robjects
 import pandas as pd
 import psycopg2
 import h2o
-import concurrent.futures
 from multiprocessing import Process
 
 
-import importlib
 import threading
 import rpy2.robjects as ro
 
@@ -122,61 +119,41 @@ def logout_success(sender, user, request, **kwargs):
     user.save()
 
 
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
 # from .forms import CustomLoginForm
 
-
-# def login_view(request):
-#     if request.method == 'POST':
-#         form = CustomLoginForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, email=email, password=password)
-#             if user is None:
-#                 messages.error(request, 'Nome de usuário ou senha inválidos.')
-
-#             if user:
-#                 login(request, user)
-#                 return redirect('home')
-#             else:
-#                 messages.error(request, 'Nome de usuário ou senha inválidos.')
-#     else:
-#         form = CustomLoginForm()
-
-#     return render(request, 'login.html', {'form': form})
-
-def login_view(request):
-    user = authenticate(request, email=email, password=password)
-    if request.method == 'POST':
-        form = CustomLoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(request, email=email, password=password)
-            context = {'form': form, 'auth_failed': False}
-
-            if user is None:
-                logger.error("Authentication failed for email: %s", email)
-                context['auth_failed'] = True
-            else:
-                logger.info("User authenticated with email: %s", email)
-                login(request, user)
-                return redirect('home')
-
-    else:
-        form = CustomLoginForm()
-
-    return render(request, 'login.html', {'form': form})
-
-
-class CustomLoginForm(AuthenticationForm):
-    username = forms.EmailField(widget=forms.EmailInput(
-        attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
-    password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+# class CustomLoginForm(AuthenticationForm):
+#     username = forms.EmailField(widget=forms.EmailInput(
+#         attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
+#     password = forms.CharField(widget=forms.PasswordInput(
+#         attrs={'class': 'form-control', 'placeholder': 'Senha'}))
 
 
 logger = logging.getLogger(__name__)
+
+
+from django.contrib.auth import login
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from .forms import LoginForm  # Importe o formulário de login
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({'success': True, 'message': 'Login bem-sucedido'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
 
 def logout_view(request):
@@ -310,8 +287,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         # teste
-        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
 
@@ -449,8 +426,8 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
 
-    #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-    Modelo = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    #Modelo = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
 
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
 
@@ -549,26 +526,26 @@ def process_rpy2():
 
     for i in modelos.index:
         if (str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
-            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
             prev_sub = prevRFranger(entrada, str_modelo)
             vetor_strings.append(prev_sub)
 
         if (str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
-            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             prev_sub = prevRFtrad(entrada, str_modelo)
             vetor_strings.append(prev_sub)
 
         if (str(modelos['Tipo'][i]) == "C50"):
-            #str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
-            str_modelo = f"""/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            #str_modelo = f"""/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             prev_sub = prevC50(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
         if (str(modelos['Tipo'][i]) == "RPART"):
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             prev_sub = prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
     # Verifique se a lista não está vazia
