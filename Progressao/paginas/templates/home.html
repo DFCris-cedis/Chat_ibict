@@ -106,6 +106,10 @@
       <form method="POST" class="form-container">
         {% csrf_token %}
 
+        <div class="form-field campo-title">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+
         <div class="form-field campo-phrasetest">
           {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
         </div>

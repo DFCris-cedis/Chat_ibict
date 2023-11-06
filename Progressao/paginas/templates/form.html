@@ -23,6 +23,10 @@
       <form method="POST" class="form-container">
         {% csrf_token %}
 
+        <div class="form-field campo-title">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+
         <div class="form-field campo-phrasetest">
           {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
         </div>
@@ -33,6 +37,14 @@
             <option value="universidade">Universidade</option>
             <option value="professor">Professor</option>
             <option value="area">Área</option>
+          </select>
+        </div>
+
+        <div style="text-align: center">
+          <label style="display: inline-block">Escolha uma linguagem:</label>
+          <select name="language" class="option" style="display: inline-block">
+            <option value="portuguese">Portugues</option>
+            <option value="english">Ingles</option>
           </select>
         </div>
 

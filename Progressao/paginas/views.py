@@ -34,6 +34,7 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 from django.shortcuts import render
 from multiprocessing import Process, Queue
+from ..englishBackend import main
 
 
 from rpy2.robjects.packages import importr
@@ -667,6 +668,7 @@ def home(request):
         if form.is_valid():
             form = form.save(commit=False)
             form.user = request.user  # Atribui o usuário atual ao atributo 'user'
+            abstract = form.phraseTest
             form.phraseTest = form.phraseTest.lower()  # Converte o campo em minúsculas
             form.save()
 
@@ -707,14 +709,18 @@ def home(request):
             area = ''
             subarea = ''
 
-            resultado = process_rpy2()
-            resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-            # Divide a string em duas partes usando a vírgula como separador
-            partes = resultado_limpo.split(',')
+            if form.language == 'english':
+                resultado = main(form.title, abstract)
+                print(resultado)
+            else:
+                resultado = process_rpy2()
+                resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+                # Divide a string em duas partes usando a vírgula como separador
+                partes = resultado_limpo.split(',')
 
-            # Remove espaços em branco adicionais
-            subarea = partes[0].strip()  # "HISTORIA"
-            area = partes[1].strip()  # "CIENCIAS HUMANAS"
+                # Remove espaços em branco adicionais
+                subarea = partes[0].strip()  # "HISTORIA"
+                area = partes[1].strip()  # "CIENCIAS HUMANAS"
 
 # Display the result to the user
             # print(resultado)

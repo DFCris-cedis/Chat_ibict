@@ -9,10 +9,12 @@ from .models import Test
 class MeuForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = ['phraseTest']
+        fields = ['phraseTest', 'title']
 
     # phraseTest = forms.CharField(label='Digite aqui seu texto:')
     phraseTest = forms.CharField(widget=forms.Textarea(
+        attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto'}))
+    title = forms.CharField(widget=forms.Textarea(
         attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto'}))
 
 
