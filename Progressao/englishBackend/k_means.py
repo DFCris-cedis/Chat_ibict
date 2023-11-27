@@ -2,7 +2,7 @@ from sklearn.cluster import KMeans
 from sklearn import metrics
 from sklearn.feature_extraction.text import TfidfVectorizer
 import matplotlib.pyplot as plt
-from stop_words import get_stop_words
+from .stop_words import get_stop_words
 from statistics import mode
 
 

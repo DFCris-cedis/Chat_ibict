@@ -34,8 +34,9 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 from django.shortcuts import render
 from multiprocessing import Process, Queue
-from ..englishBackend import main
-
+import sys
+sys.path.append('C:\\Users\\milen\\OneDrive\\Documentos\\GitHub\\Chat_ibict\\Progressao')
+from englishBackend.main import get_remote_works
 
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
@@ -654,88 +655,153 @@ print(output)  # You can replace this with the function you want to return the r
 nlp = spacy.load("pt_core_news_lg")
 
 
+from django.shortcuts import render, redirect
+from .forms import MeuForm
+from .models import Noun, Dicionario
+import spacy
+import re
+
+# Importações adicionais
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.forms import User
+import h2o
+
+# Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
+from englishBackend import main
+# from ... import process_rpy2
+
+# def home(request):
+#     show_prevrf = False  # Variável de controle
+#     if request.method == 'POST':
+#         form = MeuForm(request.POST)
+#         if form.is_valid():
+#             form = form.save(commit=False)
+#             form.user = request.user
+#             abstract = form.phraseTest.lower()
+#             form.phraseTest = abstract
+#             form.save()
+
+#             title = form.title
+#             abstract = form.phraseTest
+
+#             action = request.POST.get('action')
+
+#             if action == 'pesquisar_en':
+#                 # Chamada da função main do módulo englishBackend
+#                 resultado = main(title, abstract)
+#                 print(resultado)
+#             else:
+#                 # Código alternativo se a ação não for 'pesquisar_en'
+#                 h2o.init()
+#                 phraseTest = form.phraseTest.lower()
+#                 nlp = spacy.load("pt_core_news_lg")
+#                 doc = nlp(phraseTest)
+
+#                 # Processamento do texto
+#                 lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
+#                 for lemma in lemmas:
+#                     new_noun = Noun.objects.create(
+#                         nounText=lemma.lower(),
+#                         test=form,
+#                         idSignificado=''
+#                     )
+#                     words = new_noun.nounText.split()
+#                     for word in words:
+#                         dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
+#                         if dicionario:
+#                             new_noun.idSignificado = dicionario.IDSignificado
+#                             new_noun.user = request.user
+#                             new_noun.save()
+
+#                 # Processamento adicional
+#                 resultado = process_rpy2()
+#                 resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+#                 partes = resultado_limpo.split(',')
+#                 subarea = partes[0].strip()
+#                 area = partes[1].strip()
+
+#             # Preparando o contexto para o template
+#             context = {'area': area, 'subarea': subarea}
+#             return render(request, 'result.html', context)
+#     else:
+#         form = MeuForm()
+
+#     context = {'form': form, 'show_prevrf': show_prevrf}
+#     return render(request, 'home.html', context)
+from django.shortcuts import render, redirect
+from .forms import MeuForm
+from .models import Noun, Dicionario
+import spacy
+import re
+
+# Importações adicionais
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.forms import User
+import h2o
+
+# Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
+from englishBackend import main
+# from ... import process_rpy2
+
 def home(request):
-
-    # Importação movida para dentro da função
-    from django.contrib.auth.views import PasswordResetConfirmView
-
-    # Restante do código...
-
-    from django.contrib.auth.forms import User
-    show_prevrf = False  # Inicialmente, a variável show_prevrf é False
+    show_prevrf = False  # Variável de controle
     if request.method == 'POST':
         form = MeuForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.user = request.user  # Atribui o usuário atual ao atributo 'user'
-            abstract = form.phraseTest
-            form.phraseTest = form.phraseTest.lower()  # Converte o campo em minúsculas
+            form.user = request.user
+            abstract = form.phraseTest.lower()
+            form.phraseTest = abstract
             form.save()
 
-            phraseTest = form.phraseTest  # Salva o texto em uma variável Python
-            phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
+            title = form.title
+            abstract = form.phraseTest
+            area = None  # or some default value
 
-            # Processar o texto com o spaCy
-            doc = nlp(phraseTest)
+            action = request.POST.get('action')
 
-            # ## extrair as palavras e seus lemas
-            lemmas = [token.lemma_ for token in doc if token.pos_ in [
-                'PROPN', 'NOUN']]
-            words = [token.text for token in doc]
-            pos_tags = [token.pos_ for token in doc]
-            dep_tags = [token.dep_ for token in doc]
-
-            # extrair as entidades nomeadas
-            named_entities = [(ent.text, ent.label_) for ent in doc.ents]
-
-            # extrair os sintagmas nominais
-            noun_chunks = [np.text for np in doc.noun_chunks]
-            for lemma in lemmas:
-                new_noun = Noun.objects.create(
-                    nounText=lemma.lower(),  # Converte o lemma em minúsculas
-                    test=form,
-                    idSignificado=''
-                )
-
-                words = new_noun.nounText.split()
-                for word in words:
-                    dicionario = Dicionario.objects.filter(
-                        Palavra=word.lower()).first()  # Converte a palavra em minúsculas
-                if dicionario:
-                    new_noun.idSignificado = dicionario.IDSignificado
-                    new_noun.user = request.user
-                    new_noun.save()
-
-            area = ''
-            subarea = ''
-
-            if form.language == 'english':
-                resultado = main(form.title, abstract)
+            if action == 'pesquisar_en':
+                # Chamada da função main do módulo englishBackend
+                resultado = get_remote_works(title, abstract)
                 print(resultado)
+                # Aqui você precisa extrair a área a partir do resultado, se possível
+                area = (resultado)
             else:
+                # Código alternativo se a ação não for 'pesquisar_en'
+                h2o.init()
+                phraseTest = form.phraseTest.lower()
+                nlp = spacy.load("pt_core_news_lg")
+                doc = nlp(phraseTest)
+
+                # Processamento do texto
+                lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
+                for lemma in lemmas:
+                    new_noun = Noun.objects.create(
+                        nounText=lemma.lower(),
+                        test=form,
+                        idSignificado=''
+                    )
+                    words = new_noun.nounText.split()
+                    for word in words:
+                        dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
+                        if dicionario:
+                            new_noun.idSignificado = dicionario.IDSignificado
+                            new_noun.user = request.user
+                            new_noun.save()
+
+                # Processamento adicional
                 resultado = process_rpy2()
                 resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-                # Divide a string em duas partes usando a vírgula como separador
                 partes = resultado_limpo.split(',')
+                subarea = partes[0].strip()
+                area = partes[1].strip()
 
-                # Remove espaços em branco adicionais
-                subarea = partes[0].strip()  # "HISTORIA"
-                area = partes[1].strip()  # "CIENCIAS HUMANAS"
-
-# Display the result to the user
-            # print(resultado)
-
-        # Passar os resultados para o template renderizado
-        context = {
-            'area': area,
-            'subarea': subarea,
-        }
-
-        # Renderizar o template e retornar a resposta
-        return render(request, 'result.html', context)
-
+            # Preparando o contexto para o template
+            context = {'area': area}
+            return render(request, 'result.html', context)
     else:
         form = MeuForm()
-        # Define o contexto para a página HTML
+
     context = {'form': form, 'show_prevrf': show_prevrf}
     return render(request, 'home.html', context)
+

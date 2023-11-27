@@ -3,9 +3,9 @@ import json
 from fastapi import FastAPI
 import pandas as pd
 import json
-from vectorial_model import get_vectorial_model, pre_processing
-from k_means import get_clusters
-from sentence_transformer import set_embedding
+from .vectorial_model import get_vectorial_model, pre_processing
+from .k_means import get_clusters
+from .sentence_transformer import set_embedding
 import requests
 import json
 from pydantic import BaseModel

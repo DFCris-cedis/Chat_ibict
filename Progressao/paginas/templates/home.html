@@ -116,9 +116,11 @@
 
         {% comment %} <button type="submit" onclick="showLoader()">Pesquisar</button> {% endcomment %}
         
-        <button class="pesquisar" type="submit" onclick="submitForm(event)">Pesquisar</button>
+        <button class="pesquisar" type="submit" name="action" value="pesquisar_en">Ingles</button>
         <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
-
+        
+        <button class="pesquisar" type="submit" onclick="submitForm(event)" value="pesquisar_br">Portugues</button>
+        <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
 
       </form>
 
