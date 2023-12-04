@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from paginas.views import search_view
 from django.urls import path, include
 from paginas import views
+from paginas import PasswordResetForm
 
 urlpatterns = [
     path('', include('paginas.urls', namespace='home')),
