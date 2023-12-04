@@ -199,26 +199,26 @@ def password_reset(request):
     return render(request, 'password_reset_form.html', {'form': form})
 
 
-def reset_confirm(request, uidb64, token):
-    form_class = CustomPasswordResetConfirmForm
-    validlink = True
-    user = auth_views.PasswordResetConfirmView().get_user(uidb64)
-    if user is None:
-        validlink = False
-    else:
-        if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
-            validlink = False
-    if validlink:
-        if request.method == 'POST':
-            form = form_class(user, request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('password_reset_complete')
-        else:
-            form = form_class(user)
-        return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+# def reset_confirm(request, uidb64, token):
+#     form_class = CustomPasswordResetConfirmForm
+#     validlink = True
+#     user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+#     if user is None:
+#         validlink = False
+#     else:
+#         if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+#             validlink = False
+#     if validlink:
+#         if request.method == 'POST':
+#             form = form_class(user, request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('password_reset_complete')
+#         else:
+#             form = form_class(user)
+#         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
-User = get_user_model()
+# User = get_user_model()
 
 
 def reset_confirm(request, uidb64, token):
@@ -251,7 +251,7 @@ def reset_confirm(request, uidb64, token):
         # Exiba uma mensagem de erro amigável ao usuário
         return render(request, 'password_reset_invalid_link.html')
 
-
+User = get_user_model()
 def get_df():
 
     try:
