@@ -12,6 +12,7 @@ class StaffOnlyMiddleware:
             '/accounts/reset_password/',
             '/accounts/reset_password/done/',
             '/accounts/reset/done/'
+            '/accounts/reset_password_confirm/<uidb64>/<token>/'
         ]  # adicionar a URL de cadastro aqui
 
         if not request.user.is_authenticated:
