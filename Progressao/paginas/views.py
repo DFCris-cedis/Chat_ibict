@@ -196,7 +196,7 @@ def password_reset(request):
             return render(request, 'password_reset_done.html')
     else:
         form = PasswordResetForm()
-    return render(request, 'password_reset_form.html', {'form': form})
+    return render(request, 'password_reset_confirm.html', {'form': form})
 
 
 # def reset_confirm(request, uidb64, token):
@@ -252,6 +252,7 @@ def reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_invalid_link.html')
 
 User = get_user_model()
+
 def get_df():
 
     try:
