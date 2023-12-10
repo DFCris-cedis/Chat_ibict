@@ -120,7 +120,7 @@ def logout_success(sender, user, request, **kwargs):
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
-from .forms import CustomLoginForm
+# from .forms import CustomLoginForm
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.EmailField(widget=forms.EmailInput(
