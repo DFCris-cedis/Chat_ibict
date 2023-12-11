@@ -704,24 +704,24 @@ def home(request):
                     new_noun.user = request.user
                     new_noun.save()
 
-            area = ''
-            subarea = ''
 
-            resultado = process_rpy2()
-            resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-            # Divide a string em duas partes usando a vírgula como separador
-            partes = resultado_limpo.split(',')
+                resultado = process_rpy2()
 
-            # Remove espaços em branco adicionais
-            subarea = partes[0].strip()  # "HISTORIA"
-            area = partes[1].strip()  # "CIENCIAS HUMANAS"
+# Verifica se 'resultado' é uma string, se não for, converte para string
+                if not isinstance(resultado, str):
+                    resultado = str(resultado)
+
+                resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+                partes = resultado_limpo.split(',')
+                subarea = partes[0].strip()
+                #area = partes[1].strip()
 
 # Display the result to the user
             # print(resultado)
 
         # Passar os resultados para o template renderizado
         context = {
-            'area': area,
+            #'area': area,
             'subarea': subarea,
         }
 
