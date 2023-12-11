@@ -708,12 +708,12 @@ def home(request):
                 resultado = process_rpy2()
 
 # Verifica se 'resultado' é uma string, se não for, converte para string
-                if not isinstance(resultado, str):
-                    resultado = str(resultado)
+                # if not isinstance(resultado, str):
+                #     resultado = str(resultado)
 
-                resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-                partes = resultado_limpo.split(',')
-                subarea = partes[0].strip()
+                # resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+                # partes = resultado_limpo.split(',')
+                # subarea = partes[0].strip()
                 #area = partes[1].strip()
 
 # Display the result to the user
@@ -722,7 +722,7 @@ def home(request):
         # Passar os resultados para o template renderizado
         context = {
             #'area': area,
-            'subarea': subarea,
+            'subarea': resultado,
         }
 
         # Renderizar o template e retornar a resposta
