@@ -35,8 +35,8 @@ from rpy2.robjects import pandas2ri
 from django.shortcuts import render
 from multiprocessing import Process, Queue
 import sys
-# sys.path.append('C:\\Users\\milen\\OneDrive\\Documentos\\GitHub\\Chat_ibict\\Progressao')
-# from englishBackend.main import get_remote_works
+sys.path.append('C:\\Users\\milen\\OneDrive\\Documentos\\GitHub\\Chat_ibict\\Progressao')
+from englishBackend.main import get_remote_works
 
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
