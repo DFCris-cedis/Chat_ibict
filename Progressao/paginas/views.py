@@ -737,7 +737,8 @@ import re
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.forms import User
 import h2o
-
+from django.shortcuts import render
+from .forms import MeuForm
 # Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
 #from englishBackend import main
 # from ... import process_rpy2
@@ -750,44 +751,55 @@ def home(request):
             print("Form is valid")
             form = form.save(commit=False)
             form.user = request.user
-            abstract = form.phraseTest.lower()
-            form.phraseTest = abstract
+            # abstract = form.phraseTest.lower()
+            # form.phraseTest = abstract
+            abstract = form['phraseTest']
+            title = form['title']
             form.save()
 
-            # Inicialize o H2O e Spacy fora do loop
-            h2o.init()
-            nlp = spacy.load("pt_core_news_lg")
+            # title = form.cleaned_data['title']
+            # abstract = form.cleaned_data['phraseTest']
+            action = request.POST.get('action')
 
-            # Processamento do texto
-            doc = nlp(abstract)
-            lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
-            for lemma in lemmas:
-                new_noun = Noun.objects.create(
-                    nounText=lemma.lower(),
-                    test=form,
-                    idSignificado=''
-                )
-                words = new_noun.nounText.split()
-                for word in words:
-                    dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
-                    if dicionario:
-                        new_noun.idSignificado = dicionario.IDSignificado
-                        new_noun.user = request.user
-                        new_noun.save()
+            if action == 'pesquisar_en':
+                resultado = get_remote_works(title, abstract)
+                print(resultado)
 
-            # Chame process_rpy2 após processar todos os lemas
-            print("Chamando process_rpy2...")
-            resultado = process_rpy2()
-            if resultado:
-                print(f"Resultado de process_rpy2: {resultado}")
-                resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-                partes = resultado_limpo.split(',')
-                subarea = partes[0].strip()
-                area = partes[1].strip()
+            # # Inicialize o H2O e Spacy fora do loop
+            # h2o.init()
+            # nlp = spacy.load("pt_core_news_lg")
 
-                # Preparando o contexto para o template
-                context = {'area': area,
-                           'subarea': subarea}
+            # # Processamento do texto
+            # doc = nlp(abstract)
+            # lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
+            # for lemma in lemmas:
+            #     new_noun = Noun.objects.create(
+            #         nounText=lemma.lower(),
+            #         test=form,
+            #         idSignificado=''
+            #     )
+            #     words = new_noun.nounText.split()
+            #     for word in words:
+            #         dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
+            #         if dicionario:
+            #             new_noun.idSignificado = dicionario.IDSignificado
+            #             new_noun.user = request.user
+            #             new_noun.save()
+
+            # # Chame process_rpy2 após processar todos os lemas
+            # print("Chamando process_rpy2...")
+            # resultado = process_rpy2()
+            # if resultado:
+            #     print(f"Resultado de process_rpy2: {resultado}")
+            #     resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+            #     partes = resultado_limpo.split(',')
+            #     subarea = partes[0].strip()
+            #     area = partes[1].strip()
+
+            #     # Preparando o contexto para o template
+                # context = {'area': area,
+                #            'subarea': subarea}
+                context = {'area': resultado}
                 return render(request, 'result.html', context)
             else:
                 print("process_rpy2 não retornou resultado válido.")
