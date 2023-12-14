@@ -5,8 +5,10 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
 from django.contrib.auth.views import PasswordResetConfirmView
 import re
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
+
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from paginas.forms import CustomPasswordResetConfirmForm
@@ -32,7 +34,9 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 from django.shortcuts import render
 from multiprocessing import Process, Queue
-
+import sys
+# sys.path.append('C:\\Users\\milen\\OneDrive\\Documentos\\GitHub\\Chat_ibict\\Progressao')
+# from englishBackend.main import get_remote_works
 
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
@@ -183,40 +187,40 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
         return super().get(request, *args, **kwargs)
 
 
-# @csrf_protect
-# def password_reset(request):
-#     if request.method == 'POST':
-#         form = PasswordResetForm(request.POST)
-#         if form.is_valid():
-#             form.save(
-#                 request=request,
-#                 from_email='from@example.com',
-#                 email_template_name='password_reset_email.html'
-#             )
-#             return render(request, 'password_reset_done.html')
-#     else:
-#         form = PasswordResetForm()
-#     return render(request, 'password_reset_confirm.html', {'form': form})
-
-
-def reset_confirm(request, uidb64, token):
-    form_class = CustomPasswordResetConfirmForm
-    validlink = True
-    user = auth_views.PasswordResetConfirmView().get_user(uidb64)
-    if user is None:
-        validlink = False
+@csrf_protect
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                from_email='from@example.com',
+                email_template_name='password_reset_email.html'
+            )
+            return render(request, 'password_reset_done.html')
     else:
-        if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
-            validlink = False
-    if validlink:
-        if request.method == 'POST':
-            form = form_class(user, request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('password_reset_complete')
-        else:
-            form = form_class(user)
-        return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+        form = PasswordResetForm()
+    return render(request, 'password_reset_form.html', {'form': form})
+
+
+# def reset_confirm(request, uidb64, token):
+#     form_class = CustomPasswordResetConfirmForm
+#     validlink = True
+#     user = auth_views.PasswordResetConfirmView().get_user(uidb64)
+#     if user is None:
+#         validlink = False
+#     else:
+#         if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
+#             validlink = False
+#     if validlink:
+#         if request.method == 'POST':
+#             form = form_class(user, request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('password_reset_complete')
+#         else:
+#             form = form_class(user)
+#         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
 User = get_user_model()
 
@@ -251,7 +255,6 @@ def reset_confirm(request, uidb64, token):
         # Exiba uma mensagem de erro amigável ao usuário
         return render(request, 'password_reset_invalid_link.html')
 
-User = get_user_model()
 
 def get_df():
 
@@ -513,7 +516,6 @@ def prevRpart(dados, str_modelo):
 
 
 def process_rpy2():
-    nlp = spacy.load("pt_core_news_lg")
 
     da = get_df()
     entrada = da
@@ -551,185 +553,247 @@ def process_rpy2():
 
     # Agora, você pode usar a variável 'area1' para fazer o que for necessário
 
-            area1 = vetor_strings[0].split('",')[1].strip()
-            subarea1 = vetor_strings[0].split('",')[0].strip()
-            tipo1 = modelos['Tipo'][0]
-            subtipo1 = modelos['Subtipo'][0]
-            mindocs1 = modelos['MinDocs'][0]
-            rangedocs1 = modelos['RangeDocs'][0]
+    area1 = vetor_strings[0].split('",')[1].strip()
+    subarea1 = vetor_strings[0].split('",')[0].strip()
+    tipo1 = modelos['Tipo'][0]
+    subtipo1 = modelos['Subtipo'][0]
+    mindocs1 = modelos['MinDocs'][0]
+    rangedocs1 = modelos['RangeDocs'][0]
 
-            area2 = vetor_strings[1].split('",')[1].strip()
-            subarea2 = vetor_strings[1].split('",')[0].strip()
-            tipo2 = modelos['Tipo'][1]
-            subtipo2 = modelos['Subtipo'][1]
-            mindocs2 = modelos['MinDocs'][1]
-            rangedocs2 = modelos['RangeDocs'][1]
+    area2 = vetor_strings[1].split('",')[1].strip()
+    subarea2 = vetor_strings[1].split('",')[0].strip()
+    tipo2 = modelos['Tipo'][1]
+    subtipo2 = modelos['Subtipo'][1]
+    mindocs2 = modelos['MinDocs'][1]
+    rangedocs2 = modelos['RangeDocs'][1]
 
-            area3 = vetor_strings[2].split('",')[1].strip()
-            subarea3 = vetor_strings[2].split('",')[0].strip()
-            tipo3 = modelos['Tipo'][2]
-            subtipo3 = modelos['Subtipo'][2]
-            mindocs3 = modelos['MinDocs'][2]
-            rangedocs3 = modelos['RangeDocs'][2]
+    area3 = vetor_strings[2].split('",')[1].strip()
+    subarea3 = vetor_strings[2].split('",')[0].strip()
+    tipo3 = modelos['Tipo'][2]
+    subtipo3 = modelos['Subtipo'][2]
+    mindocs3 = modelos['MinDocs'][2]
+    rangedocs3 = modelos['RangeDocs'][2]
 
-            indicadores1 = get_indicadores(
-                area1, subarea1, tipo1, subtipo1, mindocs1, rangedocs1)
-            indicadores2 = get_indicadores(
-                area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
-            indicadores3 = get_indicadores(
-                area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
+    indicadores1 = get_indicadores(
+        area1, subarea1, tipo1, subtipo1, mindocs1, rangedocs1)
+    indicadores2 = get_indicadores(
+        area2, subarea2, tipo2, subtipo2, mindocs2, rangedocs2)
+    indicadores3 = get_indicadores(
+        area3, subarea3, tipo3, subtipo3, mindocs3, rangedocs3)
 
-            count_indicadores1 = (indicadores1 > indicadores2).sum()
-            count_indicadores2 = (indicadores2 > indicadores1).sum()
-            count_indicadores2_1 = (indicadores2 > indicadores1).sum()
-            count_indicadores2_3 = (indicadores2 > indicadores3).sum()
+    count_indicadores1 = (indicadores1 > indicadores2).sum()
+    count_indicadores2 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_1 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_3 = (indicadores2 > indicadores3).sum()
 
-            count_indicadores3_1 = (indicadores3 > indicadores1).sum()
-            count_indicadores3_2 = (indicadores3 > indicadores2).sum()
-            count_indicadores1_2 = (indicadores1 > indicadores2).sum()
-            count_indicadores1_3 = (indicadores1 > indicadores3).sum()
+    count_indicadores3_1 = (indicadores3 > indicadores1).sum()
+    count_indicadores3_2 = (indicadores3 > indicadores2).sum()
+    count_indicadores1_2 = (indicadores1 > indicadores2).sum()
+    count_indicadores1_3 = (indicadores1 > indicadores3).sum()
 
-            count_indicadores2_1 = (indicadores2 > indicadores1).sum()
-            count_indicadores2_3 = (indicadores2 > indicadores3).sum()
+    count_indicadores2_1 = (indicadores2 > indicadores1).sum()
+    count_indicadores2_3 = (indicadores2 > indicadores3).sum()
 
-            count_indicadores3_1 = (indicadores3 > indicadores1).sum()
-            count_indicadores3_2 = (indicadores3 > indicadores2).sum()
+    count_indicadores3_1 = (indicadores3 > indicadores1).sum()
+    count_indicadores3_2 = (indicadores3 > indicadores2).sum()
 
-            if vetor_strings[0] == vetor_strings[1]:
+    if vetor_strings[0] == vetor_strings[1]:
 
-                return vetor_strings[0]
+        return vetor_strings[0]
 
-            elif vetor_strings[0] == vetor_strings[2]:
+    elif vetor_strings[0] == vetor_strings[2]:
 
-                return vetor_strings[0]
+        return vetor_strings[0]
 
-            elif vetor_strings[1] == vetor_strings[2]:
+    elif vetor_strings[1] == vetor_strings[2]:
 
-                return vetor_strings[2]
+        return vetor_strings[2]
 
-            elif vetor_strings[0] == vetor_strings[1]:
-                print("A primeira e segunda string são iguais.")
+    elif vetor_strings[0] == vetor_strings[1]:
+        print("A primeira e segunda string são iguais.")
 
-                if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
-                    return (vetor_strings[2])
-                else:
-                    return (vetor_strings[0])
+        if pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).any():
+            return (vetor_strings[2])
+        else:
+            return (vetor_strings[0])
 
-            elif vetor_strings[0] == vetor_strings[2]:
-                print("A primeira e terceira string são iguais.")
+    elif vetor_strings[0] == vetor_strings[2]:
+        print("A primeira e terceira string são iguais.")
 
-                if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
-                    return (vetor_strings[1])
-                else:
-                    return (vetor_strings[0])
+        if pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).any():
+            return (vetor_strings[1])
+        else:
+            return (vetor_strings[0])
 
-            elif vetor_strings[1] == vetor_strings[2]:
-                print("A segunda e terceira string são iguais.")
+    elif vetor_strings[1] == vetor_strings[2]:
+        print("A segunda e terceira string são iguais.")
 
-                if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
-                    return (vetor_strings[0])
-                else:
-                    return (vetor_strings[2])
+        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).any():
+            return (vetor_strings[0])
+        else:
+            return (vetor_strings[2])
 
-            else:
-                print("As três strings são diferentes.")
+    else:
+        print("As três strings são diferentes.")
 
-                if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
-                    return (vetor_strings[0])
-                elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
-                    return (vetor_strings[1])
-                elif pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).all():
-                    return (vetor_strings[2])
-                else:
-                    return (vetor_strings[0])
+        if pd.Series((count_indicadores1_2 > count_indicadores2_1), (count_indicadores1_3 > count_indicadores3_1)).all():
+            return (vetor_strings[0])
+        elif pd.Series((count_indicadores2_1 > count_indicadores1_2), (count_indicadores2_3 > count_indicadores3_2)).all():
+            return (vetor_strings[1])
+        elif pd.Series((count_indicadores3_1 > count_indicadores1_3), (count_indicadores3_2 > count_indicadores2_3)).all():
+            return (vetor_strings[2])
+        else:
+            return (vetor_strings[0])
 
 
 # Call the function within the main thread
 output = process_rpy2()
 
-
 # Use the output as needed
-print(output)  # You can replace this with the function you want to return the result to
+print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 
 
+from django.shortcuts import render, redirect
+from .forms import MeuForm
+from .models import Noun, Dicionario
+import spacy
+import re
+
+# Importações adicionais
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.forms import User
+import h2o
+
+# Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
+#from englishBackend import main
+# from ... import process_rpy2
+
+# def home(request):
+#     show_prevrf = False  # Variável de controle
+#     if request.method == 'POST':
+#         form = MeuForm(request.POST)
+#         if form.is_valid():
+#             form = form.save(commit=False)
+#             form.user = request.user
+#             abstract = form.phraseTest.lower()
+#             form.phraseTest = abstract
+#             form.save()
+
+#             title = form.title
+#             abstract = form.phraseTest
+
+#             action = request.POST.get('action')
+
+#             if action == 'pesquisar_en':
+#                 # Chamada da função main do módulo englishBackend
+#                 resultado = main(title, abstract)
+#                 print(resultado)
+#             else:
+#                 # Código alternativo se a ação não for 'pesquisar_en'
+#                 h2o.init()
+#                 phraseTest = form.phraseTest.lower()
+#                 nlp = spacy.load("pt_core_news_lg")
+#                 doc = nlp(phraseTest)
+
+#                 # Processamento do texto
+#                 lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
+#                 for lemma in lemmas:
+#                     new_noun = Noun.objects.create(
+#                         nounText=lemma.lower(),
+#                         test=form,
+#                         idSignificado=''
+#                     )
+#                     words = new_noun.nounText.split()
+#                     for word in words:
+#                         dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
+#                         if dicionario:
+#                             new_noun.idSignificado = dicionario.IDSignificado
+#                             new_noun.user = request.user
+#                             new_noun.save()
+
+#                 # Processamento adicional
+#                 resultado = process_rpy2()
+#                 resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+#                 partes = resultado_limpo.split(',')
+#                 subarea = partes[0].strip()
+#                 area = partes[1].strip()
+
+#             # Preparando o contexto para o template
+#             context = {'area': area, 'subarea': subarea}
+#             return render(request, 'result.html', context)
+#     else:
+#         form = MeuForm()
+
+#     context = {'form': form, 'show_prevrf': show_prevrf}
+#     return render(request, 'home.html', context)
+from django.shortcuts import render, redirect
+from .forms import MeuForm
+from .models import Noun, Dicionario
+import spacy
+import re
+
+# Importações adicionais
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.forms import User
+import h2o
+
+# Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
+#from englishBackend import main
+# from ... import process_rpy2
 def home(request):
-
-    # Importação movida para dentro da função
-    from django.contrib.auth.views import PasswordResetConfirmView
-
-    # Restante do código...
-
-    from django.contrib.auth.forms import User
-    show_prevrf = False  # Inicialmente, a variável show_prevrf é False
+    show_prevrf = False
     if request.method == 'POST':
+        print("POST request received")
         form = MeuForm(request.POST)
         if form.is_valid():
+            print("Form is valid")
             form = form.save(commit=False)
-            form.user = request.user  # Atribui o usuário atual ao atributo 'user'
-            form.phraseTest = form.phraseTest.lower()  # Converte o campo em minúsculas
+            form.user = request.user
+            abstract = form.phraseTest.lower()
+            form.phraseTest = abstract
             form.save()
 
-            phraseTest = form.phraseTest  # Salva o texto em uma variável Python
-            phraseTest = phraseTest.lower()  # Transforma todas as palavras em minúsculas
+            # Inicialize o H2O e Spacy fora do loop
+            h2o.init()
+            nlp = spacy.load("pt_core_news_lg")
 
-            # Processar o texto com o spaCy
-            doc = nlp(phraseTest)
-
-            # ## extrair as palavras e seus lemas
-            lemmas = [token.lemma_ for token in doc if token.pos_ in [
-                'PROPN', 'NOUN']]
-            words = [token.text for token in doc]
-            pos_tags = [token.pos_ for token in doc]
-            dep_tags = [token.dep_ for token in doc]
-
-            # extrair as entidades nomeadas
-            named_entities = [(ent.text, ent.label_) for ent in doc.ents]
-
-            # extrair os sintagmas nominais
-            noun_chunks = [np.text for np in doc.noun_chunks]
+            # Processamento do texto
+            doc = nlp(abstract)
+            lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
             for lemma in lemmas:
                 new_noun = Noun.objects.create(
-                    nounText=lemma.lower(),  # Converte o lemma em minúsculas
+                    nounText=lemma.lower(),
                     test=form,
                     idSignificado=''
                 )
-
                 words = new_noun.nounText.split()
                 for word in words:
-                    dicionario = Dicionario.objects.filter(
-                        Palavra=word.lower()).first()  # Converte a palavra em minúsculas
-                if dicionario:
-                    new_noun.idSignificado = dicionario.IDSignificado
-                    new_noun.user = request.user
-                    new_noun.save()
+                    dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
+                    if dicionario:
+                        new_noun.idSignificado = dicionario.IDSignificado
+                        new_noun.user = request.user
+                        new_noun.save()
 
+            # Chame process_rpy2 após processar todos os lemas
+            print("Chamando process_rpy2...")
+            resultado = process_rpy2()
+            if resultado:
+                print(f"Resultado de process_rpy2: {resultado}")
+                resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
+                partes = resultado_limpo.split(',')
+                subarea = partes[0].strip()
+                area = partes[1].strip()
 
-                resultado = process_rpy2()
-
-# Verifica se 'resultado' é uma string, se não for, converte para string
-                # if not isinstance(resultado, str):
-                #     resultado = str(resultado)
-
-                # resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-                # partes = resultado_limpo.split(',')
-                # subarea = partes[0].strip()
-                #area = partes[1].strip()
-
-# Display the result to the user
-            # print(resultado)
-
-        # Passar os resultados para o template renderizado
-        context = {
-            #'area': area,
-            'subarea': resultado,
-        }
-
-        # Renderizar o template e retornar a resposta
-        return render(request, 'result.html', context)
+                # Preparando o contexto para o template
+                context = {'area': area,
+                           'subarea': subarea}
+                return render(request, 'result.html', context)
+            else:
+                print("process_rpy2 não retornou resultado válido.")
 
     else:
         form = MeuForm()
-        # Define o contexto para a página HTML
+
     context = {'form': form, 'show_prevrf': show_prevrf}
     return render(request, 'home.html', context)
