@@ -516,7 +516,6 @@ def prevRpart(dados, str_modelo):
 
 
 def process_rpy2():
-    nlp = spacy.load("pt_core_news_lg")
 
     da = get_df()
     entrada = da
@@ -651,7 +650,7 @@ def process_rpy2():
 output = process_rpy2()
 
 # Use the output as needed
-print(output)  # You can replace this with the function you want to return the result to
+print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 
 
@@ -742,66 +741,59 @@ import h2o
 # Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
 from englishBackend import main
 # from ... import process_rpy2
-
 def home(request):
-    show_prevrf = False  # Variável de controle
+    show_prevrf = False
     if request.method == 'POST':
+        print("POST request received")
         form = MeuForm(request.POST)
         if form.is_valid():
+            print("Form is valid")
             form = form.save(commit=False)
             form.user = request.user
             abstract = form.phraseTest.lower()
             form.phraseTest = abstract
             form.save()
 
-            title = form.title
-            abstract = form.phraseTest
-            area = None  # or some default value
+            # Inicialize o H2O e Spacy fora do loop
+            h2o.init()
+            nlp = spacy.load("pt_core_news_lg")
 
-            action = request.POST.get('action')
+            # Processamento do texto
+            doc = nlp(abstract)
+            lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
+            for lemma in lemmas:
+                new_noun = Noun.objects.create(
+                    nounText=lemma.lower(),
+                    test=form,
+                    idSignificado=''
+                )
+                words = new_noun.nounText.split()
+                for word in words:
+                    dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
+                    if dicionario:
+                        new_noun.idSignificado = dicionario.IDSignificado
+                        new_noun.user = request.user
+                        new_noun.save()
 
-            if action == 'pesquisar_en':
-                # Chamada da função main do módulo englishBackend
-                resultado = get_remote_works(title, abstract)
-                print(resultado)
-                # Aqui você precisa extrair a área a partir do resultado, se possível
-                area = (resultado)
-            else:
-                # Código alternativo se a ação não for 'pesquisar_en'
-                h2o.init()
-                phraseTest = form.phraseTest.lower()
-                nlp = spacy.load("pt_core_news_lg")
-                doc = nlp(phraseTest)
-
-                # Processamento do texto
-                lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
-                for lemma in lemmas:
-                    new_noun = Noun.objects.create(
-                        nounText=lemma.lower(),
-                        test=form,
-                        idSignificado=''
-                    )
-                    words = new_noun.nounText.split()
-                    for word in words:
-                        dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()
-                        if dicionario:
-                            new_noun.idSignificado = dicionario.IDSignificado
-                            new_noun.user = request.user
-                            new_noun.save()
-
-                # Processamento adicional
-                resultado = process_rpy2()
+            # Chame process_rpy2 após processar todos os lemas
+            print("Chamando process_rpy2...")
+            resultado = process_rpy2()
+            if resultado:
+                print(f"Resultado de process_rpy2: {resultado}")
                 resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
                 partes = resultado_limpo.split(',')
                 subarea = partes[0].strip()
                 area = partes[1].strip()
 
-            # Preparando o contexto para o template
-            context = {'area': area}
-            return render(request, 'result.html', context)
+                # Preparando o contexto para o template
+                context = {'area': area,
+                           'subarea': subarea}
+                return render(request, 'result.html', context)
+            else:
+                print("process_rpy2 não retornou resultado válido.")
+
     else:
         form = MeuForm()
 
     context = {'form': form, 'show_prevrf': show_prevrf}
     return render(request, 'home.html', context)
-
