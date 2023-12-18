@@ -35,7 +35,8 @@ from rpy2.robjects import pandas2ri
 from django.shortcuts import render
 from multiprocessing import Process, Queue
 import sys
-sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
+#sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
+sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 from englishBackend.main import get_remote_works
 
 from rpy2.robjects.packages import importr
@@ -76,7 +77,8 @@ import h2o
 import csv
 import numpy as np
 from django.contrib import messages
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 def signup_view(request):
     if request.method == 'POST':
@@ -165,26 +167,34 @@ def logout_view(request):
     return redirect('login')
 
 
-User = get_user_model()
+# views.py
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth import get_user_model
+from django.utils.http import urlsafe_base64_decode
+from django.http import Http404
 
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth import get_user_model
+from django.utils.http import urlsafe_base64_decode
+from django.http import Http404
+
+User = get_user_model()
 
 class MyPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
 
     def get(self, request, *args, **kwargs):
-        # Define o atributo user no objeto de request
-        uidb64 = kwargs.get('uidb64')
-        token = kwargs.get('token')
         try:
-            uid = urlsafe_base64_decode(uidb64).decode()
-            user = User.objects.get(pk=uid)
+            uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
+            self.user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
+            self.user = None
 
-        setattr(request, 'user', user)
+        if self.user is None or not self.token_generator.check_token(self.user, kwargs['token']):
+            raise Http404("Usuário inválido ou link de redefinição expirado")
 
-        # Chama o método get() da superclasse
         return super().get(request, *args, **kwargs)
+
 
 
 @csrf_protect
@@ -222,8 +232,6 @@ def password_reset(request):
 #             form = form_class(user)
 #         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
 
-User = get_user_model()
-
 
 def reset_confirm(request, uidb64, token):
     form_class = CustomPasswordResetConfirmForm
@@ -246,7 +254,7 @@ def reset_confirm(request, uidb64, token):
             form = form_class(user, request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('password_reset_complete')
+                return redirect('password_reset_confirm')
         else:
             form = form_class(user)
         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
@@ -289,8 +297,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         # teste
-        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
 
@@ -428,8 +436,8 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
 
-    #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-    Modelo = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    #Modelo = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
 
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
 
@@ -527,26 +535,26 @@ def process_rpy2():
 
     for i in modelos.index:
         if (str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
-            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
             prev_sub = prevRFranger(entrada, str_modelo)
             vetor_strings.append(prev_sub)
 
         if (str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
-            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             prev_sub = prevRFtrad(entrada, str_modelo)
             vetor_strings.append(prev_sub)
 
         if (str(modelos['Tipo'][i]) == "C50"):
-            #str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
-            str_modelo = f"""/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            #str_modelo = f"""/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             prev_sub = prevC50(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
         if (str(modelos['Tipo'][i]) == "RPART"):
-            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
             #prev_sub = prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
     # Verifique se a lista não está vazia
