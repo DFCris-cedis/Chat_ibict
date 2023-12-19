@@ -106,15 +106,21 @@
       <form method="POST" class="form-container">
         {% csrf_token %}
 
+        <div class="form-field campo-title">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+
         <div class="form-field campo-phrasetest">
           {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
         </div>
 
         {% comment %} <button type="submit" onclick="showLoader()">Pesquisar</button> {% endcomment %}
         
-        <button class="pesquisar" type="submit" onclick="submitForm(event)">Pesquisar</button>
+        <button class="pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_en">Ingles</button>
         <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
-
+        
+        <button class="pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_br">Portugues</button>
+        <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
 
       </form>
 

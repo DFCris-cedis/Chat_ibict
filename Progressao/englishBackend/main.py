@@ -35,6 +35,7 @@ def get_remote_works(title, abstract):
 
     return tags
 
+
 @app.post("/works")
 def get_works(data: Data):
     print(data.abstract)
