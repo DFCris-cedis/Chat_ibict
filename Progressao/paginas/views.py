@@ -37,7 +37,6 @@ from multiprocessing import Process, Queue
 import sys
 sys.path.append('C:\\Users\\milen\\OneDrive\\Documentos\\GitHub\\Chat_ibict\\Progressao')
 from englishBackend.main import get_remote_works
-from englishBackend.main import get_category
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
 from rpy2 import robjects
@@ -699,10 +698,9 @@ def home(request):
             action = request.POST.get('action')
 
             if action == 'pesquisar_en':
-                area = get_remote_works(title, abstract)
-                # area = get_category(title, abstract)
-                area = area[0]
-                subarea = ''
+                result_eng = get_remote_works(title, abstract)
+                area = result_eng[0]
+                subarea = result_eng[1]
                 print(area)
             else:
                 # Inicialize o H2O e Spacy fora do loop
