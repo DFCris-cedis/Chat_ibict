@@ -709,8 +709,12 @@ def home(request):
 
             if action == 'pesquisar_en':
                 result_eng = get_remote_works(title, abstract)
-                area = result_eng[0]
-                subarea = result_eng[1]
+                if len(result_eng) < 2:
+                    area = 'Área não encontrada'
+                    subarea = 'Subarea não encontrada'
+                else:
+                    area = result_eng[0]
+                    subarea = result_eng[1]
                 print(area)
             else:
                 # Inicialize o H2O e Spacy fora do loop
