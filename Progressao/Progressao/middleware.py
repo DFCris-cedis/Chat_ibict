@@ -9,15 +9,17 @@ class StaffOnlyMiddleware:
             
             '/accounts/login/',
             '/accounts/signup/',
-            '/accounts/reset_password/',
-            '/accounts/reset_password/done/',
-            '/accounts/reset/done/'
-            '/accounts/reset_password_confirm/<uidb64>/<token>/'
-            '/accounts/password_reset_form/'
+            '/accounts/password_reset/',
+            '/accounts/password_reset/done/',
+            '/accounts/reset/<uidb64>/<token>/',
+            '/accounts/password_reset_confirm/',
+            '/accounts/password_reset_form/',
+            '/reset/done/',
+            '/reset/<uidb64>/<token>/'
         ]  # adicionar a URL de cadastro aqui
 
         if not request.user.is_authenticated:
-            if request.path not in exceptions and '/accounts/reset_password/' not in request.path:
+            if request.path not in exceptions and '/reset/<uidb64>/<token>' not in request.path:
                 return redirect('login')
 
 
