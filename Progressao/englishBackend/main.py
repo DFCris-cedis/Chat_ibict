@@ -32,7 +32,7 @@ def get_remote_works(title, abstract):
     payload_dict = {"title":[title], "abstract": abstract, "inverted_abstract":False, "journal":"", "doc_type":""}
     r2 = requests.post('http://15.228.87.227:8080/invocations', json=payload_dict)
     tags = json.loads(r2.text)[0]['tags']
-
+    print('oi')
     return tags
 
 

@@ -713,8 +713,8 @@ def home(request):
                     area = 'Área não encontrada'
                     subarea = 'Subarea não encontrada'
                 else:
-                    area = result_eng[0]
-                    subarea = result_eng[1]
+                    area = result_eng[1]
+                    subarea = result_eng[0]
                 print(area)
             else:
                 # Inicialize o H2O e Spacy fora do loop
