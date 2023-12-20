@@ -8,39 +8,31 @@ import re
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
-
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from paginas.forms import CustomPasswordResetConfirmForm
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.views.decorators.csrf import csrf_protect
 from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth import views as auth_views
 from paginas.models import Test, Noun, Dicionario
 from paginas.forms import CustomUserCreationForm
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
 from django.dispatch import receiver
-from django import forms
 from .forms import MeuForm
 from .models import Noun
 import logging
 import spacy
 import csv
 import numpy as np
-from multiprocessing import Process, Queue
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects import pandas2ri
 from django.shortcuts import render
-from multiprocessing import Process, Queue
 import sys
 
 #sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
 sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 from englishBackend.main import get_remote_works
 
-from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
 from rpy2 import robjects
 import pandas as pd
@@ -49,30 +41,20 @@ import h2o
 from multiprocessing import Process
 
 
-import threading
 import rpy2.robjects as ro
 
-import pandas as pd
-from queue import Queue
-import threading
-import pandas as pd
 import rpy2.robjects as robjects
 
-
-from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri
 from rpy2 import robjects
-import pandas as pd
+
 import psycopg2
 import h2o
 from django.shortcuts import render
 from paginas.forms import MeuForm
 from paginas.models import Noun, Dicionario, Test
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2 import robjects
-import pandas as pd
+
 import psycopg2
 import h2o
 import csv
@@ -80,7 +62,7 @@ import numpy as np
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
+@login_required
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -143,7 +125,7 @@ from django.contrib.auth import login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import LoginForm  # Importe o formulário de login
-
+@login_required
 def custom_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -167,38 +149,10 @@ def logout_view(request):
     logger.info('User logged out successfully')
     return redirect('login')
 
+# Para a view password_reset
+from django.contrib.auth.forms import PasswordResetForm
+from django.shortcuts import render
 
-# views.py
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.contrib.auth import get_user_model
-from django.utils.http import urlsafe_base64_decode
-from django.http import Http404
-
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.contrib.auth import get_user_model
-from django.utils.http import urlsafe_base64_decode
-from django.http import Http404
-
-User = get_user_model()
-
-class MyPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'registration/password_reset_confirm.html'
-
-    def get(self, request, *args, **kwargs):
-        try:
-            uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
-            self.user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            self.user = None
-
-        if self.user is None or not self.token_generator.check_token(self.user, kwargs['token']):
-            raise Http404("Usuário inválido ou link de redefinição expirado")
-
-        return super().get(request, *args, **kwargs)
-
-
-
-@csrf_protect
 def password_reset(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
@@ -211,59 +165,67 @@ def password_reset(request):
             return render(request, 'password_reset_done.html')
     else:
         form = PasswordResetForm()
-    return render(request, 'password_reset_form.html', {'form': form})
+    return render(request, 'password_reset.html', {'form': form})
 
+# Para a view reset_confirm
+from django.contrib.auth import get_user_model, tokens
+from django.shortcuts import render, redirect
+from django.utils.http import urlsafe_base64_decode
+from .forms import CustomPasswordResetConfirmForm
 
-# def reset_confirm(request, uidb64, token):
-#     form_class = CustomPasswordResetConfirmForm
-#     validlink = True
-#     user = auth_views.PasswordResetConfirmView().get_user(uidb64)
-#     if user is None:
-#         validlink = False
-#     else:
-#         if not auth_views.PasswordResetConfirmView().token_generator.check_token(user, token):
-#             validlink = False
-#     if validlink:
-#         if request.method == 'POST':
-#             form = form_class(user, request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('password_reset_complete')
-#         else:
-#             form = form_class(user)
-#         return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
-
+User = get_user_model()
 
 def reset_confirm(request, uidb64, token):
-    form_class = CustomPasswordResetConfirmForm
-    validlink = True
-
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is None:
-        validlink = False
-    else:
-        if not default_token_generator.check_token(user, token):
-            validlink = False
-
-    if validlink:
+    if user is not None and tokens.default_token_generator.check_token(user, token):
         if request.method == 'POST':
-            form = form_class(user, request.POST)
+            form = CustomPasswordResetConfirmForm(user, request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('password_reset_confirm')
+                return redirect('password_reset_complete')
         else:
-            form = form_class(user)
-        return render(request, 'password_reset_confirm.html', {'form': form, 'validlink': validlink})
+            form = CustomPasswordResetConfirmForm(user)
     else:
-        # Trate os erros de link de redefinição inválido
-        # Exiba uma mensagem de erro amigável ao usuário
         return render(request, 'password_reset_invalid_link.html')
 
+    return render(request, 'password_reset_confirm.html', {'form': form})
+
+from django import forms
+from django.contrib.auth.forms import SetPasswordForm
+from django.utils.translation import gettext_lazy as _
+
+class CustomPasswordResetConfirmForm(SetPasswordForm):
+    # Adicione quaisquer campos ou lógicas personalizadas aqui
+
+    # Exemplo: Adicionar um campo personalizado
+    custom_field = forms.CharField(max_length=100, required=False, help_text=_("Campo personalizado"))
+
+    # Exemplo: Sobrescrever o método clean para adicionar validações personalizadas
+    def clean(self):
+        cleaned_data = super().clean()
+        custom_field_data = cleaned_data.get("custom_field")
+
+        # Adicione sua lógica de validação aqui
+        if custom_field_data and not custom_field_data.isalpha():
+            self.add_error('custom_field', _("O campo personalizado deve conter apenas letras."))
+
+        return cleaned_data
+
+    # Exemplo: Sobrescrever o método save para adicionar lógicas adicionais após salvar
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        # Adicione sua lógica personalizada aqui
+        # Exemplo: Atualizar um campo personalizado do usuário
+        user.custom_attribute = self.cleaned_data.get('custom_field')
+
+        if commit:
+            user.save()
+        return user
 
 def get_df():
 

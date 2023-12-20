@@ -1,9 +1,8 @@
-from paginas.views import MyPasswordResetConfirmView
+# from paginas.views import MyPasswordResetConfirmView
 from django.contrib.auth import views as auth_views
 from paginas.views import search_view
 from django.urls import path, include
 from paginas import views
-from paginas import PasswordResetForm
 
 urlpatterns = [
     path('', include('paginas.urls', namespace='home')),
@@ -12,10 +11,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout_view'),
     path('search/', search_view, name='search_view'),
     path('home/', include('paginas.urls')),
-    path('reset_password/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('reset_password_form/', auth_views.PasswordResetForm.as_view(), name='password_reset_form'),
-    path('reset_password/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset_password_confirm/<uidb64>/<token>/', MyPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_complete'),
-
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
