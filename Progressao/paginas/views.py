@@ -1,68 +1,52 @@
-from django.shortcuts import redirect, render
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth import authenticate, login
+import sys
+sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
+#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
 from django.contrib.auth.views import PasswordResetConfirmView
-import re
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import authenticate
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from paginas.forms import CustomPasswordResetConfirmForm
-from django.contrib.auth.forms import PasswordResetForm
 from django.views.decorators.csrf import csrf_protect
 from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import authenticate, login
+from rpy2.robjects.conversion import localconverter
 from paginas.models import Test, Noun, Dicionario
+from paginas.models import Noun, Dicionario, Test
 from paginas.forms import CustomUserCreationForm
+from englishBackend.main import get_remote_works
 from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy, reverse
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from rpy2.robjects.packages import importr
+from django.contrib.auth.forms import User
+from django.contrib.auth import login
+from django.http import JsonResponse
 from django.dispatch import receiver
+from .models import Noun, Dicionario
+from rpy2.robjects import pandas2ri
+from multiprocessing import Process
+from django.contrib import messages
+from paginas.forms import MeuForm
+import rpy2.robjects as robjects
+from .forms import LoginForm
+import rpy2.robjects as ro
 from .forms import MeuForm
+from rpy2 import robjects
 from .models import Noun
+import pandas as pd
+import numpy as np
+import psycopg2
 import logging
 import spacy
 import csv
-import numpy as np
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects import pandas2ri
-from django.shortcuts import render
-import sys
-
-#sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
-sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
-from englishBackend.main import get_remote_works
-
-from rpy2.robjects import pandas2ri
-from rpy2 import robjects
-import pandas as pd
-import psycopg2
 import h2o
-from multiprocessing import Process
+import re
 
-
-import rpy2.robjects as ro
-
-import rpy2.robjects as robjects
-
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2 import robjects
-
-import psycopg2
-import h2o
-from django.shortcuts import render
-from paginas.forms import MeuForm
-from paginas.models import Noun, Dicionario, Test
-
-import psycopg2
-import h2o
-import csv
-import numpy as np
-from django.contrib import messages
-from django.contrib.auth import get_user_model
 User = get_user_model()
-@login_required
+ 
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -80,8 +64,7 @@ def signup_view(request):
 
 
 @login_required
-# def home(request):
-#     return render(request, 'home.html')
+
 def home(request):
     if request.method == 'POST':
         phrase = request.POST.get('phrase', '')
@@ -93,39 +76,13 @@ def home(request):
     tests = Test.objects.filter(user=request.user)
     return render(request, 'home.html', {'tests': tests})
 
-
 @receiver(user_logged_in)
 def login_success(sender, user, request, **kwargs):
     user.is_staff = True
     user.save()
 
-
-@receiver(user_logged_out)
-def logout_success(sender, user, request, **kwargs):
-    user.is_staff = False
-    user.save()
-
-
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
-# from .forms import CustomLoginForm
-
-# class CustomLoginForm(AuthenticationForm):
-#     username = forms.EmailField(widget=forms.EmailInput(
-#         attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
-#     password = forms.CharField(widget=forms.PasswordInput(
-#         attrs={'class': 'form-control', 'placeholder': 'Senha'}))
-
-
 logger = logging.getLogger(__name__)
 
-
-from django.contrib.auth import login
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from .forms import LoginForm  # Importe o formulário de login
-@login_required
 def custom_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -149,83 +106,25 @@ def logout_view(request):
     logger.info('User logged out successfully')
     return redirect('login')
 
-# Para a view password_reset
-from django.contrib.auth.forms import PasswordResetForm
-from django.shortcuts import render
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
 
-def password_reset(request):
-    if request.method == 'POST':
-        form = PasswordResetForm(request.POST)
-        if form.is_valid():
-            form.save(
-                request=request,
-                from_email='from@example.com',
-                email_template_name='password_reset_email.html'
-            )
-            return render(request, 'password_reset_done.html')
-    else:
-        form = PasswordResetForm()
-    return render(request, 'password_reset.html', {'form': form})
+    def dispatch(self, *args, **kwargs):
+        assert 'uidb64' in kwargs and 'token' in kwargs
 
-# Para a view reset_confirm
-from django.contrib.auth import get_user_model, tokens
-from django.shortcuts import render, redirect
-from django.utils.http import urlsafe_base64_decode
-from .forms import CustomPasswordResetConfirmForm
+        try:
+            uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
+            self.user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            self.user = None
 
-User = get_user_model()
-
-def reset_confirm(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-
-    if user is not None and tokens.default_token_generator.check_token(user, token):
-        if request.method == 'POST':
-            form = CustomPasswordResetConfirmForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('password_reset_complete')
+        if self.user is not None and self.token_generator.check_token(self.user, kwargs['token']):
+            return super().dispatch(*args, **kwargs)
         else:
-            form = CustomPasswordResetConfirmForm(user)
-    else:
-        return render(request, 'password_reset_invalid_link.html')
+            # Redireciona para a tela de login
+            return HttpResponseRedirect(reverse('login'))
 
-    return render(request, 'password_reset_confirm.html', {'form': form})
-
-from django import forms
-from django.contrib.auth.forms import SetPasswordForm
-from django.utils.translation import gettext_lazy as _
-
-class CustomPasswordResetConfirmForm(SetPasswordForm):
-    # Adicione quaisquer campos ou lógicas personalizadas aqui
-
-    # Exemplo: Adicionar um campo personalizado
-    custom_field = forms.CharField(max_length=100, required=False, help_text=_("Campo personalizado"))
-
-    # Exemplo: Sobrescrever o método clean para adicionar validações personalizadas
-    def clean(self):
-        cleaned_data = super().clean()
-        custom_field_data = cleaned_data.get("custom_field")
-
-        # Adicione sua lógica de validação aqui
-        if custom_field_data and not custom_field_data.isalpha():
-            self.add_error('custom_field', _("O campo personalizado deve conter apenas letras."))
-
-        return cleaned_data
-
-    # Exemplo: Sobrescrever o método save para adicionar lógicas adicionais após salvar
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        # Adicione sua lógica personalizada aqui
-        # Exemplo: Atualizar um campo personalizado do usuário
-        user.custom_attribute = self.cleaned_data.get('custom_field')
-
-        if commit:
-            user.save()
-        return user
 
 def get_df():
 
@@ -251,8 +150,6 @@ def get_df():
                 """
         cursor.execute(query)
 
-        # Recupera os resultados da consulta como uma lista de tuplas
-        # Recupera os resultados da consulta como uma lista de tuplas
         results = cursor.fetchall()
 
         for id in range(len(results)):
@@ -260,8 +157,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         # teste
-        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
 
@@ -399,8 +296,8 @@ def get_indicadores(area, subarea, tipo, subtipo, mindocs, rangedocs):
 def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
 
-    Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
-    #Modelo = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    #Modelo = h2o.load_model('C:/Users/milen/OneDrive/Documentos/DF/Modelos/DeepLearning_model_R_1670582405235_1')
+    Modelo = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
 
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
 
@@ -498,27 +395,27 @@ def process_rpy2():
 
     for i in modelos.index:
         if (str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "ranger"):
-            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
-            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
+            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.ranger.200x1x280.Ocorrencias.ResearchAreaSA.RData"
             prev_sub = prevRFranger(entrada, str_modelo)
             vetor_strings.append(prev_sub)
 
         if (str(modelos['Tipo'][i]) == "RF" and str(modelos['Subtipo'][i]) == "trad"):
-            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
-            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
+            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.RF.trad.200x1x280.Ocorrencias.RData"
             prev_sub = prevRFtrad(entrada, str_modelo)
             vetor_strings.append(prev_sub)
 
         if (str(modelos['Tipo'][i]) == "C50"):
-            str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
-            #str_modelo = f"""/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            #str_modelo = f"""C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
+            str_modelo = f"""/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.C50.trad.100x1x100.Ocorrencias.ResearchAreaSA.{area}.RData"""
             prev_sub = prevC50(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
 
         if (str(modelos['Tipo'][i]) == "RPART"):
-            str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            #str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
-            #prev_sub = prevRpart(entrada, str_modelo)
+            #str_modelo = "C:/Users/milen/OneDrive/Documentos/DF/Modelo/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            str_modelo = "/home/milenasilva/Chat_ibict/Progressao/static/modelos/Modelo.Rpart.trad.200x1x320.Ocorrencias.RData"
+            prev_sub = prevRpart(entrada, str_modelo)
             vetor_strings.append(f"""c("{prev_sub}", "{area}")""")
     # Verifique se a lista não está vazia
 
@@ -624,32 +521,6 @@ output = process_rpy2()
 print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 
-
-from django.shortcuts import render, redirect
-from .forms import MeuForm
-from .models import Noun, Dicionario
-import spacy
-import re
-
-# Importações adicionais
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.contrib.auth.forms import User
-import h2o
-from django.shortcuts import render, redirect
-from .forms import MeuForm
-from .models import Noun, Dicionario
-import spacy
-import re
-
-# Importações adicionais
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.contrib.auth.forms import User
-import h2o
-from django.shortcuts import render
-from .forms import MeuForm
-# Supondo que 'main' e 'process_rpy2' sejam importados de outro módulo
-#from englishBackend import main
-# from ... import process_rpy2
 def home(request):
     show_prevrf = False
     if request.method == 'POST':
