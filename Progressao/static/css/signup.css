@@ -6,6 +6,8 @@ body {
   font-family: 'Roboto', sans-serif;
   text-decoration: none;
   color: inherit;
+  height: 100vh;
+  width: 100vw;
 }
 
 .container {
@@ -18,16 +20,12 @@ body {
 
 
 .link {
+  margin-top: 1rem;
   text-align: right;
-  margin-right: 5rem;
+  margin-right: 5.5vw;
   font-weight: bold;
-}
-
-.link a:visited {
+  color: white;
   text-decoration: none;
-  color: inherit;
-  color: #fbffff;
-  font-weight: bold;
 }
 
 .coluna_1 {
@@ -38,83 +36,87 @@ body {
   width: 60%;
 }
 
-/* .coluna_2 {
-  background-color: #18355A;
-  width: 50%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  padding: 0.5rem 0.5rem;
-  max-width: 50vw;
-  /* definindo a largura máxima da coluna em relação à largura da tela 
-} */
 .coluna_2 {
-
   width: 40%;
   height: 80%;
   justify-content: center;
   align-items: center;
   color: white;
   padding: 0.5rem 0.5rem;
-  text-decoration: white;
+}
 
+.link {
+  text-align: right;
+  position: absolute;
+  right: 0;
+}
 
+.link a:visited {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  width: 100%;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .title {
-  margin-top: 2rem;
+  margin-top: rem;
   color: #fbffff;
 }
 
 .imagem {
-
   max-width: 100%;
   max-height: 100%;
 }
 
 .form {
-  height: 2rem;
+  height: 3rem;
   text-align: center;
   justify-content: center;
   color: white;
 }
 
-/* .inner-box {
-  width: 70%;
-   ajustando a largura do inner-box para ocupar 70% da largura da coluna_2 
-  height: 79vh;
-  background-color: #425978;
-  margin: 20px auto;
-  padding: 10px;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-
-} */
 
 .inner-box {
   max-width: 65%;
   min-width: 15rem;
-  height: 79vh;
+  height: 100%;
   border-radius: 10px;
   border: 2px solid #943e8e;
   border-color: #943e8e;
   background-color: #302464;
   margin: auto;
-  margin-top: 2rem;
+  margin-top: 7vh;
   /* centraliza horizontalmente */
   display: center;
   justify-content: center;
   /* centraliza verticalmente */
   align-items: center;
+  text-align: left;
   /* centraliza verticalmente */
   padding: 20px;
   padding: 0.5rem 1rem;
   border-radius: 10px;
+  overflow: auto;
 }
 
 button {
   border-radius: 10px;
+  width: 25vw;
+  height: 6vh;
+  font-size: px;
+  font-weight: bold;
   border-color: #943e8e;
   background-color: #241148;
   color: white;
@@ -125,44 +127,131 @@ button {
   border-bottom: white;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 2rem;
-
+  margin-top: 4vh;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"] {
+button:hover {
+  filter: brightness(0.6);
+}
 
-  padding: 0.5rem 0.1rem;
-  font-size: 15px;
+.inner-box {
+  position: relative;
+}
+
+.button-container {
+  bottom: 3%;
+}
+
+.custom-button {
   border-radius: 10px;
+  border-color: #943e8e;
+  background-color: #241148;
+  color: white;
+  display: block;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-top: 4vh;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px white;
-  border-bottom: white;
-
-
-}
 
 .input-group {
   display: flex;
-  font-size: 15px;
   width: 40%;
-
+  padding: 0.6vh 0.1vh;
+  border-radius: 10px;
 }
 
-label {
 
-  float: left;
+.form-row {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 10px;
+  align-items: center;
+  padding: 0.6vh 0.1vh;
+  border-radius: 10px;
+}
+
+.form-row label {
   text-align: left;
   width: 35%;
   padding-top: 6px;
   margin-right: 5%;
   padding: 1rem 0rem;
-  font-size: 15px;
+  padding: 0.6vh 0.2vh;
+  /* font-size: 15px; */
+  border-radius: 10px;
+}
+
+.input-group input,
+.form-row input {
+  border-radius: 10px;
+  padding: 5px;
+  border: none;
+  height: 1.5rem;
+}
+
+@media (max-width: 1250px) {
+
+  body {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  input {
+    font-size: 30px;
+    height: 3rem !important;
+  }
+
+  .link {
+    margin-top: 4rem;
+  }
+
+  a {
+    font-size: 40px;
+
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .coluna_1 {
+    margin-top: 5rem;
+    width: 100vw;
+  }
+
+  .coluna_2 {
+    width: 100vw;
+  }
+
+  .inner-box {
+    height: 55vh;
+    width: 80vw;
+    max-width: 1000px;
+  }
+
+  button {
+    width: 80vw;
+    height: 4vh;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 6rem;
+  }
+
+}
+
+@media (min-width: 1700px) {
+
+  .inner-box {
+    height: 60vh;
+  }
+
+  .coluna_2 {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    padding-top: 5vw;
+  }
 
 }

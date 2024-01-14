@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
 from django import forms
 from .models import Test
@@ -8,7 +9,7 @@ from .models import Test
 class MeuForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = ['phraseTest']
+        fields = ['phraseTest', 'title']
 
     # phraseTest = forms.CharField(label='Digite aqui seu texto:')
     phraseTest = forms.CharField(widget=forms.Textarea(
@@ -35,3 +36,16 @@ class CustomPasswordResetConfirmForm(SetPasswordForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'autocomplete': 'new_password', 'class': 'form-control'}),
     )
+
+class LoginForm(forms.Form):
+   
+    username = forms.EmailField(widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+    
+# from django import forms
+
+# class LoginForm(forms.Form):
+#     username = forms.CharField(label='Nome de usuário', max_length=100)
+#     password = forms.CharField(label='Senha', widget=forms.PasswordInput)

@@ -1,18 +1,67 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Chatibict</title>
+    <title>Contextus</title>
     <link rel="stylesheet" href="/static/css/style2.css" />
-  </head>
-  <body>
-    <div class="container">
-      <img src="/static/img/chat_ibict.png" alt="chatibict" />
-      <div class="form-container">
-        <div class="form-field campo-phrasetest">
-          <p>O resultado retornado foi: {{ resultado }}</p>
+    <link rel="stylesheet" href="/static/css/all.min.css" />
+    <body>
+      <div class="container">
+        <div style="display: flex; justify-content: space-between">
+          <div style="display: flex; justify-content: space-between">
+            <div class="logout">
+              <i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: #241148;"></i>
+              <button class="logout-button" type="button" value="logout">
+                Sair
+              </button>
+            </div>
+          </div>
+          <img class="chatibict" src="/static/img/contextus2.png" alt="chatibict"/>
         </div>
-      </div>
-      <footer>2023, Projeto DFCris - parceria CEDIS/UnB, Ibict e FAP/DF</footer>
+      
+        <div class="form-container">
+          <div class="form-field campo-phrasetest">
+            <p> ÁREA: {{ area }}</p>
+            <p> SUBÁREA: {{ subarea }}</p>
+          </div>
+        </div>
+        {% comment %} <button type="submit">Nova Pesquisa</button> {% endcomment %}
+        <button onclick="voltar()">Nova Pesquisa</button>
+        <script>
+          function voltar() {
+            window.history.back();
+          }
+          </script>
+
+          {% comment %} <script>
+            document
+              .querySelector('button[value="logout"]')
+              .addEventListener("click", function () {
+                document.querySelector(".form-container").action = "{% url 'logout_view' %}";
+                document.querySelector(".form-container").submit();
+              });
+          
+            document
+              .querySelector('i.fa-arrow-right-from-bracket')
+              .addEventListener("click", function () {
+                document.querySelector(".form-container").action = "{% url 'logout_view' %}";
+                document.querySelector(".form-container").submit();
+              });
+          </script> {% endcomment %}
+          <script>
+            document.querySelector('button[value="logout"]').addEventListener("click", function () {
+              window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de logout
+            });
+          
+            document.querySelector('i.fa-arrow-right-from-bracket').addEventListener("click", function () {
+              window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de login
+            });
+          </script>
+
+      <footer > <img class="imagem" src="/static/img/fapdf.png" />
+        <img class="imagem" src="/static/img/cedis.png"/>
+        <img class="imagem" src="/static/img/ibict.png" />
+
+      </footer>
     </div>
   </body>
 </html>

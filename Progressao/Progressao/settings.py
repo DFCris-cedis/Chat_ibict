@@ -30,10 +30,14 @@ SECRET_KEY = 'django-insecure-!ph7usvbsvm2k#f@%!%v=$ggv*s-f=&1(@rakrh+czsv*$6c9*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = [
-    'http://15.228.87.227',
-]
+# settings.py
+
+# settings.py
+
+ALLOWED_HOSTS = ['contextus.ibict.br', '172.16.17.41']
+#ALLOWED_HOSTS =['*']
+CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
+#CSRF_TRUSTED_ORIGINS = ['*']
 
 
 # Application definition
@@ -59,18 +63,21 @@ LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 
 
+
 CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'Progressao.middleware.StaffOnlyMiddleware',
+    
 ]
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'Progressao.urls'
@@ -89,6 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -101,7 +109,7 @@ WSGI_APPLICATION = 'Progressao.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'testy',
         'USER': 'postgres',
@@ -110,7 +118,7 @@ DATABASES = {
         'PORT': '5432',
     },
     'postgres': {
-     'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'testy',
         'USER': 'postgres',
         'PASSWORD': 'SENHA',
@@ -159,35 +167,33 @@ USE_TZ = True
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),  # comentei agr
-# ]
+# Importe a biblioteca os no início do arquivo
+
+# ...
+
+# Configurações estáticas
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
-
-STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
+# Configurações de banco de dados
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTHENTICATION_BACKENDS = (
+# Configuração de autenticação
+AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-)
+]
 
+# Configuração de redirecionamento após login e logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
-# add the following line at the end of the file
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+# Configurações de email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'milenafaria1706@gmail.com'
-EMAIL_HOST_PASSWORD = 'ckwktyijrxlltfjo'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server address
+EMAIL_PORT = 25  # Replace with your SMTP server port
+EMAIL_USE_TLS = True  # Use TLS for secure communication
+EMAIL_HOST_USER = 'ibictcontextus@gmail.com'
+EMAIL_HOST_PASSWORD = 'rvdr bagw boai wzvh'

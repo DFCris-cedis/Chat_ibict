@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Chat Ibict</title>
+    <title>Contextus</title>
     
     <link rel="stylesheet" href="/static/css/signup.css" />
+    <link rel="stylesheet" href="/static/css/all.min.css" />
     
   </head>
 
@@ -12,41 +13,43 @@
         <div class="coluna_1">
           <img src="/static/img/contextus2.png" alt="chatibict" class="imagem" />
         </div>
+        
+        <div class="link">
+          <a href="{% url 'auth:login' %}"><i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: white;"></i></a>
+          <a href="{% url 'auth:login' %}">Voltar</a>
+          </div>
+    <div class="coluna_2"> 
+      <div class="inner-box">
+        <form method="post" class="form">
+            <div class="title"><h2>Cadastro</h2></div>
 
-        <div class="coluna_2">
-            <div class="title"><h1>CADASTRE-SE!</h1></div>
-            <div class="inner-box">
-                <form method="post" class="form">
-                  <div class="title"><h2>Cadastro</h2></div>
-
-  <form method="post">
-    {% csrf_token %}
-    <div class="form-group">
-    <label for="{{ form.first_name.id_for_label }}">Primeiro Nome:</label>
-    {{ form.first_name }}
-    </div>
-    <div class="form-group">
-    <label for="{{ form.last_name.id_for_label }}">Último Nome:</label>
-    {{ form.last_name }}
-    </div>
-    <div class="form-group">
-    <label for="{{ form.email.id_for_label }}">Email:</label>
-    {{ form.email }}
-    </div>
-    <div class="form-group">
-    <label for="{{ form.password1.id_for_label }}">Senha:</label>
-    {{ form.password1 }}
-    </div>
-    <div class="form-group">
-    <label for="{{ form.password2.id_for_label }}">Confirmar Senha:</label>
-    {{ form.password2 }}
-    </div>
-    <button type="submit">Cadastrar</button>
-
+            <form method="post">
+            {% csrf_token %}
+            <div class="form-row">
+            <label for="{{ form.first_name.id_for_label }}">Primeiro Nome:</label>
+            {{ form.first_name }}
+          </div>
+            <div class="form-row">
+            <label for="{{ form.last_name.id_for_label }}">Último Nome:</label>
+            {{ form.last_name }}   
+          </div>      
+            <div class="form-row">
+            
+            <label for="{{ form.email.id_for_label }}">Email:</label>
+            {{ form.email }}
+            </div>
+            <div class="form-row">
+            <label for="{{ form.password1.id_for_label }}">Senha:</label>
+            {{ form.password1 }}
+            </div>
+            <div class="form-row"> 
+            <label for="{{ form.password2.id_for_label }}">Confirmar Senha:</label>
+            {{ form.password2 }}
+            </div>
+            <div class="button-container">
+            <button type="submit">Cadastrar</button>
+            </div>
+          </form>
+      </div>
 </div>
-<div class="link">
-<a href="{% url 'auth:login' %}">Possui conta? Login</a>
-</div>
-</div>
-</form>
 </html>
