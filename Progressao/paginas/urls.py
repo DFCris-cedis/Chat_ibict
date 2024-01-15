@@ -5,6 +5,7 @@ from paginas import views
 from paginas.views import CustomPasswordResetConfirmView
 
 urlpatterns = [
+    path('', views.home, name='home_root'),
     path('', include('paginas.urls', namespace='home')),
     path('login/', views.custom_login, name='login'),
     path('signup/', views.signup_view, name='signup'),

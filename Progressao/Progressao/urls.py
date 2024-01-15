@@ -7,6 +7,7 @@ from paginas import views
 from paginas.views import CustomPasswordResetConfirmView
 
 urlpatterns = [
+    path('', views.home, name='home_root'),
     path('admin/', admin.site.urls),
     path('home/', views.home, name='home'),
     path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='auth')),
