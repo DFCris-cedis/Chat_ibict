@@ -1,6 +1,6 @@
 import sys
-sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
-#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+#sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
+sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
@@ -63,8 +63,8 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 
-@login_required
 
+@login_required
 def home(request):
     if request.method == 'POST':
         phrase = request.POST.get('phrase', '')
@@ -156,7 +156,7 @@ def get_df():
             results[id] = 'v'+results[id][0]
         # Fecha o cursor e a conexão
         cursor.close()
-        # teste
+        
         #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         idsignificado = list(csv.reader(file, delimiter=","))
