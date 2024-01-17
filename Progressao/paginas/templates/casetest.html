@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contextus</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+
+    <link rel="stylesheet" href="/static/css/all.min.css" />
+
+    <style>
+      /* Estilos do loader */
+      #loader {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+      }
+    </style>
+
+    <style>
+      /* Estilos do loader */
+      #loader {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+      }
+    
+      /* Sobreposição escura */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 9998;
+        display: none;
+      }
+    
+      /* Spinner animado */
+      .loader-spinner {
+        border: 4px solid #943e8e;
+        border-top: 4px solid #241148;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        animation: spin 2s linear infinite;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+            /* Texto do loader */
+      .loader-text {
+        margin-top: 10px;
+        font-weight: bold;
+        position: relative;
+        z-index: 9999;
+        color: #ffffff; /* Altera a cor do texto para branco */
+      
+
+      }
+
+      /* Descrição do loader */
+      .loader-description {
+        margin-top: 5px;
+        position: relative;
+        z-index: 9999;
+        color: #ffffff; /* Altera a cor do texto para branco */
+      }
+
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+      </style>
+  </head>
+  <body>
+    <div class="container">
+      <div style="display: flex; justify-content: space-between">
+        <div style="display: flex; justify-content: space-between">
+          <div class="logout">
+            <i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: white;"></i>
+            <button class="logout-button" type="button" value="logout">
+              Sair
+            </button>
+          </div>
+        </div>
+        <img class="chatibict" src="/static/img/contextus2.png" alt="chatibict" />
+      </div>
+
+      <form method="POST" class="form-container">
+        {% csrf_token %}
+
+        <div class="form-field campo-title">
+          {{ form.title.label_tag }} {{ form.title }}
+        </div>
+
+        <div class="form-field campo-phrasetest">
+          {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+        </div>
+
+        {% comment %} <button type="submit" onclick="showLoader()">Pesquisar</button> {% endcomment %}
+        
+        <button class="pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_en">Ingles</button>
+        <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
+        
+        <button class="pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_br">Portugues</button>
+        <p id="warning" style="color: white; display: none; margin-left: 20px; margin-top: 30px;">Por favor, preencha o campo antes de pesquisar.</p>
+
+      </form>
+
+      
+      <div class="overlay" id="overlay"></div>
+      <div id="loader">
+        <div class="loader-spinner"></div>
+  <div class="loader-description">Carregando...</div>
+  <div class="loader-description">Aguarde um momento</div>
+  {% comment %} <div class="loader-description">O processo leva em média 45 segundos para ser concluído.</div> {% endcomment %}
+</div>
+
+
+<script>
+  function submitForm(event) {
+    var phraseValue = document.getElementById("id_phraseTest").value;
+
+    if (phraseValue.trim() === "" || phraseValue.length < 200) {
+      event.preventDefault();
+      document.getElementById("warning").style.display = "block";
+      document.getElementById("warning").textContent = "Por favor, preencha o campo com pelo menos 200 caracteres antes de pesquisar.";
+    } else {
+      showLoader();
+    }
+  }
+
+  function showLoader() {
+    document.getElementById("loader").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function hideLoader() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+
+<script>
+  document.querySelector('button[value="logout"]').addEventListener("click", function () {
+    window.location.href = "{% url 'logout_view' %}";
+  });
+
+  document.querySelector('i.fa-arrow-right-from-bracket').addEventListener("click", function () {
+    window.location.href = "{% url 'logout_view' %}";
+  });
+</script>     
+
+{% comment %} 
+<script>
+  function submitForm(event) {
+    var phraseValue = document.getElementById("id_phraseTest").value;
+
+    if (phraseValue.trim() === "") {
+      event.preventDefault();
+      document.getElementById("warning").style.display = "block";
+    } else {
+      showLoader();
+    }
+  }
+
+  function showLoader() {
+    document.getElementById("loader").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function hideLoader() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+
+<script>
+  document.querySelector('button[value="logout"]').addEventListener("click", function () {
+    window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de logout
+  });
+
+  document.querySelector('i.fa-arrow-right-from-bracket').addEventListener("click", function () {
+    window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de login
+  });
+</script>    {% endcomment %}
+
+
+      <footer>
+        <img class="imagem" src="/static/img/fapdf.png" />
+        <img class="imagem" src="/static/img/cedis.png" />
+        <img class="imagem" src="/static/img/ibict.png" />
+      </footer>
+    </div>
+  </body>
+</html>

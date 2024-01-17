@@ -12,8 +12,11 @@ class MeuForm(forms.ModelForm):
         fields = ['phraseTest', 'title']
 
     # phraseTest = forms.CharField(label='Digite aqui seu texto:')
-    phraseTest = forms.CharField(widget=forms.Textarea(
-        attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto'}))
+    phraseTest = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto', 'minlength': '200'}
+        )
+    )
 
 
 class CustomUserCreationForm(UserCreationForm):
