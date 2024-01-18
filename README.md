@@ -11,7 +11,8 @@
   - André Corrêa
   - Milena Faria
   - Renan Carneiro
- Getting Started
+
+# Getting Started
 
 ## Configurando e subindo o ambiente pela primeira vez
 
@@ -39,6 +40,18 @@ Apos a instalacao das bibliotecas va para o diretorio `Chat_ibict/Progressao` e 
 
 ```
 pip install -U pip setuptools
+```
+* Instale o PgAdmin [aqui](https://www.pgadmin.org/download/).
+
+Depois de instalado abra o PgAdmin e na pagina inicial clique em Add New Server.
+
+Na janela que abrir na sessao geral de um nome por exemplo: localhost. Va para a sessao connection e no primeiro campo digite localhost e salve.
+
+Agora clique no servidor que voce criou > Databases > testy clique com o botao esquerdo e selecione a opcao restore e restaure as modelos sql presentes no repositorio, depois clique com o botao esquerdo em testy e selecione a opcao refresh.
+
+Depois rode os seguintes comandos:
+```
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver
+```
