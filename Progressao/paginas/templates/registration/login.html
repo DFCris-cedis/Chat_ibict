@@ -105,44 +105,34 @@
                 <p id="textoErroPopup"></p>
             </div>
         </div>
-
+    
         <script>
             document.getElementById('login-form').addEventListener('submit', function(event) {
-                event.preventDefault(); // Previne o envio do formulário normal
-            
+                event.preventDefault();
                 var formData = new FormData(this);
                 fetch("{% url 'login' %}", {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
                     }
                 })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Resposta de rede não foi ok.');
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = data.redirect_url; // Usa o URL fornecido pelo servidor
-                    } else {
-                        document.getElementById("textoErroPopup").textContent = data.message;
-                        document.getElementById("popupErro").style.display = "flex";
-                    }
+                    window.location.href = response.url; // Redireciona para a URL recebida na resposta
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     document.getElementById("textoErroPopup").textContent = 'Ocorreu um erro ao processar o login.';
                     document.getElementById("popupErro").style.display = "flex";
                 });
-            });
-            
-
-        function fecharPopupErro() {
-            document.getElementById("popupErro").style.display = "none";
-        }
-    </script>
-</body>
-</html>
+                
+    
+            function fecharPopupErro() {
+                document.getElementById("popupErro").style.display = "none";
+            }
+        </script>
+    </body>
+    </html>
