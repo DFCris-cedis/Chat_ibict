@@ -38,6 +38,7 @@ pip install -r requirements.txt
 Apos a instalacao das bibliotecas va para o diretorio `Chat_ibict/Progressao` e execute os seguintes comandos:
 
 ```
+pip install -U pip setuptools
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver
