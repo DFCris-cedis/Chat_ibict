@@ -375,17 +375,15 @@ def home(request):
         print("POST request received")
         form = MeuForm(request.POST)
         if form.is_valid():
+
             print("Form is valid")
-            form = form.save(commit=False)
-            form.user = request.user
-            # abstract = form.phraseTest.lower()
-            # form.phraseTest = abstract
-            abstract = form.phraseTest
-            title = form.title
+            form_instance = form.save(commit=False)
+            form_instance.user = request.user
+            form_instance.save()
+            abstract = form_instance.phraseTest.lower()
+            title = form_instance.title
             form.save()
 
-            # title = form.cleaned_data['title']
-            # abstract = form.cleaned_data['phraseTest']
             action = request.POST.get('action')
 
             if action == 'pesquisar_en':
@@ -403,14 +401,14 @@ def home(request):
                 nlp = spacy.load("pt_core_news_lg")
 
                 # Processamento do texto
-                doc = nlp(abstract)
+                doc = nlp(abstract)  # Usando 'abstract', que é o 'phraseTest' em minúsculas
                 lemmas = [token.lemma_ for token in doc if token.pos_ in ['PROPN', 'NOUN']]
                 for lemma in lemmas:
                     new_noun = Noun.objects.create(
                         nounText=lemma.lower(),
-                        test=form,
+                        test=form_instance,
                         idSignificado=''
-                    )
+    )
                     words = new_noun.nounText.split()
                     for word in words:
                         dicionario = Dicionario.objects.filter(Palavra=word.lower()).first()

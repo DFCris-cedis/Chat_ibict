@@ -174,7 +174,7 @@
     function submitForm(event) {
       var phraseValue = document.getElementById("id_phraseTest").value;
   
-      if (phraseValue.trim().length < 10) {
+      if (phraseValue.trim().length < 100) {
         event.preventDefault();
         alert("Por favor, preencha o campo com pelo menos 200 caracteres antes de pesquisar.");
       } else if (phraseValue.trim().length > 1500) {
