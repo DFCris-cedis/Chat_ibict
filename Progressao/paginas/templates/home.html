@@ -185,10 +185,10 @@
       }
     }
   
-    function showLoader() {
-      document.getElementById("loader").style.display = "block";
-      document.getElementById("overlay").style.display = "block";
-    }
+    window.addEventListener('load', (event) => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    });
   
     function fecharPopup() {
       document.getElementById("popupAviso").style.display = "none";
