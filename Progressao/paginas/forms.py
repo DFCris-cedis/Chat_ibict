@@ -47,21 +47,21 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Senha'}))
     
-# from django import forms
+from django import forms
 
-# class LoginForm(forms.Form):
-#     username = forms.CharField(label='Nome de usuário', max_length=100)
-#     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Nome de usuário', max_length=100)
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
 
 # forms.py
 
 from django import forms
 
 class EmailForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
 
 # forms.py
 
 class PasswordForm(forms.Form):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
 
