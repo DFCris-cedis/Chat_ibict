@@ -1,183 +1,63 @@
+@font-face {
+    font-family: "inter";
+    src: url("/static/fonts/Inter.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: inter;
+}
+
+
 body {
-  background-image: linear-gradient(135deg, #170932, #241148,
-      #3d1e5c, #854b9c, #aa5eb6);
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  text-decoration: none;
-  color: inherit;
-  height: 100vh;
-  width: 100vw;
+    background-image: url(library.jpg);
+    background-position-x: center;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#errorModal {
-  display: none;
-  /* Outras propriedades de estilo aqui */
-}
-
-input {
-  height: 1.5rem;
-}
-
-.container {
-  margin: none;
-  display: flex;
-  height: 100vh;
-  flex-direction: row;
-  text-align: center;
-}
-
-a {
-  color: white;
-  text-decoration: none;
-  width: 100%;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.link {
-  margin-top: 1rem;
-  text-align: right;
-  margin-right: 5.5vw;
-  font-weight: bold;
-  color: white;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.coluna_1 {
-  margin-top: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-}
-
-.coluna_2 {
-
-  width: 40%;
-  height: 80%;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  padding: 0.5rem 0.5rem;
-  text-decoration: white;
-
+.login-container {
+    width: 30%;
+    height: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
 }
 
-.link {
-  text-align: right;
+.login-content {
+
+    background-color: red;
+    width: 80%;
+    height: 80%;
 }
 
-.link a:visited {
-  text-decoration: none;
-  color: inherit;
-  font-weight: bold;
-  color: white;
+.login-email {
+    background-color: pink;
+    width: 100%;
+    height: 90%;
 }
 
-.title {
-  margin-top: rem;
-  color: #fbffff;
+.button-container {
+    display: flex;
+    justify-content: right;
+    background-color: #0067B8;
+    bottom: 0;
+    height: 10%;
 }
 
-.imagem {
-
-  max-width: 100%;
-  max-height: 100%;
+form input {
+    background-color: transparent;
+    border: none;
 }
 
-.form {
-  height: 3rem;
-  text-align: center;
-  justify-content: center;
-  color: white;
-}
-
-
-.inner-box {
-  max-width: 65%;
-  min-width: 15rem;
-  height: 55vh;
-  border-radius: 10px;
-  border: 2px solid #943e8e;
-  border-color: #943e8e;
-  background-color: #aaa3ca;
-  margin: auto;
-  margin-top: 7vh;
-  /* centraliza horizontalmente */
-  display: center;
-  justify-content: center;
-  /* centraliza verticalmente */
-  align-items: center;
-  /* centraliza verticalmente */
-  padding: 20px;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-}
-
-
-button {
-  border-radius: 10px;
-  border-color: #943e8e;
-  background-color: #241148;
-  color: white;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px white;
-  border-bottom: white;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 4vh;
-
-}
-
-
-.form {
-  max-width: 400px;
-  /* Defina a largura máxima desejada */
-  width: 100%;
-  text-align: center;
-  color: white;
-  margin: 0 auto;
-}
-
-
-.input-group {
-  display: flex;
-  font-size: 15px;
-  width: 40%;
-
-}
-
-.input-label {
-  display: flex;
-  align-items: center;
-  /* Centralize verticalmente */
-  justify-content: flex-start;
-  /* Alinhe à esquerda horizontalmente */
-  width: 35%;
-  /* Ajuste a largura desejada para o rótulo */
-  margin-right: 5%;
-  padding: 1rem 0rem;
-  font-size: 2vh;
-}
-
-label {
-
-  float: left;
-  text-align: left;
-  width: 35%;
-  padding-top: 6vh;
-  margin-right: 5%;
-  padding: 1rem 0rem;
-  font-size: 2vh;
-
+.hr-email {
+    margin-top: 3px;
+    border: 1px solid #666;
 }

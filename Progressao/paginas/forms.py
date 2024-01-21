@@ -52,3 +52,16 @@ class LoginForm(forms.Form):
 # class LoginForm(forms.Form):
 #     username = forms.CharField(label='Nome de usuário', max_length=100)
 #     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+
+# forms.py
+
+from django import forms
+
+class EmailForm(forms.Form):
+    email = forms.EmailField()
+
+# forms.py
+
+class PasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput())
+

@@ -102,25 +102,72 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm  # Supondo que LoginForm é importado corretamente
 
-def custom_login(request):
+# def custom_login(request):
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password']
+#             user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 return JsonResponse({'success': True, 'redirect_url': '/home'})
+#             else:
+#                 return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
+#         else:
+#             return JsonResponse({'success': False, 'message': 'Erro na validação do formulário'})
+#     else:
+#         form = LoginForm()
+#     return render(request, 'login.html', {'form': form})
+
+# views.py
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from .forms import EmailForm
+
+
+from paginas.models import CustomUser  # Importe seu modelo de usuário personalizado
+
+def email_login(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = EmailForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            email = form.cleaned_data['email']
+            if CustomUser.objects.filter(email=email).exists():  # Use CustomUser aqui
+                request.session['email_for_login'] = email
+                return redirect('senha_login')
+            else:
+                return render(request, 'email_login.html', {'form': form, 'error': 'E-mail não encontrado'})
+    else:
+        form = EmailForm()
+    return render(request, 'email_login.html', {'form': form})
+
+# views.py
+
+from django.contrib.auth import authenticate, login
+from .forms import PasswordForm
+
+def senha_login(request):
+    email = request.session.get('email_for_login')
+    if not email:
+        # Redirecione para a página de e-mail se não houver e-mail na sessão
+        return redirect('email_login')
+
+    if request.method == 'POST':
+        form = PasswordForm(request.POST)
+        if form.is_valid():
+            user = authenticate(username=email, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                return JsonResponse({'success': True, 'redirect_url': '/home'})
+                # Redirecione para a página inicial ou painel após o login bem-sucedido
+                return redirect('home')
             else:
-                return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
-        else:
-            return JsonResponse({'success': False, 'message': 'Erro na validação do formulário'})
+                # Senha incorreta
+                return render(request, 'senha_login.html', {'form': form, 'error': 'Senha incorreta'})
     else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
-
-
+        form = PasswordForm()
+    return render(request, 'senha_login.html', {'form': form})
 
 
 def logout_view(request):
@@ -147,68 +194,6 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         else:
             # Redireciona para a tela de login
             return HttpResponseRedirect(reverse('login'))
-
-
-# def get_df():
-
-#     try:
-#         connection = psycopg2.connect(
-#             database="testy",
-#             user="postgres",
-#             password="SENHA",
-#             host="localhost",
-#             port="5432"
-#         )
-
-#         # Cria um cursor para executar consultas
-#         cursor = connection.cursor()
-
-#         # Executa a consulta
-#         query = """
-#                 SELECT "idSignificado"
-#                 FROM paginas_noun
-#                 WHERE "idSignificado" != '' AND test_id = (
-#                     SELECT MAX ("test_id")
-#                     FROM paginas_noun);
-#                 """
-#         cursor.execute(query)
-
-#         results = cursor.fetchall()
-
-#         for id in range(len(results)):
-#             results[id] = 'v'+results[id][0]
-#         # Fecha o cursor e a conexão
-#         cursor.close()
-        
-#         file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-#         #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-#         idsignificado = list(csv.reader(file, delimiter=","))
-#         file.close()
-
-#         idsignificado = [row[0] for row in idsignificado]
-
-#         for id in range(len(idsignificado)):
-#             idsignificado[id] = 'v'+idsignificado[id]
-
-#         df = pd.DataFrame(np.zeros((1, len(idsignificado))),
-#                           columns=idsignificado)
-#         df = df.astype(int)
-
-#         for id in results:
-#             df[id] = df[id] + 1
-
-#         with localconverter(robjects.default_converter + pandas2ri.converter):
-#             df = robjects.conversion.py2rpy(df)
-
-#     except psycopg2.Error as error:
-#         print("Erro ao conectar ao PostgreSQL:", error)
-
-#     finally:
-#         # Fecha a conexão com o banco de dados
-#         if 'connection' in locals():
-#             connection.close()
-
-#     return df
 
 import psycopg2
 import pandas as pd

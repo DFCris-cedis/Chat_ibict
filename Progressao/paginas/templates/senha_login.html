@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login de Senha</title>
+    <link rel="stylesheet" href="/static/css/login.css"/>
+    <img src="/static/img/library.png" alt="chatibict" class="imagem" />
+    <!-- Adicione aqui qualquer CSS ou frameworks que você esteja usando -->
+</head>
+<body>
+    <div class="login-container">
+        <h2>Insira sua Senha</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if error %}
+                <div class="error-message">
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
