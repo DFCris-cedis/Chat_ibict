@@ -81,46 +81,10 @@ def login_success(sender, user, request, **kwargs):
 
 logger = logging.getLogger(__name__)
 
-# def custom_login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return JsonResponse({'success': True, 'message': 'Login bem-sucedido'})
-#             else:
-#                 return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
-#     else:
-#         form = LoginForm()
-#     return render(request, 'login.html', {'form': form})
-
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm  # Supondo que LoginForm é importado corretamente
-
-# def custom_login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return JsonResponse({'success': True, 'redirect_url': '/home'})
-#             else:
-#                 return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
-#         else:
-#             return JsonResponse({'success': False, 'message': 'Erro na validação do formulário'})
-#     else:
-#         form = LoginForm()
-#     return render(request, 'login.html', {'form': form})
-
-# views.py
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -281,14 +245,6 @@ def process():
 
     da = get_df()
     entrada = da
-    
-    # print(type(da))
-    # path_df = path_df = "C:/Users/milen/OneDrive/Documentos/DF/Modelos/df100x1x100Ocorrencias.csv"
-    # df_id = 'eef474adc4c2d494dca53fa6b3bd8211'
-    # df = pd.read_csv(path_df)
-    # entrada = df
-    # entrada = df.tail(1)
-    # entrada = entrada.drop(['Status'], axis=1)
 
     area = prevNN(entrada)
    
@@ -346,11 +302,8 @@ def process():
 
     return f"""c("{sub}", "{area}")"""
 
-
-# Call the function within the main thread
 output = process()
 
-# Use the output as needed
 print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 

@@ -1,214 +1,57 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Contextus</title>
-    <link rel="stylesheet" href="/static/css/style.css" />
-    <link rel="stylesheet" href="/static/css/all.min.css" />
-    <style>
-      /* Seus estilos existentes para o loader e outros elementos */
-
-      .popup-aviso {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-        display: none;
-      }
-
-      .popup-conteudo {
-        background: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        text-align: center;
-      }
-
-      .popup-fechar {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 20px;
-        cursor: pointer;
-      }
-    </style>
-
-    <style>
-      /* Estilos do loader */
-      #loader {
-        display: none;
-        text-align: center;
-        margin-top: 20px;
-      }
-    </style>
-
-    <style>
-      /* Estilos do loader */
-      #loader {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 9999;
-      }
-    
-      /* Sobreposição escura */
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 1);
-        z-index: 9998;
-        display: none;
-      }
-    
-      /* Spinner animado */
-      .loader-spinner {
-        border: 4px solid #943e8e;
-        border-top: 4px solid #241148;
-        border-radius: 50%;
-        width: 80px;
-        height: 80px;
-        animation: spin 2s linear infinite;
-        position: relative;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    
-      @keyframes spin {
-        0% {
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
-        100% {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-            /* Texto do loader */
-      .loader-text {
-        margin-top: 10px;
-        font-weight: bold;
-        position: relative;
-        z-index: 9999;
-        color: #ffffff; /* Altera a cor do texto para branco */
-      
-
-      }
-
-      /* Descrição do loader */
-      .loader-description {
-        margin-top: 5px;
-        position: relative;
-        z-index: 9999;
-        color: #ffffff; /* Altera a cor do texto para branco */
-      }
-
-      @keyframes spin {
-        0% {
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
-        100% {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-      </style>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/home.css"/>
 
   </head>
 
   <body>
-    <div class="container">
-      <!-- Seu conteúdo HTML existente -->
+    <div class="leave">
+      <a>Sair &nbsp </a> 
+    <img src="/static/img/leave.png"  class="button-leave"/>
+    
+    </div>
+    <div class="option">
+    </br>
+      <p> Língua do texto a ser pesquisado: </p>
+    </br>
+      <button class="button-pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_en">Inglês</button>
+      <button class="button-pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_br">Português</button> 
+    </br> 
+    </div>
+    <div class="body-content">
+        <div class="login-container">
+            <div class="login-content">  
+                <img src="/static/img/logo.png"  class="logo"/> 
+                    
+                    <div class="login-email">
+                      <form method="POST" class="form-container">
+                      {% csrf_token %}
+                      {% csrf_token %}
 
-      <form method="POST" class="form-container">
-        {% csrf_token %}
-        {% csrf_token %}
+                      {% comment %} <div class="form-field campo-title">
+                        {{ form.title.label_tag }} {{ form.title }}
+                      </div> {% endcomment %}
 
-        <div class="form-field campo-title">
-          {{ form.title.label_tag }} {{ form.title }}
+                      <div class="form-field campo-phrasetest">
+                        {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+                      </div>
+
+                      <button class="button-next" type="submit">Buscar</button>
+                      </form>
+                    </div> 
+
+            </div>        
         </div>
 
-        <div class="form-field campo-phrasetest">
-          {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
-        </div>
+        <div class="about-content">
 
-        <button class="pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_en">Ingles</button>
-        <button class="pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_br">Portugues</button>
-      </form>
-      <div id="mensagemErro" class="mensagem-erro" style="display: none;">
-        <p id="textoErro"></p>
+          <button class="button-history" type="submit"><img src="/static/img/email.png"/> &nbsp Contate-nos!</button>
+            
+        </div> 
       </div>
 
-      <div class="overlay" id="overlay"></div>
-      <div id="loader">
-        <div class="loader-spinner"></div>
-  <div class="loader-description">Carregando...</div>
-  <div class="loader-description">Aguarde um momento</div>
-
-      <!-- Seu loader e overlay existentes -->
-
-      <div id="popupAviso" class="popup-aviso">
-        <div class="popup-conteudo">
-          <span class="popup-fechar" onclick="fecharPopup()">&times;</span>
-          <p>Por favor, preencha o campo com pelo menos 200 caracteres antes de pesquisar.</p>
-          <button onclick="fecharPopup()">Fechar</button>
-        </div>
-      </div>
-
-      
-  <div id="popupAviso" class="popup-aviso">
-    <div class="popup-conteudo">
-      <span class="popup-fechar" onclick="fecharPopup()">&times;</span>
-      <p>Por favor, preencha o campo com pelo menos 1500 caracteres antes de pesquisar.</p>
-      <button onclick="fecharPopup()">Fechar</button>
-    </div>
-  </div>
-
-  <script>
-    function submitForm(event) {
-      var phraseValue = document.getElementById("id_phraseTest").value;
-  
-      if (phraseValue.trim().length < 100) {
-        event.preventDefault();
-        alert("Por favor, preencha o campo com pelo menos 200 caracteres antes de pesquisar.");
-      } else if (phraseValue.trim().length > 1500) {
-        event.preventDefault();
-        alert("Por favor, limite sua entrada a 1500 caracteres.");
-      } else {
-        showLoader();
-      }
-    }
-  
-    window.addEventListener('load', (event) => {
-      document.getElementById("loader").style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    });
-  
-    function fecharPopup() {
-      document.getElementById("popupAviso").style.display = "none";
-      window.location.href = '/home'; // Ajuste conforme necessário
-    }
-  </script>
-  <script>
-    document.querySelector('button[value="logout"]').addEventListener("click", function () {
-      window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de logout
-    });
-  
-    document.querySelector('i.fa-arrow-right-from-bracket').addEventListener("click", function () {
-      window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de login
-    });
-  </script> 
-  
-
-      <!-- Seu script de logout e outros scripts JavaScript -->
-
-      <!-- Seu rodapé HTML existente -->
-    </div>
   </body>
 </html>
