@@ -12,9 +12,15 @@ class MeuForm(forms.ModelForm):
         fields = ['phraseTest', 'title']
 
     # phraseTest = forms.CharField(label='Digite aqui seu texto:')
+    title = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'title', 'placeholder': 'Digite seu título...'}
+        )
+    )    
+
     phraseTest = forms.CharField(
         widget=forms.Textarea(
-            attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto', 'minlength': '200'}
+            attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto. (O texto precisa conter no mínimo 200 e no máximo 1.500 caracteres).'}
         )
     )
 

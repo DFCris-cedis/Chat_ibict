@@ -2,44 +2,62 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Contextus</title>
     <link rel="stylesheet" href="/static/css/home.css"/>
-
+    <script>
+      function changeLanguage(language) {
+          document.getElementById('language').value = language;
+          // Adicional: Alterar a lógica de exibição do campo title conforme necessário
+          if (language === 'pt') {
+              document.querySelector('.campo-title').style.display = 'none';
+          } else {
+              document.querySelector('.campo-title').style.display = 'block';
+          }
+      }
+    </script>
+    
+  
   </head>
 
   <body>
-    <div class="leave">
-      <a>Sair &nbsp </a> 
-    <img src="/static/img/leave.png"  class="button-leave"/>
+    <a class="leave" href="{% url 'login' %}">
+      <p> Sair &nbsp</p> 
+      
+      <img src="/static/img/leave.png"  class="button-leave"/>
     
-    </div>
+    </a>
     <div class="option">
     </br>
       <p> Língua do texto a ser pesquisado: </p>
     </br>
-      <button class="button-pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_en">Inglês</button>
-      <button class="button-pesquisar" type="submit" onclick="submitForm(event)" name="action" value="pesquisar_br">Português</button> 
+    <input type="hidden" id="language" name="language" value="pt">
+        <button class="button-pesquisar" type="button" onclick="changeLanguage('en')">Inglês</button>
+        <button class="button-pesquisar" type="button" onclick="changeLanguage('pt')">Português</button>
+       
     </br> 
     </div>
     <div class="body-content">
         <div class="login-container">
             <div class="login-content">  
                 <img src="/static/img/logo.png"  class="logo"/> 
-                    
+                    </br></br>
                     <div class="login-email">
                       <form method="POST" class="form-container">
                       {% csrf_token %}
-                      {% csrf_token %}
+                      <input type="hidden" id="language" name="language" value="en">
 
-                      {% comment %} <div class="form-field campo-title">
+                      <div class="form-field campo-title" style="display: none;">
                         {{ form.title.label_tag }} {{ form.title }}
-                      </div> {% endcomment %}
-
+                    </div>
+                    
+                    </br>
                       <div class="form-field campo-phrasetest">
                         {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
                       </div>
-
+                    </br>
+                    <div class="button-container">
                       <button class="button-next" type="submit">Buscar</button>
+                    </div>
                       </form>
                     </div> 
 
@@ -47,11 +65,49 @@
         </div>
 
         <div class="about-content">
-
-          <button class="button-history" type="submit"><img src="/static/img/email.png"/> &nbsp Contate-nos!</button>
-            
-        </div> 
+               
+          <p class="button-colaboradores"> Colaboradores:</p>
+          
+         <br/>
+          <p class="button-logo">
+            <a class="logos" href="https://www.cedis.unb.br">
+              <img src="/static/img/cedis.png"  class="logos"/>
+            </a>
+              <a class="logos" href="https://www.fap.df.gov.br">
+                <img src="/static/img/fapdf.png"  class="logos"/>
+              </a>
+              <a class="logos" href="http://sitehistorico.ibict.br">
+                <img src="/static/img/ibict.png"  class="logos"/>
+              </a>             
+          <p>
+          
+      </div> 
       </div>
 
+      <script>
+        function changeLanguage(language) {
+            document.getElementById('language').value = language;
+        }
+    </script>
+
+    <script>
+      function changeLanguage(language) {
+          document.getElementById('language').value = language;
+    
+          // Se a língua selecionada for "pt", mantenha o campo de título oculto
+          if (language === 'pt') {
+              document.querySelector('.campo-title').style.display = 'none';
+          } else {
+              // Caso contrário, exiba o campo de título
+              document.querySelector('.campo-title').style.display = 'block';
+          }
+      }
+    </script>
+    
+    <script>
+      document.getElementById("english-button").addEventListener("click", function() {
+          document.getElementById("language-input").value = "en";
+      });
+    </script>
   </body>
 </html>

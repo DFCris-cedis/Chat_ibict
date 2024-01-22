@@ -31,22 +31,6 @@
             window.history.back();
           }
           </script>
-
-          {% comment %} <script>
-            document
-              .querySelector('button[value="logout"]')
-              .addEventListener("click", function () {
-                document.querySelector(".form-container").action = "{% url 'logout_view' %}";
-                document.querySelector(".form-container").submit();
-              });
-          
-            document
-              .querySelector('i.fa-arrow-right-from-bracket')
-              .addEventListener("click", function () {
-                document.querySelector(".form-container").action = "{% url 'logout_view' %}";
-                document.querySelector(".form-container").submit();
-              });
-          </script> {% endcomment %}
           <script>
             document.querySelector('button[value="logout"]').addEventListener("click", function () {
               window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de logout
