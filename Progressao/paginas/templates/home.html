@@ -5,48 +5,50 @@
     <title>Contextus</title>
     <link rel="stylesheet" href="/static/css/home.css"/>
     <script>
+      // Atualiza o valor do campo de idioma no formulário e o campo de título
       function changeLanguage(language) {
           document.getElementById('language').value = language;
-          // Adicional: Alterar a lógica de exibição do campo title conforme necessário
-          if (language === 'pt') {
-              document.querySelector('.campo-title').style.display = 'none';
-          } else {
-              document.querySelector('.campo-title').style.display = 'block';
+          localStorage.setItem('selectedLanguage', language); // Salva no Local Storage
+
+          // Exibe ou oculta o campo título com base no idioma
+          var titleField = document.querySelector('.campo-title');
+          if (titleField) {
+              titleField.style.display = language === 'en' ? 'block' : 'none';
           }
       }
-    </script>
-    
-  
-  </head>
 
-  <body>
-    <a class="leave" href="{% url 'login' %}">
-      <p> Sair &nbsp</p> 
-      
-      <img src="/static/img/leave.png"  class="button-leave"/>
-    
-    </a>
+      // Carrega a preferência de idioma do Local Storage ao abrir a página
+      document.addEventListener('DOMContentLoaded', function() {
+          var savedLanguage = localStorage.getItem('selectedLanguage') || 'pt';
+          changeLanguage(savedLanguage); // Aplica a preferência de idioma salva
+      });
+    </script>
+</head>
+<body>
+ 
+  <a class="leave" href="{% url 'login' %}">
+    <p> Sair &nbsp</p> 
+  </br>
+    <img src="/static/img/leave.png"  class="button-leave"/>
+  
+  </a>
     <div class="option">
+        <p> Língua do texto a ser pesquisado: </p>
     </br>
-      <p> Língua do texto a ser pesquisado: </p>
-    </br>
-    <input type="hidden" id="language" name="language" value="pt">
         <button class="button-pesquisar" type="button" onclick="changeLanguage('en')">Inglês</button>
         <button class="button-pesquisar" type="button" onclick="changeLanguage('pt')">Português</button>
-       
-    </br> 
     </div>
+
     <div class="body-content">
         <div class="login-container">
-            <div class="login-content">  
-                <img src="/static/img/logo.png"  class="logo"/> 
-                    </br></br>
-                    <div class="login-email">
-                      <form method="POST" class="form-container">
-                      {% csrf_token %}
-                      <input type="hidden" id="language" name="language" value="en">
+            <div class="login-content">
+              <img src="/static/img/logo.png"  class="logo"/> 
+                <div class="login-email">
+                    <form method="POST" class="form-container">
+                        {% csrf_token %}
+                        <input type="hidden" id="language" name="language" value="pt">
 
-                      <div class="form-field campo-title" style="display: none;">
+                        <div class="form-field campo-title" style="display: none;">
                         {{ form.title.label_tag }} {{ form.title }}
                     </div>
                     
@@ -83,31 +85,5 @@
           
       </div> 
       </div>
-
-      <script>
-        function changeLanguage(language) {
-            document.getElementById('language').value = language;
-        }
-    </script>
-
-    <script>
-      function changeLanguage(language) {
-          document.getElementById('language').value = language;
-    
-          // Se a língua selecionada for "pt", mantenha o campo de título oculto
-          if (language === 'pt') {
-              document.querySelector('.campo-title').style.display = 'none';
-          } else {
-              // Caso contrário, exiba o campo de título
-              document.querySelector('.campo-title').style.display = 'block';
-          }
-      }
-    </script>
-    
-    <script>
-      document.getElementById("english-button").addEventListener("click", function() {
-          document.getElementById("language-input").value = "en";
-      });
-    </script>
-  </body>
+</body>
 </html>

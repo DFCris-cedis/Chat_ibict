@@ -323,8 +323,8 @@ def home(request):
             form.save()
 
             language = request.POST.get('language')
-
-            if language == 'pesquisar_en':
+            print(language)
+            if language == 'en':
                 result_eng = get_remote_works(title, abstract)
                 if len(result_eng) < 2:
                     area = 'Área não encontrada'

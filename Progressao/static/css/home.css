@@ -59,6 +59,7 @@ body {
 
 .option p {
     font-weight: semi-bold;
+    margin-top: 5%;
 }
 
 .button-pesquisar {
@@ -186,7 +187,6 @@ p {
     font-size: 15px;
     align-items: center;
     text-align: center;
-    margin: none;
 
 }
 
