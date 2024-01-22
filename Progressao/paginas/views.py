@@ -57,13 +57,13 @@ def signup_view(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=user.email, password=raw_password)
             login(request, user)
-            return redirect('/home')
+            return redirect('home')
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
 
-def /home(request):
+def home(request):
     if request.method == 'POST':
         phrase = request.POST.get('phrase', '')
         # Pega o usuário logado
@@ -72,7 +72,7 @@ def /home(request):
         Test.objects.create(user=user, phraseTest=phrase)
 
     tests = Test.objects.filter(user=request.user)
-    return render(request, '/home.html', {'tests': tests})
+    return render(request, 'home.html', {'tests': tests})
 
 @receiver(user_logged_in)
 def login_success(sender, user, request, **kwargs):
@@ -125,7 +125,7 @@ def senha_login(request):
             if user is not None:
                 login(request, user)
                 # Redirecione para a página inicial ou painel após o login bem-sucedido
-                return redirect('/home')
+                return redirect('home')
             else:
                 # Senha incorreta
                 return render(request, 'senha_login.html', {'form': form, 'error': 'Senha incorreta'})
@@ -196,7 +196,7 @@ def get_df():
         cursor.close()
         
         #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
         
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
@@ -232,7 +232,7 @@ def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
     
     #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Modelos/DeepLearning_model_R_1670582405235_1")
-    Modelo = h2o.load_model("/home/milenasilva/Chat_ibict/Progressao/Modelos/DeepLearning_model_R_1670582405235_1")
+    Modelo = h2o.load_model("home/milenasilva/Chat_ibict/Progressao/Modelos/DeepLearning_model_R_1670582405235_1")
     
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
@@ -338,7 +338,7 @@ output = process()
 print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 
-def /home(request):
+def home(request):
     show_prevrf = False
     if request.method == 'POST':
         print("POST request received")
@@ -408,4 +408,4 @@ def /home(request):
         form = MeuForm()
 
     context = {'form': form, 'show_prevrf': show_prevrf}
-    return render(request, '/home.html', context)
+    return render(request, 'home.html', context)
