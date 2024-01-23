@@ -22,10 +22,19 @@
                 <div class="login-email">
                
                   <div class="form-field campo-phrasetest">
-                  <p> ÁREA: {{ area }}</p>
-                  <p> SUBÁREA: {{ subarea }}</p>
-                </div> 
-            </div>
+                  </br></br>
+                    <p><strong>ÁREA:</strong> {{ area }}</p>
+                  </br>
+                    <p><strong>SUBÁREA:</strong> {{ subarea }}</p>
+                  </br></br>
+                  </div> 
+                  <div class="button-container">
+                    <button class="button-next" type="submit"onclick="voltar()">Nova Pesquisa</button>
+                  </div>
+                </div>
+                
+               
+              </div> 
         </div>
                   
                   <div class="about-content">
@@ -48,7 +57,7 @@
        
       </div>
         {% comment %} <button type="submit">Nova Pesquisa</button> {% endcomment %}
-        <button onclick="voltar()">Nova Pesquisa</button>
+        
         <script>
           function voltar() {
             window.history.back();
