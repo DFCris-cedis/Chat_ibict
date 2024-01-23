@@ -1,29 +1,52 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
     <title>Contextus</title>
-    <link rel="stylesheet" href="/static/css/style2.css" />
-    <link rel="stylesheet" href="/static/css/all.min.css" />
-    <body>
-      <div class="container">
-        <div style="display: flex; justify-content: space-between">
-          <div style="display: flex; justify-content: space-between">
-            <div class="logout">
-              <i class="fa-sharp fa-solid fa-arrow-right-from-bracket" style="color: #241148;"></i>
-              <button class="logout-button" type="button" value="logout">
-                Sair
-              </button>
+    <link rel="stylesheet" href="/static/css/home.css"/>
+   
+</head>
+<body>
+ 
+  <a class="leave" href="{% url 'login' %}">
+    <p> Sair &nbsp</p> 
+    </br>
+    <img src="/static/img/leave.png"  class="button-leave"/>
+  
+  </a>
+
+    <div class="body-content">
+        <div class="login-container">
+            <div class="login-content">
+              <img src="/static/img/logo.png"  class="logo"/> 
+                <div class="login-email">
+               
+                  <div class="form-field campo-phrasetest">
+                  <p> ÁREA: {{ area }}</p>
+                  <p> SUBÁREA: {{ subarea }}</p>
+                </div> 
             </div>
-          </div>
-          <img class="chatibict" src="/static/img/contextus2.png" alt="chatibict"/>
         </div>
-      
-        <div class="form-container">
-          <div class="form-field campo-phrasetest">
-            <p> ÁREA: {{ area }}</p>
-            <p> SUBÁREA: {{ subarea }}</p>
-          </div>
-        </div>
+                  
+                  <div class="about-content">
+               
+                    <p class="button-colaboradores"> Colaboradores:</p>
+          
+                    <br/>
+                    <p class="button-logo">
+                    <a class="logos" href="https://www.cedis.unb.br">
+                      <img src="/static/img/cedis.png"  class="logos"/>
+                    </a>
+                    <a class="logos" href="https://www.fap.df.gov.br">
+                      <img src="/static/img/fapdf.png"  class="logos"/>
+                    </a>
+                    <a class="logos" href="http://sitehistorico.ibict.br">
+                      <img src="/static/img/ibict.png"  class="logos"/>
+                    </a>             
+                    
+          
+       
+      </div>
         {% comment %} <button type="submit">Nova Pesquisa</button> {% endcomment %}
         <button onclick="voltar()">Nova Pesquisa</button>
         <script>
@@ -40,12 +63,6 @@
               window.location.href = "{% url 'logout_view' %}";  // Redireciona para a página de login
             });
           </script>
-
-      <footer > <img class="imagem" src="/static/img/fapdf.png" />
-        <img class="imagem" src="/static/img/cedis.png"/>
-        <img class="imagem" src="/static/img/ibict.png" />
-
-      </footer>
-    </div>
+ 
   </body>
 </html>
