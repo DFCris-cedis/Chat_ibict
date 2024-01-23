@@ -196,7 +196,7 @@ def get_df():
         cursor.close()
         
         #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("/home/milenasilva/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
        
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
@@ -232,7 +232,7 @@ def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
     
     #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
-    Modelo = h2o.load_model("/home/milenasilva/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
+    Modelo = h2o.load_model("/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1")
     
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
