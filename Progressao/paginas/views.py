@@ -1,5 +1,5 @@
 import sys
-sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
+sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
 #sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
@@ -196,7 +196,7 @@ def get_df():
         cursor.close()
         
         #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("home/milenasilva/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("/home/milenasilva/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
        
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
