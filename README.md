@@ -40,6 +40,7 @@ Apos a instalacao das bibliotecas va para o diretorio `Chat_ibict/Progressao` e 
 
 ```
 pip install -U pip setuptools
+python -m spacy download pt_core_news_lg
 sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get update
