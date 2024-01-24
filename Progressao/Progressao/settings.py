@@ -35,7 +35,7 @@ DEBUG = True
 # settings.py
 
 ALLOWED_HOSTS = ['contextus.ibict.br','172.16.17.41']
-#ALLOWED_HOSTS =['*']
+ALLOWED_HOSTS =['contextus.ibict.br', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
 
 
