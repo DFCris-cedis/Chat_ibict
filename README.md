@@ -75,4 +75,4 @@ python3 manage.py runserver
 ```
 ### Visualizando a aplicao
 
-Agora acesse o site `contextus.ibict.br`, bom desenvolvimento!
+Agora acesse `http://127.0.0.1:8000`, bom desenvolvimento!
