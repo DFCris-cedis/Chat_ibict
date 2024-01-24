@@ -34,9 +34,9 @@ DEBUG = True
 
 # settings.py
 
-#ALLOWED_HOSTS = ['contextus.ibict.br']
-ALLOWED_HOSTS =['*']
-#CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
+ALLOWED_HOSTS = ['contextus.ibict.br','172.16.17.41']
+#ALLOWED_HOSTS =['*']
+CSRF_TRUSTED_ORIGINS = ['http://contextus.ibict.br']
 
 
 
@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     # 'nomedoapp.apps.NomedoappConfig'
 ]
 AUTH_USER_MODEL = 'paginas.CustomUser'
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 

@@ -12,9 +12,15 @@ class MeuForm(forms.ModelForm):
         fields = ['phraseTest', 'title']
 
     # phraseTest = forms.CharField(label='Digite aqui seu texto:')
+    title = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'title', 'placeholder': 'Digite seu título...'}
+        )
+    )    
+
     phraseTest = forms.CharField(
         widget=forms.Textarea(
-            attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto', 'minlength': '200'}
+            attrs={'class': 'textarea', 'placeholder': 'Digite aqui seu texto. (O texto precisa conter no mínimo 200 e no máximo 1.500 caracteres).'}
         )
     )
 
@@ -47,8 +53,21 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Senha'}))
     
-# from django import forms
+from django import forms
 
-# class LoginForm(forms.Form):
-#     username = forms.CharField(label='Nome de usuário', max_length=100)
-#     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Nome de usuário', max_length=100)
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+
+# forms.py
+
+from django import forms
+
+class EmailForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
+
+# forms.py
+
+class PasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+

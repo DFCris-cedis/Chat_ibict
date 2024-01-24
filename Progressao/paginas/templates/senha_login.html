@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/senha.css"/>
+
+    <!-- Adicione aqui qualquer CSS ou frameworks que você esteja usando -->
+</head>
+<body>
+    
+    <div class="body-content">
+        <a href="{% url 'login' %}"><img src="/static/img/back.png" class="img-back"></a>
+        <div class="login-container">
+            
+            <div class="login-content">  
+                <img src="/static/img/logo.png"  class="logo"/>   
+                    <div class="login-email">
+                    <br/> 
+                    <h2>Insira sua Senha</h2>
+                    <br/> 
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        {% if error %}
+                            <div class="error-message">
+                                <p>{{ error }}</p>
+                            </div>
+                        {% endif %}<br/><br/><br/>
+                        <div class="button-container">
+                            <button class="button-next" type="submit">Entrar</button>
+                            </div>    
+                </div>
+                
+                </form>
+        </div>
+                        
+    </div>
+</div>
+</body>
+</html>

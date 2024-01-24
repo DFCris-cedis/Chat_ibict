@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/login.css"/>
+</head>
+<body>
+    <div class="body-content">
+        <div class="login-container">
+            <div class="login-content">  
+                <img src="/static/img/logo.png"  class="logo"/>   
+                    <div class="login-email">
+                    <br/> 
+                    <h2>Entrar</h2>
+                    <br/>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            {% if error %}
+                        
+                                <div class="error-message">
+                                    <p>{{ error }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            <br/><br/>
+                            <p> Não possui conta? 
+                                <a href="{% url 'signup' %}">Criar Conta</a>
+                            </p> 
+                                <a href="{% url 'password_reset' %}">Esqueceu a sua senha?</a>
+                            <br/><br/>
+                            <div class="button-container">
+                                <button class="button-next" type="submit">Próximo</button>
+                                </div>    
+                    </div>
+                    
+                    </form>
+            </div>
+                            
+        </div>
+
+        <div class="about-content">
+               
+            <button  class="button-history" type="submit"><img src="/static/img/lampada.png"/> &nbsp Conheça mais sobre  o Contextus</button>
+            
+           <br/>
+            <button class="button-history" type="submit"><img src="/static/img/email.png"/> &nbsp Contate-nos!</button>
+            
+        </div> 
+    </div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+@font-face {
+    font-family: "inter";
+    src: url("/static/fonts/Inter.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: inter;
+}
+
+
+body {
+    background-image: url(library.jpg);
+    background-position-x: center;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leave {
+    background-color: #ffffffda;
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 2%;
+    margin-top: 1%;
+    align-items: center;
+    justify-content: center;
+    width: 7%;
+    text-align: center;
+    font-size: 20px;
+    color: #0067B8;
+    font-weight: 600;
+    border-radius: 7px;
+    padding: 0.3%;
+}
+
+.button-leave {
+    width: 25px;
+}
+
+.option {
+    background-color: #ffffffe0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 2%;
+    margin-top: 2%;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    text-align: center;
+    border-radius: 7px;
+}
+
+.option p {
+    font-weight: semi-bold;
+    font-size: 15px;
+    margin-top: 5%;
+}
+
+.button-pesquisar {
+    background-color: #0067B8;
+    width: 108px;
+    height: 30px;
+    flex-shrink: 0;
+    font-size: 15px;
+    color: #F5F5F5;
+    margin-bottom: 5%;
+    border: none;
+}
+
+.body-content {
+    width: 30%;
+    height: 85%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.login-container {
+    width: 100%;
+    height: 60%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-content {
+    background-color: transparent;
+    width: 98%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.button-colaboradores {
+    background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+    width: 93%;
+    height: 20%;
+    font-size: 15px;
+    color: black;
+    border: none;
+    text-align: center;
+    font-weight: 500;
+
+}
+
+.button-logo {
+    background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+    width: 93%;
+    height: 30%;
+    font-size: 15px;
+    color: black;
+    border: none;
+    text-align: center;
+    margin: none;
+
+}
+
+a .logos {
+    width: 65%;
+    margin: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.login-content {
+
+    width: 80%;
+    height: 70%;
+}
+
+.title {
+    width: 98%;
+    border: 2px solid rgb(192, 192, 192);
+    border-radius: 3px;
+    height: 22px;
+    padding-left: 5px;
+}
+
+.login-email {
+
+    width: 100%;
+    height: 80%;
+}
+
+label {
+    display: none;
+}
+
+h2 {
+
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+p {
+    font-size: 16px;
+    align-items: center;
+    text-align: center;
+
+}
+
+a p {
+    font-size: 17px;
+    text-decoration: none;
+    color: #0067B8;
+}
+
+a {
+    text-decoration: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: right;
+    bottom: 0;
+    height: 10%;
+
+}
+
+.button-next {
+    background-color: #0067B8;
+    width: 120px;
+    height: 30px;
+    flex-shrink: 0;
+    font-size: 15px;
+    color: #F5F5F5;
+    margin-right: none;
+
+}
+
+.error-message {
+    color: red;
+}
+
+button {
+    border: none;
+}
+
+.form-field {
+    background-color: #ffffffda;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    color: black;
+    border: none;
+    text-align: center;
+    flex-direction: column;
+    padding-top: 5%;
+
+}

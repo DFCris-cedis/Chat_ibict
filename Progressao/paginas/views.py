@@ -1,6 +1,6 @@
 import sys
-#sys.path.append('home/milenasilva/Chat_ibict/Progressao/')
-sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
+#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
@@ -81,46 +81,57 @@ def login_success(sender, user, request, **kwargs):
 
 logger = logging.getLogger(__name__)
 
-# def custom_login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return JsonResponse({'success': True, 'message': 'Login bem-sucedido'})
-#             else:
-#                 return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
-#     else:
-#         form = LoginForm()
-#     return render(request, 'login.html', {'form': form})
-
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm  # Supondo que LoginForm é importado corretamente
 
-def custom_login(request):
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from .forms import EmailForm
+
+
+from paginas.models import CustomUser  # Importe seu modelo de usuário personalizado
+
+def email_login(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = EmailForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            email = form.cleaned_data['email']
+            if CustomUser.objects.filter(email=email).exists():  # Use CustomUser aqui
+                request.session['email_for_login'] = email
+                return redirect('senha_login')
+            else:
+                return render(request, 'email_login.html', {'form': form, 'error': 'E-mail não encontrado'})
+    else:
+        form = EmailForm()
+    return render(request, 'email_login.html', {'form': form})
+
+# views.py
+
+from django.contrib.auth import authenticate, login
+from .forms import PasswordForm
+
+def senha_login(request):
+    email = request.session.get('email_for_login')
+    if not email:
+        # Redirecione para a página de e-mail se não houver e-mail na sessão
+        return redirect('email_login')
+
+    if request.method == 'POST':
+        form = PasswordForm(request.POST)
+        if form.is_valid():
+            user = authenticate(username=email, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                return JsonResponse({'success': True, 'redirect_url': '/home'})
+                # Redirecione para a página inicial ou painel após o login bem-sucedido
+                return redirect('home')
             else:
-                return JsonResponse({'success': False, 'message': 'Nome de usuário ou senha inválidos'})
-        else:
-            return JsonResponse({'success': False, 'message': 'Erro na validação do formulário'})
+                # Senha incorreta
+                return render(request, 'senha_login.html', {'form': form, 'error': 'Senha incorreta'})
     else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
-
-
+        form = PasswordForm()
+    return render(request, 'senha_login.html', {'form': form})
 
 
 def logout_view(request):
@@ -147,68 +158,6 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         else:
             # Redireciona para a tela de login
             return HttpResponseRedirect(reverse('login'))
-
-
-# def get_df():
-
-#     try:
-#         connection = psycopg2.connect(
-#             database="testy",
-#             user="postgres",
-#             password="SENHA",
-#             host="localhost",
-#             port="5432"
-#         )
-
-#         # Cria um cursor para executar consultas
-#         cursor = connection.cursor()
-
-#         # Executa a consulta
-#         query = """
-#                 SELECT "idSignificado"
-#                 FROM paginas_noun
-#                 WHERE "idSignificado" != '' AND test_id = (
-#                     SELECT MAX ("test_id")
-#                     FROM paginas_noun);
-#                 """
-#         cursor.execute(query)
-
-#         results = cursor.fetchall()
-
-#         for id in range(len(results)):
-#             results[id] = 'v'+results[id][0]
-#         # Fecha o cursor e a conexão
-#         cursor.close()
-        
-#         file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-#         #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-#         idsignificado = list(csv.reader(file, delimiter=","))
-#         file.close()
-
-#         idsignificado = [row[0] for row in idsignificado]
-
-#         for id in range(len(idsignificado)):
-#             idsignificado[id] = 'v'+idsignificado[id]
-
-#         df = pd.DataFrame(np.zeros((1, len(idsignificado))),
-#                           columns=idsignificado)
-#         df = df.astype(int)
-
-#         for id in results:
-#             df[id] = df[id] + 1
-
-#         with localconverter(robjects.default_converter + pandas2ri.converter):
-#             df = robjects.conversion.py2rpy(df)
-
-#     except psycopg2.Error as error:
-#         print("Erro ao conectar ao PostgreSQL:", error)
-
-#     finally:
-#         # Fecha a conexão com o banco de dados
-#         if 'connection' in locals():
-#             connection.close()
-
-#     return df
 
 import psycopg2
 import pandas as pd
@@ -246,7 +195,9 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         
-        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+       
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
 
@@ -280,7 +231,9 @@ warnings.simplefilter("ignore")
 def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
     
-    Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/DeepLearning_model_R_1670582405235_1")
+    #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
+    Modelo = h2o.load_model("/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1")
+    
     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
     
     return prevNN[0, 0]
@@ -296,55 +249,65 @@ def process():
 
     da = get_df()
     entrada = da
-    
-    # print(type(da))
-    # path_df = path_df = "C:/Users/milen/OneDrive/Documentos/DF/Modelos/df100x1x100Ocorrencias.csv"
-    # df_id = 'eef474adc4c2d494dca53fa6b3bd8211'
-    # df = pd.read_csv(path_df)
-    # entrada = df
-    # entrada = df.tail(1)
-    # entrada = entrada.drop(['Status'], axis=1)
 
     area = prevNN(entrada)
    
     print(area)
 
     if area == 'CIENCIAS SOCIAIS APLICADAS':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_CienciasSociaisAplicadas.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
 
     if area == 'CIENCIAS DA SAUDE':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/CienciasDaSaude_xgboost.pkl'
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_CienciasDaSaude.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
         
     if area == 'LINGUISTICA, LETRAS E ARTES':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_LinguisticaLetrasArtes.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
         
     if area == 'CIENCIAS EXATAS E DA TERRA':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_CienciasExatasDaTerra.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
         
     if area == 'MULTIDISCIPLINAR':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/Multidisciplinar_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_Multidisciplinar.csv')
+        # #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
+        # #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Multidisciplinar.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_Multidisciplinar.csv')
         
     if area == 'CIENCIAS HUMANAS':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/CienciasHumanas_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_CienciasHumanas.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasHumanas.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_CienciasHumanas.csv')
         
     if area == 'ENGENHARIAS':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/Engenharias_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_Engenharias.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Engenharias_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Engenharias.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/Engenharias_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_Engenharias.csv')
         
     if area == 'CIENCIAS BIOLOGICAS':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/CienciasBiologicas_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_CienciasBiologicas.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
         
     if area == 'CIENCIAS AGRARIAS':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/CienciasAgrarias_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/Progressao/Modelos/encoder_CienciasAgrarias.csv')
+        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
+        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
 
+        path_model = '/home/milenasilva/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
+        encoder = pd.read_csv('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
     
     sub = ''
 
@@ -361,11 +324,8 @@ def process():
 
     return f"""c("{sub}", "{area}")"""
 
-
-# Call the function within the main thread
 output = process()
 
-# Use the output as needed
 print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 
@@ -384,9 +344,9 @@ def home(request):
             title = form_instance.title
             form.save()
 
-            action = request.POST.get('action')
-
-            if action == 'pesquisar_en':
+            language = request.POST.get('language')
+            print(language)
+            if language == 'en':
                 result_eng = get_remote_works(title, abstract)
                 if len(result_eng) < 2:
                     area = 'Área não encontrada'
