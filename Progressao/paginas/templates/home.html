@@ -4,32 +4,136 @@
     <meta charset="UTF-8">
     <title>Contextus</title>
     <link rel="stylesheet" href="/static/css/home.css"/>
-    <script>
-      // Atualiza o valor do campo de idioma no formulário e o campo de título
-      function changeLanguage(language) {
-          document.getElementById('language').value = language;
-          localStorage.setItem('selectedLanguage', language); // Salva no Local Storage
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
-          // Exibe ou oculta o campo título com base no idioma
+    <script>
+      function changeLanguage(language) {
+          // Remove as propriedades de estilo dos botões
+          var buttons = document.querySelectorAll('.button-pesquisar');
+          buttons.forEach(function(button) {
+              button.style.backgroundColor = ''; // Remove a cor de fundo
+              button.style.color = ''; // Remove a cor do texto
+          });
+    
+          // Adiciona ou modifica as propriedades de estilo no botão clicado
+          var clickedButton = event.target;
+          if (language === 'en') {
+              clickedButton.style.backgroundColor = '#ccc'; // Cor de fundo azul para Inglês
+              clickedButton.style.color = '#000'; // Cor do texto branco para Inglês
+          } else {
+              clickedButton.style.backgroundColor = '#ccc'; // Cor de fundo cinza para Português
+              clickedButton.style.color = '#000'; // Cor do texto preto para Português
+          }
+    
+          // Resto do seu código para alterar o idioma
+          document.getElementById('language').value = language;
+          localStorage.setItem('selectedLanguage', language);
+    
           var titleField = document.querySelector('.campo-title');
+          var titleInput = document.getElementById('title');
+    
           if (titleField) {
-              titleField.style.display = language === 'en' ? 'block' : 'none';
+              if (language === 'en') {
+                  titleField.style.display = 'block';
+                  titleInput.required = true;
+              } else {
+                  titleField.style.display = 'none';
+                  titleInput.value = 'Digite seu título...';
+                  titleInput.required = false;
+              }
           }
       }
-
-      // Carrega a preferência de idioma do Local Storage ao abrir a página
+    </script>
+    
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
-          var savedLanguage = localStorage.getItem('selectedLanguage') || 'pt';
-          changeLanguage(savedLanguage); // Aplica a preferência de idioma salva
+          var isDirectAccess = !document.referrer || document.referrer === "";
+          if (isDirectAccess) {
+              // Se for um acesso direto, ocultar o campo de título
+              var titleField = document.querySelector('.campo-title');
+              if (titleField) {
+                  titleField.style.display = 'none';
+              }
+          }
       });
     </script>
+    
+    
+    <style>
+      /* Estilos do loader */
+      #loader {
+        display: none;
+        position: fixed;
+        top: 40%; /* Ajuste esta porcentagem conforme necessário */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        text-align: center;
+        color: #ffffff;
+    }
+    
+      /* Sobreposição escura */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 3, 0.9);
+        z-index: 9998;
+        display: none;
+      }
+    
+      /* Spinner animado */
+      .loader-spinner {
+        border: 4px solid #3498db;
+        border-top: 4px solid #f3f3f3;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        animation: spin 2s linear infinite;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    
+      .loader-info {
+        text-align: center;
+        color: #ffffff;
+    }
+    
+    /* Texto do loader */
+    .loader-text {
+        font-weight: bold;
+        margin-top: 400px;
+        
+    }
+    
+      /* Descrição do loader */
+      .loader-description {
+        
+        text-align: center;
+        color: #ffffff;
+    }
+    
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+    </style>
+    
 </head>
 <body>
  
   <a class="leave" href="{% url 'login' %}">
     <p> Sair &nbsp</p> 
   </br>
-    <img src="/static/img/leave.png"  class="button-leave"/>
+    <img src="/static/img/exit.png"  class="button-leave"/>
   
   </a>
     <div class="option">
@@ -47,20 +151,31 @@
                     <form method="POST" class="form-container">
                         {% csrf_token %}
                         <input type="hidden" id="language" name="language" value="pt">
-
-                        <div class="form-field campo-title" style="display: none;">
-                        {{ form.title.label_tag }} {{ form.title }}
+                      <div class="form-field campo-title" style="display: none;">
+                          {{ form.title.label_tag }} <input type="text" id="title" name="title" value="{{ form.title.value }}">
+                        
                     </div>
                     
                     </br>
-                      <div class="form-field campo-phrasetest">
+                      <div class="form-field campo-phrasetest"id="phraseTest">
                         {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+                      
+
                       </div>
+                      <button class="button-delete" type="button" onclick="clearTextarea()">
+                        <i class="fas fa-times"></i> Apagar Texto
+                      </button>
                     </br>
                     <div class="button-container">
-                      <button class="button-next" type="submit">Buscar</button>
+                      <button class="button-next" onclick="showLoader()">Buscar</button>
+      
+                      
                     </div>
                       </form>
+                      
+                      
+
+      
                     </div> 
 
             </div>        
@@ -68,7 +183,7 @@
 
         <div class="about-content">
                
-          <p class="button-colaboradores"> Colaboradores:</p>
+          <p class="button-colaboradores"> Uma parceria:</p>
           
          <br/>
           <p class="button-logo">
@@ -83,7 +198,37 @@
               </a>             
           <p>
           
-      </div> 
-      </div>
+            <div id="overlay" class="overlay">
+              <div id="loader" class="loader-spinner"></div>
+              <div class="loader-info">
+                  <div class="loader-text">Carregando...</div>
+                  <div class="loader-description">Aguarde um momento</div>
+              </div>
+          </div>
+          
+          
 </body>
 </html>
+
+<script>
+
+function showLoader() {
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
+}
+
+document.querySelector('.form-container').addEventListener('submit', function(e) {
+  // Mostrar o loader quando o formulário é enviado
+  showLoader();
+});
+
+</script>
+<script>
+  function clearTextarea() {
+    // Aqui, é necessário selecionar o textarea correto dentro do div com id 'phraseTest'
+    var textarea = document.getElementById("phraseTest").querySelector('textarea');
+    if (textarea) {
+      textarea.value = ""; // Limpa o conteúdo do textarea
+    }
+  }
+</script>
