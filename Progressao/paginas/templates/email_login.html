@@ -45,14 +45,18 @@
             <button class="button-history" type="submit"> 
                 <a href="{% url 'conheca_mais' %}">
                     <img src="/static/img/lampada.png"/>
-                    Conheça mais sobre o Contextus
+                    &nbsp; Conheça mais sobre o Contextus
                 </a>
             </button>
 
-              
+            <!-- <br> -->
             
-           <br/>
-            <button class="button-history" type="submit"><img src="/static/img/email.png"/> &nbsp Contate-nos!</button>
+            <button class="button-history" type="submit">
+                <a href="{% url 'contate_nos' %}">
+                    <img src="/static/img/email.png"/> 
+                    &nbsp; Contate-nos!
+                </a>
+            </button>
             
         </div> 
     </div>
