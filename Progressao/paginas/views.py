@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('./Progressao/')
 #sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
@@ -231,6 +232,7 @@ warnings.simplefilter("ignore")
 def prevNN(abstract):
     localH2o = h2o.init(nthreads=-1)
     
+
     #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
     Modelo = h2o.load_model("./Progressao/static/modelos/DeepLearning_model_R_1670582405235_1")
     
@@ -255,6 +257,7 @@ def process():
     print(area)
 
     if area == 'CIENCIAS SOCIAIS APLICADAS':
+
         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
         path_model = './Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
@@ -301,13 +304,13 @@ def process():
         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
         path_model = './Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
-        
-    if area == 'CIENCIAS AGRARIAS':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
 
+    if area == 'CIENCIAS AGRARIAS':
+        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
+        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
         path_model = './Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
+
     
     sub = ''
 
