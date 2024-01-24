@@ -73,3 +73,6 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver
 ```
+### Visualizando a aplicao
+
+Agora acesse o site `contextus.ibict.br`, bom desenvolvimento!
