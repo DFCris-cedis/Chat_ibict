@@ -149,60 +149,21 @@ form input {
         /* background-color: #D7844C; */
     }
 
-
-    .login-container {
-        margin-top: 20vw;
+    .body-content {
         width: 80vw;
-    }
-
-    .about-content {
-        width: 80vw;
-        margin-top: 6vw;
-
-    }
-
-    .option {
-        width: 55vw;
-        margin-left: 25vw;
-        margin-top: 12vw;
-
-        /* font-size: 22px; */
-    }
-
-    .option p {
-
-        font-size: 28px;
-    }
-
-    .leave {
-        margin-top: 20px;
-        width: 18vw;
-        height: 2vh;
-        font-size: 20px;
-        font-weight: 400;
-    }
-
-    .leave p {
-
-        font-size: 30px;
-    }
-
-    textarea {
-        font-size: 30px;
-    }
-
-    .button-logo {
+        height: 30vh;
+        background-color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 90px;
-        font-size: 30px;
-        margin: none;
+        flex-direction: column;
     }
 
-    .logos {
-        height: 60px;
-        /* width: 250px; */
+    .login-container {
+        /* margin-top: 20vw; */
+        width: 80vw;
+        height: 25vh;
+        display: flex;
     }
 
     .button-next {
@@ -211,24 +172,15 @@ form input {
         font-size: 30px;
     }
 
-    .button-delete {
-        height: 45px;
-        width: 180px;
-        font-size: 22px;
-    }
-
-    .button-colaboradores {
-        font-size: 32px;
-    }
-
-    .button-pesquisar {
-        height: 45px;
-        width: 180px;
-        font-size: 30px;
-    }
-
     img {
         width: 250px;
+    }
+
+    .img-back {
+        height: auto;
+        width: 7%;
+        padding-left: 25px;
+
     }
 
 }
