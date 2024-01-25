@@ -301,13 +301,13 @@ button {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 80px;
+        height: 90px;
         font-size: 30px;
         margin: none;
     }
 
     .logos {
-        height: 150px;
+        height: 50px;
     }
 
     .button-next {
