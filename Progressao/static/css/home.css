@@ -323,13 +323,13 @@ button {
     }
 
     .button-colaboradores {
-        font-size: 40px;
+        font-size: 32px;
     }
 
     .button-pesquisar {
         height: 45px;
-        width: 160px;
-        font-size: 20px;
+        width: 180px;
+        font-size: 30px;
     }
 
     img {
