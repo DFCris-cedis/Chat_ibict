@@ -60,7 +60,16 @@ body {
     font-size: 15px;
     color: black;
     border: none;
+    margin-bottom: 10px;
+    padding-top: 0%;
+    /* padding-bottom: 10px; */
+}
 
+.button-history a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    /* color: black; */
 }
 
 .login-content {
