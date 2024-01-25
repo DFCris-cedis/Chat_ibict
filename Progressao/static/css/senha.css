@@ -67,7 +67,7 @@ label {
     display: none;
 }
 
-.button-next {
+h2 {
 
     font-family: Inter;
     font-size: 24px;
@@ -187,7 +187,12 @@ form input {
     }
 
     h2 {
-        font-size: 25px;
+
+        font-family: Inter;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
     }
 
 }
