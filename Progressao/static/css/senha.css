@@ -164,12 +164,15 @@ form input {
         width: 80vw;
         height: 25vh;
         display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
     }
 
     .button-next {
-        height: 55px;
+        height: 60px;
         /* width: 260px; */
-        font-size: 30px;
+        font-size: 25px;
     }
 
     img {
@@ -178,9 +181,13 @@ form input {
 
     .img-back {
         height: auto;
-        width: 7%;
+        width: 6%;
         padding-left: 25px;
 
+    }
+
+    h2 {
+        font-size: 25px;
     }
 
 }
