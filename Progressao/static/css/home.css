@@ -307,8 +307,8 @@ button {
     }
 
     .logos {
-        height: 70px;
-        width: 250px;
+        height: 60px;
+        /* width: 250px; */
     }
 
     .button-next {
