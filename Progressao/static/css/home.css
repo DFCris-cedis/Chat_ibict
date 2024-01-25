@@ -241,3 +241,48 @@ a {
 button {
     border: none;
 }
+
+@media (max-aspect-ratio: 4/3) {
+    body {
+        background-image: url(library.jpg);
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-repeat: no-repeat;
+        background-color: #D7844C;
+    }
+
+
+    .login-container {
+        margin-top: 6vw;
+        width: 80vw;
+    }
+
+    .about-content {
+        width: 80vw;
+    }
+
+    .option {
+        width: 40vw;
+        margin-left: 33vw;
+    }
+
+    .leave {
+        margin-top: 20px;
+        width: 15vw;
+    }
+
+    .button-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .button-next {
+        height: 35px;
+        font-size: 16px;
+    }
+
+}

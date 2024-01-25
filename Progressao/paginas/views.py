@@ -197,7 +197,7 @@ def get_df():
         cursor.close()
         
         #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("./Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
        
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
@@ -221,111 +221,342 @@ def get_df():
     return df
 
 
+# from sklearn.preprocessing import LabelEncoder
+# import pandas as pd
+# import warnings
+# import joblib
+# import h2o
+
+# warnings.simplefilter("ignore")
+
+# def prevNN(abstract):
+#     localH2o = h2o.init(nthreads=-1)
+    
+
+#     #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
+#     Modelo = h2o.load_model("./Progressao/static/modelos/DeepLearning_model_R_1670582405235_1")
+    
+#     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
+    
+#     return prevNN[0, 0]
+
+# def prevXGB(abstract, path_modelo):
+#     modelo = joblib.load(path_modelo)
+#     prevXGB = modelo.predict(abstract)
+
+#     return prevXGB
+
+
+# def process():
+
+#     da = get_df()
+#     entrada = da
+
+#     area = prevNN(entrada)
+   
+#     print(area)
+
+#     if area == 'CIENCIAS SOCIAIS APLICADAS':
+
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
+#         path_model = './Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
+
+#     if area == 'CIENCIAS DA SAUDE':
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
+#         path_model = './Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
+        
+#     if area == 'LINGUISTICA, LETRAS E ARTES':
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
+#         path_model = './Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
+        
+#     if area == 'CIENCIAS EXATAS E DA TERRA':
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
+#         path_model = './Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
+        
+#     if area == 'MULTIDISCIPLINAR':
+#         # #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
+#         # #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Multidisciplinar.csv')
+#         path_model = './Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_Multidisciplinar.csv')
+        
+#     if area == 'CIENCIAS HUMANAS':
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasHumanas.csv')
+#         path_model = './Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasHumanas.csv')
+        
+#     if area == 'ENGENHARIAS':
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Engenharias_xgboost.pkl' 
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Engenharias.csv')
+#         path_model = './Progressao/static/Modelos/Engenharias_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_Engenharias.csv')
+        
+#     if area == 'CIENCIAS BIOLOGICAS':
+#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
+#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
+#         path_model = './Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
+
+#     if area == 'CIENCIAS AGRARIAS':
+#         path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
+#         encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
+#         path_model = './Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
+#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
+
+    
+#     sub = ''
+
+#     sub = prevXGB(entrada, path_model)
+
+#     label_encoder = LabelEncoder()
+#     y_encoded = label_encoder.fit_transform(encoder)
+
+#     sub = label_encoder.inverse_transform(sub)
+#     sub = sub[0]
+
+#     print(f"""c("{sub}", "{area}")""")
+
+
+#     return f"""c("{sub}", "{area}")"""
+
+# output = process()
+
 from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from catboost import CatBoostClassifier
+from xgboost import XGBClassifier
 import pandas as pd
+import psycopg2
 import warnings
 import joblib
 import h2o
+import time
 
 warnings.simplefilter("ignore")
+localH2o = h2o.init(nthreads = -1)
 
-def prevNN(abstract):
-    localH2o = h2o.init(nthreads=-1)
+def get_best_models(area, quant):
+    try:
+        connection = psycopg2.connect(
+            database="testy",
+            user="postgres",
+            password="SENHA",
+            host="127.0.0.1",
+            port="5432"
+        )
+
+        # Cria um cursor para executar consultas
+        cursor = connection.cursor()
+
+        # Executa a consulta
+        query = f"""
+                SELECT "model", "algorithm", "accuracy", "precision", "recall", "f1-score" FROM public.metrics
+                WHERE "area" = '{area}'
+                ORDER BY "f1-score" DESC LIMIT {quant};
+                """
+        cursor.execute(query)
+
+        # Recupera os resultados da consulta como uma lista de tuplas
+        results = cursor.fetchall()
+
+        # Cria um DataFrame pandas com os resultados
+        df_modelos = pd.DataFrame(results, columns=[desc[0] for desc in cursor.description])
+
+        # Fecha o cursor e a conexão
+        cursor.close()
+
+    except psycopg2.Error as error:
+        print("Erro ao conectar ao PostgreSQL:", error)
+
+    finally:
+        # Fecha a conexão com o banco de dados
+        if 'connection' in locals():
+            connection.close()
+        
+        return df_modelos
+    
+def get_prevision(row, entrada):
+    modelo = row[1]
+
+    if modelo == "Random Forest" :
+        resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    if modelo == 'AdaBoost':
+        resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    if modelo == 'XGBoost':
+        resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    if modelo == 'CatBoost':
+        resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    if modelo == 'Decision Tree':
+        resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    if modelo == 'GaussianNB':
+        resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    if modelo == 'Logistic Regression':
+        resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        
+    if modelo == 'SVC':
+        resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+
+    return resultado
+
+def prevH2O(abstract):
+    model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
+    prev = model.predict(h2o.H2OFrame(abstract))
+    del(model)
+    return prev[0, 0]
+
+def prevXGB(abstract, path_model):
+    model, encoder, _, _ = joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit_transform(encoder)
+    
+    prev = label_encoder.inverse_transform(prev)
+    del(model, encoder)
+    return prev[0]
+
+def prevADA(abstract, path_model):
+    model, encoder, _, _ = joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit_transform(encoder)
+    
+    prev = label_encoder.inverse_transform(prev)
+    del(model, encoder)
+    return prev[0]
+
+def prevCAT(abstract, path_model):
+    model, _= joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+    del(model)
+    return prev[0][0]
+
+def prevDT(abstract, path_model):
+    model, encoder, _, _ = joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit_transform(encoder)
+    
+    prev = label_encoder.inverse_transform(prev)
+    del(model, encoder)
+    return prev[0]
+
+def prevGNB(abstract, path_model):
+    model, encoder, _ = joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit_transform(encoder)
+    
+    prev = label_encoder.inverse_transform(prev)
+    del(model, encoder)
+    return prev[0]
+
+def prevLOG(abstract, path_model):
+    model, encoder, _, _ = joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit_transform(encoder)
+    
+    prev = label_encoder.inverse_transform(prev)
+    del(model, encoder)
+    return prev[0]
+
+def prevSVC(abstract, path_model):
+    model, encoder, _, _ = joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+
+    label_encoder = LabelEncoder()
+    label_encoder.fit_transform(encoder)
+    
+    prev = label_encoder.inverse_transform(prev)
+    del(model, encoder)
+    return prev[0]
+
+def prevRF(abstract, path_model):
+    model, _= joblib.load(path_model)
+    
+    prev = model.predict(abstract)
+    del(model)
+    return prev[0]
+
+def prev(entrada, qnt_models = 5):
+    start = time.time()
+    
+    area = prevH2O(entrada)
+    
+    models = get_best_models(area, min(qnt_models, 8))
+    
+    results = []
+    
+    for index, row in models.iterrows():
+        results.append(get_prevision(row, entrada))
     
 
-    #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
-    Modelo = h2o.load_model("./Progressao/static/modelos/DeepLearning_model_R_1670582405235_1")
+    map = {}
+
+    for i, result in enumerate(results):
+        map[result] = map.get(result, 0) + models['f1-score'][i]
+        
+    sub, max_value = max(map.items(), key=lambda x: x[1])
+
+    ans = [f"""c("{sub}", "{area}")"""]
     
-    prevNN = Modelo.predict(h2o.H2OFrame(abstract))
+    # ans_total_values = ans.append(results)
+    # print(ans_total_values)
+    # end = time.time()
+    # print(f"""tempo total para previsão {end - start}s""")
     
-    return prevNN[0, 0]
+    return ans
 
-def prevXGB(abstract, path_modelo):
-    modelo = joblib.load(path_modelo)
-    prevXGB = modelo.predict(abstract)
+# path_df = 'C:/Users/milen/OneDrive/Documentos/df.100x1x100.Ocorrencias.csv'
+# df_id = 'eef474adc4c2d494dca53fa6b3bd8211'
 
-    return prevXGB
+# df = pd.read_csv(path_df)
 
+# df.head(1)
 
+# entrada = df.tail(1)
+# entrada = entrada.drop(['Status'], axis=1)
+
+# entrada
+
+# prev(entrada)
 def process():
 
     da = get_df()
     entrada = da
-
-    area = prevNN(entrada)
-   
-    print(area)
-
-    if area == 'CIENCIAS SOCIAIS APLICADAS':
-
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
-        path_model = './Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
-
-    if area == 'CIENCIAS DA SAUDE':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
-        path_model = './Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
-        
-    if area == 'LINGUISTICA, LETRAS E ARTES':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
-        path_model = './Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
-        
-    if area == 'CIENCIAS EXATAS E DA TERRA':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
-        path_model = './Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
-        
-    if area == 'MULTIDISCIPLINAR':
-        # #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
-        # #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Multidisciplinar.csv')
-        path_model = './Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_Multidisciplinar.csv')
-        
-    if area == 'CIENCIAS HUMANAS':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasHumanas.csv')
-        path_model = './Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasHumanas.csv')
-        
-    if area == 'ENGENHARIAS':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Engenharias_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Engenharias.csv')
-        path_model = './Progressao/static/Modelos/Engenharias_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_Engenharias.csv')
-        
-    if area == 'CIENCIAS BIOLOGICAS':
-        #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
-        #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
-        path_model = './Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
-
-    if area == 'CIENCIAS AGRARIAS':
-        path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
-        encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
-        path_model = './Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
-        encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
-
-    
-    sub = ''
-
-    sub = prevXGB(entrada, path_model)
-
-    label_encoder = LabelEncoder()
-    y_encoded = label_encoder.fit_transform(encoder)
-
-    sub = label_encoder.inverse_transform(sub)
-    sub = sub[0]
-
-    print(f"""c("{sub}", "{area}")""")
-
-
-    return f"""c("{sub}", "{area}")"""
+    result = prev(entrada)
+    return result
 
 output = process()
 
@@ -386,10 +617,16 @@ def home(request):
                 resultado = process()
                 if resultado:
                     print(f"Resultado de process: {resultado}")
-                    resultado_limpo = re.sub(r'^\w+\(|\)$|\"', '', resultado)
-                    partes = resultado_limpo.split(',')
-                    subarea = partes[0].strip()
-                    area = partes[1].strip()
+                    # cleaned_string = re.sub(r"^\['c\(\"|\"\)\']$", '', resultado)
+                    # resultados = re.split(r'",\s*"', cleaned_string)
+                    # print(type(resultado_limpo))
+                    # partes = resultado_limpo.split(',')
+                    # subarea = resultado[0].strip()
+                    # area = resultado[1].strip()
+                    
+                    subarea = resultado
+                    area = resultado
+                    
 
                 # Preparando o contexto para o template
             context = {'area': area,'subarea': subarea}
