@@ -396,32 +396,32 @@ def get_prevision(row, entrada):
         #resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'AdaBoost':
-        #resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'XGBoost':
-        #resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'CatBoost':
-        #resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Decision Tree':
-        #resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'GaussianNB':
-        #resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Logistic Regression':
-        #resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
         
     if modelo == 'SVC':
-        #resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     return resultado
 
