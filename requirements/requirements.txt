@@ -166,3 +166,4 @@ mock
 spacy
 scikit-learn==1.3.2
 joblib==1.3.2
+catboost==1.2.2
