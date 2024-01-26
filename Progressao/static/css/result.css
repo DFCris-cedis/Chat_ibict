@@ -250,6 +250,7 @@ button {
     .login-container {
         margin-top: 20vw;
         width: 80vw;
+        height: 60vh;
     }
 
     .about-content {
@@ -273,12 +274,9 @@ button {
 
     .leave p {
 
-        font-size: 30px;
+        font-size: 40px;
     }
 
-    textarea {
-        font-size: 30px;
-    }
 
     .button-logo {
         display: flex;
