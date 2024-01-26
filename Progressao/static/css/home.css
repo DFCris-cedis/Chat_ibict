@@ -235,11 +235,28 @@ a {
 }
 
 .error-message {
-    color: red;
+    color: #ca5d5d;
+    font-size: 12px;
 }
 
 button {
     border: none;
+}
+
+.button-next-disabled {
+    background-color: #ccc;
+    /* Cor de fundo para o botão desabilitado */
+    color: #666;
+    /* Cor do texto para o botão desabilitado */
+    cursor: not-allowed;
+}
+
+.button-next-enabled {
+    background-color: #0067B8;
+    /* Cor de fundo para o botão habilitado */
+    color: white;
+    /* Cor do texto para o botão habilitado */
+    cursor: pointer;
 }
 
 @media (max-aspect-ratio: 4/3) {

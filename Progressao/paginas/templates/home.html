@@ -147,6 +147,7 @@
         <div class="login-container">
             <div class="login-content">
               <img src="/static/img/logo.png"  class="logo"/> 
+              <p id="mensagemErro" class="error-message" style="color: red;"></p>
                 <div class="login-email">
                     <form method="POST" class="form-container">
                         {% csrf_token %}
@@ -159,6 +160,7 @@
                     </br>
                       <div class="form-field campo-phrasetest"id="phraseTest">
                         {{ form.phraseTest.label_tag }} {{ form.phraseTest }}
+                        
                       
 
                       </div>
@@ -166,11 +168,14 @@
                         <i class="fas fa-times"></i> Apagar Texto
                       </button>
                     </br>
-                    <div class="button-container">
+                    {% comment %} <div class="button-container">
                       <button class="button-next" onclick="showLoader()">Buscar</button>
       
                       
-                    </div>
+                    </div> {% endcomment %}
+                    <div class="button-container">
+                      <button class="button-next" id="botaoBuscar" disabled>Buscar</button>
+                  </div>
                       </form>
                       
                       
@@ -205,7 +210,34 @@
                   <div class="loader-description">Aguarde um momento</div>
               </div>
           </div>
-          
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var texto = document.querySelector('#phraseTest textarea');
+                var botaoBuscar = document.getElementById('botaoBuscar');
+                var mensagemErro = document.getElementById('mensagemErro');
+    
+                // Função para validar o texto e controlar o estado do botão
+                function validarTexto() {
+                    if (texto.value.length < 100 || texto.value.length > 1500) {
+                        mensagemErro.innerText = 'O texto deve ter entre 100 e 1500 caracteres.';
+                        botaoBuscar.disabled = true;
+                        botaoBuscar.classList.remove('button-next-enabled');
+                        botaoBuscar.classList.add('button-next-disabled');
+                    } else {
+                        mensagemErro.innerText = '';
+                        botaoBuscar.disabled = false;
+                        botaoBuscar.classList.remove('button-next-disabled');
+                        botaoBuscar.classList.add('button-next-enabled');
+                    }
+                }
+    
+                // Evento para verificar o texto a cada entrada
+                texto.addEventListener('input', validarTexto);
+    
+                // Inicializar a validação na carga
+                validarTexto();
+            });
+        </script>
           
 </body>
 </html>
@@ -231,4 +263,8 @@ document.querySelector('.form-container').addEventListener('submit', function(e)
       textarea.value = ""; // Limpa o conteúdo do textarea
     }
   }
+</script>
+<scrip>
+
+
 </script>
