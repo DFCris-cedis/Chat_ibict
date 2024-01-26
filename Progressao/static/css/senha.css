@@ -173,6 +173,7 @@ form input {
         height: 60px;
         /* width: 260px; */
         font-size: 25px;
+        border: none;
     }
 
     img {
@@ -189,10 +190,14 @@ form input {
     h2 {
 
         font-family: Inter;
-        font-size: 24px;
+        font-size: 30px;
         font-style: normal;
-        font-weight: 300;
+        font-weight: 500;
         line-height: normal;
+    }
+
+    .form-control {
+        font-size: 25px;
     }
 
 }
