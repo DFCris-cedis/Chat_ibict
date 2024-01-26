@@ -60,7 +60,14 @@ body {
     font-size: 15px;
     color: black;
     border: none;
+    margin-bottom: 3%;
+}
 
+.button-history a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    /* color: black; */
 }
 
 .login-content {
