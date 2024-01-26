@@ -518,34 +518,34 @@ def prevRF(abstract, path_model):
     del(model)
     return prev[0]
 
-def prev(entrada, qnt_models = 5):
-    start = time.time()
+# def prev(entrada, qnt_models = 5):
+#     start = time.time()
     
-    area = prevH2O(entrada)
+#     area = prevH2O(entrada)
     
-    models = get_best_models(area, min(qnt_models, 8))
+#     models = get_best_models(area, min(qnt_models, 8))
     
-    results = []
+#     results = []
     
-    for index, row in models.iterrows():
-        results.append(get_prevision(row, entrada))
+#     for index, row in models.iterrows():
+#         results.append(get_prevision(row, entrada))
     
 
-    map = {}
+#     map = {}
 
-    for i, result in enumerate(results):
-        map[result] = map.get(result, 0) + models['f1-score'][i]
+#     for i, result in enumerate(results):
+#         map[result] = map.get(result, 0) + models['f1-score'][i]
         
-    sub, max_value = max(map.items(), key=lambda x: x[1])
+#     sub, max_value = max(map.items(), key=lambda x: x[1])
 
-    ans = [sub, area]
+#     ans = [sub, area]
     
-    # ans_total_values = ans.append(results)
-    # print(ans_total_values)
-    # end = time.time()
-    # print(f"""tempo total para previsão {end - start}s""")
+#     # ans_total_values = ans.append(results)
+#     # print(ans_total_values)
+#     # end = time.time()
+#     # print(f"""tempo total para previsão {end - start}s""")
     
-    return ans
+#     return ans
 
 # path_df = 'C:/Users/milen/OneDrive/Documentos/df.100x1x100.Ocorrencias.csv'
 # df_id = 'eef474adc4c2d494dca53fa6b3bd8211'
@@ -558,6 +558,38 @@ def prev(entrada, qnt_models = 5):
 # entrada = entrada.drop(['Status'], axis=1)
 
 # entrada
+def prev(entrada, qnt_models=5):
+    start = time.time()
+
+    area = prevH2O(entrada)
+
+    models = get_best_models(area, min(qnt_models, 8))
+
+    results = []
+
+    for index, row in models.iterrows():
+        results.append(get_prevision(row, entrada))
+
+    map = {}
+
+    for i, result in enumerate(results):
+        map[result] = map.get(result, 0) + models['f1-score'][i]
+
+    # Check if map is not empty
+    if map:
+        sub, max_value = max(map.items(), key=lambda x: x[1])
+    else:
+        # Handle the empty case - either set default values, or handle it differently
+        sub, max_value = "Não Encontrado", 0  # Example default values
+
+    ans = [sub, area]
+
+    # ans_total_values = ans.append(results)
+    # print(ans_total_values)
+    # end = time.time()
+    # print(f"""tempo total para previsão {end - start}s""")
+
+    return ans
 
 # prev(entrada)
 def process():
