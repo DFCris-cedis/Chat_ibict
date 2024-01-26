@@ -258,15 +258,7 @@ button {
 
     }
 
-    .option {
-        width: 55vw;
-        margin-left: 25vw;
-        margin-top: 12vw;
-
-        /* font-size: 22px; */
-    }
-
-    .option p {
+    .form-field p {
 
         font-size: 28px;
     }
@@ -304,8 +296,8 @@ button {
 
     .button-next {
         height: 60px;
-        /* width: 260px; */
-        font-size: 25px;
+        width: 260px;
+        font-size: 30px;
         border: none;
         font-weight: 500;
     }
