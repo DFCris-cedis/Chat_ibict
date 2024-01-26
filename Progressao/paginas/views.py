@@ -588,13 +588,13 @@ def prev(entrada, qnt_models=5):
     # print(ans_total_values)
     # end = time.time()
     # print(f"""tempo total para previsão {end - start}s""")
-    ans_total_values = ans + results
+    # ans_total_values = ans + results
 
-    # Print combined results
-    print("Combined Results:", ans_total_values)
+    # # Print combined results
+    # print("Combined Results:", ans_total_values)
 
-    end = time.time()
-    print(f"Total time for prediction: {end - start}s")
+    # end = time.time()
+    # print(f"Total time for prediction: {end - start}s")
 
     return ans
 
