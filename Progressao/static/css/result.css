@@ -250,7 +250,7 @@ button {
     .login-container {
         margin-top: 20vw;
         width: 80vw;
-        height: 60vh;
+        height: 40vh;
     }
 
     .about-content {
@@ -282,7 +282,7 @@ button {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 90px;
+        height: 80px;
         font-size: 30px;
         margin: none;
     }
