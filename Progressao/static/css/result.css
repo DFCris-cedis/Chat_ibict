@@ -303,9 +303,11 @@ button {
     }
 
     .button-next {
-        height: 55px;
+        height: 60px;
         /* width: 260px; */
-        font-size: 30px;
+        font-size: 25px;
+        border: none;
+        font-weight: 500;
     }
 
     .button-delete {
