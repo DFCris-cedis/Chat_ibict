@@ -3,12 +3,24 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from paginas import views
 from paginas.views import CustomPasswordResetConfirmView
+# from .views import SignUpNameView, SignUpEmailView, SignUpPasswordView
+
 
 urlpatterns = [
     path('', views.home, name='home_root'),
     path('', include('paginas.urls', namespace='home')),
     # path('login/', views.custom_login, name='login'),
-    path('signup/', views.signup_view, name='signup'),
+    # path('signup/name/', SignUpNameView.as_view(), name='sign_up_name'),
+    # path('signup/email/', SignUpEmailView.as_view(), name='sign_up_email'),
+    # path('signup/password/', SignUpPasswordView.as_view(), name='sign_up_password'),
+
+    path('signup/email/', views.signup_email, name='signup_email'),
+    path('signup/name/', views.signup_name, name='signup_name'),
+    path('signup/password/', views.signup_password, name='signup_password'),
+    # Adicione outras URLs necessárias aqui
+
+
+    # path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout_view'),
     path('home/', include('paginas.urls')),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),

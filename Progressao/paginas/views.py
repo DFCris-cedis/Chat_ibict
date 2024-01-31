@@ -1,7 +1,7 @@
 import sys
 
-sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
-#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+#sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
+sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
@@ -48,21 +48,135 @@ import re
 
 User = get_user_model()
  
-def signup_view(request):
+# def signup_view(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active = True
+#             user.save()
+#             raw_password = form.cleaned_data.get('password1')
+#             user = authenticate(email=user.email, password=raw_password)
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'signup.html', {'form': form})
+from django.shortcuts import render, redirect
+from .forms import EmailForm
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .models import CustomUser
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .models import CustomUser
+from .forms import UserPasswordCreationForm
+
+# def signup_email(request):
+#     if request.method == 'POST':
+#         form = EmailForm(request.POST)
+#         if form.is_valid():
+#             request.session['email'] = form.cleaned_data['email']
+#             return redirect('signup_name')
+#     else:
+#         form = EmailForm()
+#     return render(request, 'signup_email.html', {'form': form})
+def signup_email(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = EmailForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = True
-            user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=user.email, password=raw_password)
-            login(request, user)
+            email = form.cleaned_data['email']
+            if CustomUser.objects.filter(email=email).exists():
+                # Se o e-mail já existir, adicione um erro ao formulário
+                form.add_error('email', 'Um usuário com este e-mail já existe.')
+            else:
+                # O e-mail não existe no banco de dados, pode prosseguir com o cadastro
+                # Salve o e-mail na sessão ou continue com o processo de cadastro
+                request.session['email_for_signup'] = email
+                return redirect('signup_name')  # Direcione para a próxima etapa do cadastro
+        # Se o formulário não for válido ou se o e-mail já existir
+        return render(request, 'signup_email.html', {'form': form})
+    else:
+        form = EmailForm()
+        return render(request, 'signup_email.html', {'form': form})
+
+
+from .forms import NameForm
+
+def signup_name(request):
+    if request.method == 'POST':
+        form = NameForm(request.POST)
+        if form.is_valid():
+            request.session['first_name'] = form.cleaned_data['first_name']
+            request.session['last_name'] = form.cleaned_data['last_name']
+            return redirect('signup_password')
+    else:
+        form = NameForm()
+    return render(request, 'signup_name.html', {'form': form})
+
+
+# def signup_password(request):
+#     if request.method == 'POST':
+#         form = UserPasswordCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(
+#                 email=request.session.get('email'),
+#                 first_name=request.session.get('first_name'),
+#                 last_name=request.session.get('last_name')
+#             )
+#             # Redirecionar para a página inicial ou outra página desejada
+#             return redirect('home')
+#     else:
+#         form = UserPasswordCreationForm()
+
+#     return render(request, 'signup_password.html', {'form': form})
+def signup_password(request):
+    User = get_user_model()
+    if request.method == 'POST':
+        form = UserPasswordCreationForm(request.POST)
+        if form.is_valid():
+            # Usar a chave correta para recuperar o e-mail da sessão
+            email = request.session.get('email_for_signup')
+            first_name = request.session.get('first_name')
+            last_name = request.session.get('last_name')
+
+            if not email:
+                form.add_error(None, 'O campo de e-mail deve ser fornecido.')
+                return render(request, 'signup_password.html', {'form': form})
+
+            password = form.cleaned_data['password1']
+            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, password=password)
+            
+            del request.session['email_for_signup'], request.session['first_name'], request.session['last_name']
             return redirect('home')
     else:
-        form = CustomUserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+        form = UserPasswordCreationForm()
 
+    return render(request, 'signup_password.html', {'form': form})
+
+
+
+# from .forms import CustomUserCreationForm
+# from .models import CustomUser
+
+# def signup_password(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.email = request.session.get('email')
+#             user.first_name = request.session.get('first_name')
+#             user.last_name = request.session.get('last_name')
+#             user.save()
+#             # Aqui você pode adicionar o login do usuário
+#             return redirect('home')  # Substitua 'home' pelo nome da sua URL de destino
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'signup_password.html', {'form': form})
+
+
+#----------------------------------------------------------------
 
 def home(request):
     if request.method == 'POST':
@@ -196,8 +310,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         
-        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
        
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
@@ -392,42 +506,42 @@ def get_prevision(row, entrada):
     modelo = row[1]
 
     if modelo == "Random Forest" :
-        resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'AdaBoost':
-        resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'XGBoost':
-        resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'CatBoost':
-        resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Decision Tree':
-        resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'GaussianNB':
-        resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Logistic Regression':
-        resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
         
     if modelo == 'SVC':
-        resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     return resultado
 
 def prevH2O(abstract):
-    model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
-    #model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
+    #model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
     prev = model.predict(h2o.H2OFrame(abstract))
     del(model)
     return prev[0, 0]
