@@ -255,7 +255,46 @@ def logout_view(request):
     logger.info('User logged out successfully')
     return redirect('login')
 
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+# class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+#     template_name = 'registration/password_reset_confirm.html'
+#     success_url = reverse_lazy('password_reset_complete')
+
+#     def dispatch(self, *args, **kwargs):
+#         assert 'uidb64' in kwargs and 'token' in kwargs
+
+#         try:
+#             uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
+#             self.user = User.objects.get(pk=uid)
+#         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+#             self.user = None
+
+#         if self.user is not None and self.token_generator.check_token(self.user, kwargs['token']):
+#             return super().dispatch(*args, **kwargs)
+#         else:
+#             # Redireciona para a tela de login
+#             return HttpResponseRedirect(reverse('login'))
+        
+# views.py
+
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+
+# Custom Password Reset View
+class PasswordResetView(auth_views.PasswordResetView):
+    email_template_name = 'registration/password_reset_email.html'
+    subject_template_name = 'registration/password_reset_subject.txt'
+    success_url = reverse_lazy('password_reset_done')
+    template_name = 'registration/password_reset_form.html'
+
+# Custom Password Reset Done View
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'registration/password_reset_done.html'
+
+# Custom Password Reset Confirm View
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    # success_url = reverse_lazy('password_reset_complete')
+    # template_name = 'registration/password_reset_confirm.html'
     template_name = 'registration/password_reset_confirm.html'
     success_url = reverse_lazy('password_reset_complete')
 
@@ -273,6 +312,12 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         else:
             # Redireciona para a tela de login
             return HttpResponseRedirect(reverse('login'))
+
+# Custom Password Reset Complete View
+class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'registration/password_reset_complete.html'
+
+
 
 import psycopg2
 import pandas as pd
