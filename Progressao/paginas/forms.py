@@ -170,3 +170,16 @@ class EmailForm(forms.Form):
 class PasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
 
+
+#-----------------------------------------------------------------------
+    
+    from django import forms
+
+class PasswordResetView(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'autocomplete': 'email',
+            'class': 'form-control',
+            'placeholder': 'Digite seu e-mail'
+        })
+    )

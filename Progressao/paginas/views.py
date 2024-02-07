@@ -292,26 +292,29 @@ class PasswordResetDoneView(auth_views.PasswordResetDoneView):
     template_name = 'registration/password_reset_done.html'
 
 # Custom Password Reset Confirm View
-class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
-    # success_url = reverse_lazy('password_reset_complete')
-    # template_name = 'registration/password_reset_confirm.html'
+from django.shortcuts import render
+
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.utils.http import urlsafe_base64_decode
+from .models import CustomUser  # Ajuste conforme o caminho do seu modelo de usuário
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
     success_url = reverse_lazy('password_reset_complete')
+    form_class = SetPasswordForm  # Especifica que você está usando SetPasswordForm
 
-    def dispatch(self, *args, **kwargs):
-        assert 'uidb64' in kwargs and 'token' in kwargs
-
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
         try:
-            uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
-            self.user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            uid = urlsafe_base64_decode(self.kwargs['uidb64']).decode()
+            self.user = CustomUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
             self.user = None
+        
+        kwargs['user'] = self.user  # Passa o usuário para o formulário
+        return kwargs
 
-        if self.user is not None and self.token_generator.check_token(self.user, kwargs['token']):
-            return super().dispatch(*args, **kwargs)
-        else:
-            # Redireciona para a tela de login
-            return HttpResponseRedirect(reverse('login'))
 
 # Custom Password Reset Complete View
 class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):

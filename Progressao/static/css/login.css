@@ -212,24 +212,7 @@ form input {
         margin: none;
     }
 
-    .logos {
-        height: 60px;
-        /* width: 250px; */
-    }
-
-    .button-next {
-        height: 55px;
-        /* width: 260px; */
-        font-size: 30px;
-    }
-
-    .button-delete {
-        height: 45px;
-        width: 180px;
-        font-size: 22px;
-    }
-
-    .button-colaboradores {
+    .button-history {
         font-size: 32px;
     }
 
@@ -237,10 +220,17 @@ form input {
         height: 45px;
         width: 180px;
         font-size: 30px;
+
     }
 
-    img {
+    img.logo {
         width: 250px;
+
+    }
+
+    img.icon {
+        width: 50px;
+
     }
 
 }
