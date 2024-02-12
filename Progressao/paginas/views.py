@@ -1,7 +1,7 @@
 import sys
 
-#sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
-sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
+#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
@@ -48,20 +48,7 @@ import re
 
 User = get_user_model()
  
-# def signup_view(request):
-#     if request.method == 'POST':
-#         form = CustomUserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.is_active = True
-#             user.save()
-#             raw_password = form.cleaned_data.get('password1')
-#             user = authenticate(email=user.email, password=raw_password)
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = CustomUserCreationForm()
-#     return render(request, 'signup.html', {'form': form})
+
 from django.shortcuts import render, redirect
 from .forms import EmailForm
 from django.shortcuts import render, redirect
@@ -73,15 +60,7 @@ from django.contrib.auth import login
 from .models import CustomUser
 from .forms import UserPasswordCreationForm
 
-# def signup_email(request):
-#     if request.method == 'POST':
-#         form = EmailForm(request.POST)
-#         if form.is_valid():
-#             request.session['email'] = form.cleaned_data['email']
-#             return redirect('signup_name')
-#     else:
-#         form = EmailForm()
-#     return render(request, 'signup_email.html', {'form': form})
+
 def signup_email(request):
     if request.method == 'POST':
         form = EmailForm(request.POST)
@@ -116,21 +95,6 @@ def signup_name(request):
     return render(request, 'signup_name.html', {'form': form})
 
 
-# def signup_password(request):
-#     if request.method == 'POST':
-#         form = UserPasswordCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(
-#                 email=request.session.get('email'),
-#                 first_name=request.session.get('first_name'),
-#                 last_name=request.session.get('last_name')
-#             )
-#             # Redirecionar para a página inicial ou outra página desejada
-#             return redirect('home')
-#     else:
-#         form = UserPasswordCreationForm()
-
-#     return render(request, 'signup_password.html', {'form': form})
 def signup_password(request):
     User = get_user_model()
     if request.method == 'POST':
@@ -155,28 +119,6 @@ def signup_password(request):
 
     return render(request, 'signup_password.html', {'form': form})
 
-
-
-# from .forms import CustomUserCreationForm
-# from .models import CustomUser
-
-# def signup_password(request):
-#     if request.method == 'POST':
-#         form = CustomUserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.email = request.session.get('email')
-#             user.first_name = request.session.get('first_name')
-#             user.last_name = request.session.get('last_name')
-#             user.save()
-#             # Aqui você pode adicionar o login do usuário
-#             return redirect('home')  # Substitua 'home' pelo nome da sua URL de destino
-#     else:
-#         form = CustomUserCreationForm()
-#     return render(request, 'signup_password.html', {'form': form})
-
-
-#----------------------------------------------------------------
 
 def home(request):
     if request.method == 'POST':
@@ -339,8 +281,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         
-        #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
        
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
@@ -362,115 +304,6 @@ def get_df():
             connection.close()
 
     return df
-
-
-# from sklearn.preprocessing import LabelEncoder
-# import pandas as pd
-# import warnings
-# import joblib
-# import h2o
-
-# warnings.simplefilter("ignore")
-
-# def prevNN(abstract):
-#     localH2o = h2o.init(nthreads=-1)
-    
-
-#     #Modelo = h2o.load_model("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1")
-#     Modelo = h2o.load_model("./Progressao/static/modelos/DeepLearning_model_R_1670582405235_1")
-    
-#     prevNN = Modelo.predict(h2o.H2OFrame(abstract))
-    
-#     return prevNN[0, 0]
-
-# def prevXGB(abstract, path_modelo):
-#     modelo = joblib.load(path_modelo)
-#     prevXGB = modelo.predict(abstract)
-
-#     return prevXGB
-
-
-# def process():
-
-#     da = get_df()
-#     entrada = da
-
-#     area = prevNN(entrada)
-   
-#     print(area)
-
-#     if area == 'CIENCIAS SOCIAIS APLICADAS':
-
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
-#         path_model = './Progressao/static/Modelos/CienciasSociaisAplicadas_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasSociaisAplicadas.csv')
-
-#     if area == 'CIENCIAS DA SAUDE':
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
-#         path_model = './Progressao/static/Modelos/CienciasDaSaude_xgboost.pkl'
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasDaSaude.csv')
-        
-#     if area == 'LINGUISTICA, LETRAS E ARTES':
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
-#         path_model = './Progressao/static/Modelos/LinguisticaLetrasArtes_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_LinguisticaLetrasArtes.csv')
-        
-#     if area == 'CIENCIAS EXATAS E DA TERRA':
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
-#         path_model = './Progressao/static/Modelos/CienciasExatasDaTerra_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasExatasDaTerra.csv')
-        
-#     if area == 'MULTIDISCIPLINAR':
-#         # #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
-#         # #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Multidisciplinar.csv')
-#         path_model = './Progressao/static/Modelos/Multidisciplinar_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_Multidisciplinar.csv')
-        
-#     if area == 'CIENCIAS HUMANAS':
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasHumanas.csv')
-#         path_model = './Progressao/static/Modelos/CienciasHumanas_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasHumanas.csv')
-        
-#     if area == 'ENGENHARIAS':
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/Engenharias_xgboost.pkl' 
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_Engenharias.csv')
-#         path_model = './Progressao/static/Modelos/Engenharias_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_Engenharias.csv')
-        
-#     if area == 'CIENCIAS BIOLOGICAS':
-#         #path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
-#         #encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
-#         path_model = './Progressao/static/Modelos/CienciasBiologicas_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasBiologicas.csv')
-
-#     if area == 'CIENCIAS AGRARIAS':
-#         path_model = 'C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
-#         encoder = pd.read_csv('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
-#         path_model = './Progressao/static/Modelos/CienciasAgrarias_xgboost.pkl' 
-#         encoder = pd.read_csv('./Progressao/static/Modelos/encoder_CienciasAgrarias.csv')
-
-    
-#     sub = ''
-
-#     sub = prevXGB(entrada, path_model)
-
-#     label_encoder = LabelEncoder()
-#     y_encoded = label_encoder.fit_transform(encoder)
-
-#     sub = label_encoder.inverse_transform(sub)
-#     sub = sub[0]
-
-#     print(f"""c("{sub}", "{area}")""")
-
-
-#     return f"""c("{sub}", "{area}")"""
-
-# output = process()
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LogisticRegression
@@ -535,42 +368,42 @@ def get_prevision(row, entrada):
     modelo = row[1]
 
     if modelo == "Random Forest" :
-        #resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'AdaBoost':
-        #resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'XGBoost':
-        #resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'CatBoost':
-        #resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Decision Tree':
-        #resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'GaussianNB':
-        #resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Logistic Regression':
-        #resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
         
     if modelo == 'SVC':
-        #resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     return resultado
 
 def prevH2O(abstract):
-    #model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
-    model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
+    model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    #model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
     prev = model.predict(h2o.H2OFrame(abstract))
     del(model)
     return prev[0, 0]
