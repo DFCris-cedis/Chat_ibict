@@ -301,7 +301,7 @@ from .models import CustomUser  # Ajuste conforme o caminho do seu modelo de usu
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
-    success_url = reverse_lazy('password_reset_complete')
+    success_url = reverse_lazy('password_reset_comple')
     form_class = SetPasswordForm  # Especifica que você está usando SetPasswordForm
 
     def get_form_kwargs(self):
@@ -318,7 +318,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 # Custom Password Reset Complete View
 class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
-    template_name = 'registration/password_reset_complete.html'
+    template_name = 'home.html'
 
 
 
