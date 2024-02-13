@@ -1,7 +1,7 @@
 import sys
 
-sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
-#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+#sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
+sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
@@ -198,7 +198,7 @@ def logout_view(request):
     return redirect('login')
 
 
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
@@ -222,10 +222,40 @@ from django.contrib.auth.views import PasswordResetConfirmView
 from django.utils.http import urlsafe_base64_decode
 from .models import CustomUser  # Ajuste conforme o caminho do seu modelo de usuário
 
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.utils.http import urlsafe_base64_decode
+from .models import CustomUser
+
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import CustomUser
+
+class CustomPasswordResetView(auth_views.PasswordResetView):
+    email_template_name = 'registration/password_reset_email.html'
+    subject_template_name = 'registration/password_reset_subject.txt'
+    success_url = reverse_lazy('password_reset_done')
+    template_name = 'registration/password_reset_form.html'
+    form_class = PasswordResetForm
+
+    def form_valid(self, form):
+        # Check if the provided email exists in the system
+        email = form.cleaned_data['email']
+        if not CustomUser.objects.filter(email=email).exists():
+            messages.error(self.request, "E-mail não existente, crie uma conta.")
+            return render(self.request, self.template_name, {'form': form})
+
+        return super().form_valid(form)
+
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
-    success_url = reverse_lazy('password_reset_comple')
-    form_class = SetPasswordForm  # Especifica que você está usando SetPasswordForm
+    success_url = reverse_lazy('home')  # Redireciona para a tela inicial após a redefinição da senha.
+    form_class = SetPasswordForm
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -235,8 +265,9 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
             self.user = None
         
-        kwargs['user'] = self.user  # Passa o usuário para o formulário
+        kwargs['user'] = self.user
         return kwargs
+
 
 
 # Custom Password Reset Complete View
@@ -281,8 +312,8 @@ def get_df():
         # Fecha o cursor e a conexão
         cursor.close()
         
-        file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
-        #file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        #file = open("/home/milenasilva/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
+        file = open("C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/modelos/todos_IDSignificados.Ocorrencias.csv", "r")
        
         idsignificado = list(csv.reader(file, delimiter=","))
         file.close()
@@ -368,42 +399,42 @@ def get_prevision(row, entrada):
     modelo = row[1]
 
     if modelo == "Random Forest" :
-        resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'AdaBoost':
-        resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'XGBoost':
-        resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'CatBoost':
-        resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Decision Tree':
-        resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'GaussianNB':
-        resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Logistic Regression':
-        resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
         
     if modelo == 'SVC':
-        resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        #resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     return resultado
 
 def prevH2O(abstract):
-    model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
-    #model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
+    #model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
+    model = h2o.load_model('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/DeepLearning_model_R_1670582405235_1')
     prev = model.predict(h2o.H2OFrame(abstract))
     del(model)
     return prev[0, 0]
