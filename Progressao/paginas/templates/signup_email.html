@@ -22,21 +22,22 @@
                     <br/> 
                     <h2>Cadastro Email</h2>
                     <br/> <br/> 
-                        <form method="post">
-                            {% csrf_token %}
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="error">
-                                    {{ form.email.errors }}
-                                </div>
-                            {% endif %}
-                            <br/><br/><br/><br/><br/><br/>
-                            <div class="button-container">
-                                <button class="button-next" type="submit">Entrar</button>
-                            </div>    
-                        </div>
-
-                        </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="error">
+                                {% for error in form.email.errors %}
+                                    <span class="error-message">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <br/><br/><br/><br/>
+                        <div class="button-container">
+                            <button class="button-next" type="submit">Entrar</button>
+                        </div>    
+                    </form>
+                    
                         </div>
                             
 </div>

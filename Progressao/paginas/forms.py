@@ -104,8 +104,8 @@ from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 class UserPasswordCreationForm(forms.Form):
-    password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirmação de Senha', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+    password2 = forms.CharField(label='Confirmação de Senha', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Senha'}))
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -139,6 +139,7 @@ class CustomPasswordResetConfirmForm(SetPasswordForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new_password', 'placeholder': 'Senha'}),
     )
+    
     new_password2 = forms.CharField(
         label="Confirme a nova senha",
         strip=False,

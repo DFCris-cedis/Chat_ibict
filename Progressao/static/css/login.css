@@ -113,6 +113,7 @@ p {
 }
 
 .button-next {
+    border: none;
     background-color: #0067B8;
     width: 108px;
     height: 30px;
@@ -147,6 +148,8 @@ form input {
     width: 10%;
     align-items: top;
 }
+
+
 
 @media (max-aspect-ratio: 4/3) {
     body {

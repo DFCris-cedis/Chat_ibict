@@ -105,6 +105,7 @@ p {
     flex-shrink: 0;
     font-size: 15px;
     color: #F5F5F5;
+    border: none;
 }
 
 .form-control {

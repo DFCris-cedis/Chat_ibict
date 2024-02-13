@@ -105,6 +105,7 @@ p {
     flex-shrink: 0;
     font-size: 15px;
     color: #F5F5F5;
+    border: none;
 }
 
 .form-control {
@@ -124,9 +125,12 @@ form input {
     border: 1px solid #666;
 }
 
-.error-message {
+.error {
     color: red;
+    font-size: 14px;
 }
+
+
 
 .img-back {
     height: auto;
