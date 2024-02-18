@@ -23,8 +23,8 @@ body {
 
 .body-content {
     width: 45%;
-    height: 90%;
-    background-color: #ffffff;
+    height: 95%;
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,7 +33,7 @@ body {
 
 .login-container {
     width: 100%;
-    height: 90%;
+    height: 100%;
     background-color: #ffffff;
     display: flex;
     align-items: center;
@@ -45,8 +45,8 @@ body {
     display: flex;
     align-items: center;
     padding-left: 10%;
-    /* width: 90%; */
-    height: 20%;
+    width: 90%;
+    height: 25%;
     font-size: 15px;
     color: black;
     border: none;
@@ -56,8 +56,7 @@ body {
 }
 
 .about-content {
-    /* background-color: transparent; */
-    background-color: red;
+    background-color: transparent;
     width: 100%;
     height: 30%;
     display: flex;
@@ -100,24 +99,36 @@ a {
     font-size: 15px;
 
     height: auto;
+    /* width: 100%; */
+    align-items: center;
+
+
+}
+
+.backbase {
+    background-color: #ffffff;
+    text-decoration: none;
+    color: #0067B8;
+    font-size: 15px;
+    margin: none;
+    height: auto;
+    border: none;
     width: 100%;
-    align-items: left;
-    background-color: pink;
+    align-items: center;
+
 
 }
 
 a .logos {
-    width: 65%;
-    margin: 5px;
-    text-align: center;
-    align-items: center;
+    width: 60%;
+    align-items: justify flex;
 }
 
 p {
     display: flex;
     font-size: 15px;
-    background-color: aquamarine;
     justify-content: center;
+    text-align: justify;
 }
 
 .button-container {
@@ -141,22 +152,15 @@ p {
     background-color: #F5F5F5;
     display: flex;
     align-items: center;
-    padding-left: 10%;
-    width: 90%;
-    height: 30%;
+    /* padding-left: 10%; */
+    width: 100%;
+    height: 35%;
     font-size: 15px;
     color: black;
     border: none;
     text-align: center;
-    margin: none;
 
-}
 
-a .logos {
-    width: 65%;
-    margin: 5px;
-    text-align: center;
-    align-items: center;
 }
 
 .form-control {
@@ -184,8 +188,9 @@ form input {
 
 
 .img-back {
+    padding-top: 10px;
     height: auto;
-    width: 6%;
+    width: 5%;
     padding-left: 20px;
 
 }
@@ -285,7 +290,7 @@ form input {
         font-size: 30px;
     }
 
-    img {
+    img .logo {
         width: 250px;
     }
 
