@@ -252,9 +252,28 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
 
         return super().form_valid(form)
 
+# class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+#     template_name = 'registration/password_reset_confirm.html'
+#     success_url = reverse_lazy('home')  # Redireciona para a tela inicial após a redefinição da senha.
+#     form_class = SetPasswordForm
+
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         try:
+#             uid = urlsafe_base64_decode(self.kwargs['uidb64']).decode()
+#             self.user = CustomUser.objects.get(pk=uid)
+#         except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+#             self.user = None
+        
+#         kwargs['user'] = self.user
+#         return kwargs
+from django.contrib.auth import login
+
+from django.contrib.auth import login
+from django.shortcuts import resolve_url
+
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
-    success_url = reverse_lazy('home')  # Redireciona para a tela inicial após a redefinição da senha.
     form_class = SetPasswordForm
 
     def get_form_kwargs(self):
@@ -267,6 +286,18 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         
         kwargs['user'] = self.user
         return kwargs
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.user:
+            login(self.request, self.user)
+            # Adicione aqui uma mensagem de sucesso se desejar
+            messages.success(self.request, 'Sua senha foi redefinida com sucesso e você está logado.')
+        return response
+
+    def get_success_url(self):
+        # Aqui você define para onde o usuário deve ser redirecionado após o processo
+        return resolve_url('home')  # Substitua 'home' pelo nome da sua URL de destino
 
 
 

@@ -22,8 +22,8 @@ body {
 }
 
 .body-content {
-    width: 30%;
-    height: 60%;
+    width: 45%;
+    height: 90%;
     background-color: #ffffff;
     display: flex;
     align-items: center;
@@ -33,15 +33,31 @@ body {
 
 .login-container {
     width: 100%;
-    height: 85%;
+    height: 90%;
     background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.button-colaboradores {
+    background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+    /* width: 90%; */
+    height: 20%;
+    font-size: 15px;
+    color: black;
+    border: none;
+    text-align: center;
+    font-weight: 500;
+
+}
+
 .about-content {
-    background-color: transparent;
+    /* background-color: transparent; */
+    background-color: red;
     width: 100%;
     height: 30%;
     display: flex;
@@ -54,25 +70,19 @@ body {
 .login-content {
 
     width: 80%;
-    height: 80%;
+    height: 90%;
 }
+
+
 
 .login-email {
 
     width: 100%;
     height: 90%;
-
 }
 
 label {
-    /* display: none; */
-    /* background-color: blue; */
-    font-family: Inter;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-top: 20px;
+    display: none;
 }
 
 h2 {
@@ -82,53 +92,32 @@ h2 {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    justify-content: center;
 }
 
 a {
     text-decoration: none;
     color: #0067B8;
     font-size: 15px;
+
     height: auto;
     width: 100%;
+    align-items: left;
+    background-color: pink;
 
 }
 
-.button-button {
-    display: flex;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 15px;
-    height: auto;
-    width: 100%;
-    justify-content: center;
-
-}
-
-.button-button span {
-    display: flex;
-    background-color: #0067B8;
-    width: 108px;
-    height: 30px;
-    flex-shrink: 0;
-    font-size: 15px;
-    color: #F5F5F5;
-    /* height: 30px; */
-    justify-content: center;
+a .logos {
+    width: 65%;
+    margin: 5px;
+    text-align: center;
     align-items: center;
-    /* padding: 5px 7px 5px 7px; */
-}
-
-li {
-    margin-top: 10px;
-    font-size: 11px;
-    color: #666;
-
 }
 
 p {
+    display: flex;
     font-size: 15px;
-    margin-top: 20px;
+    background-color: aquamarine;
+    justify-content: center;
 }
 
 .button-container {
@@ -136,7 +125,6 @@ p {
     justify-content: right;
     bottom: 0;
     height: 10%;
-    align-items: right;
 }
 
 .button-next {
@@ -147,24 +135,40 @@ p {
     font-size: 15px;
     color: #F5F5F5;
     border: none;
-    align-items: right;
-    justify-content: right;
+}
+
+.button-logo {
+    background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+    width: 90%;
+    height: 30%;
+    font-size: 15px;
+    color: black;
+    border: none;
+    text-align: center;
+    margin: none;
+
+}
+
+a .logos {
+    width: 65%;
+    margin: 5px;
+    text-align: center;
+    align-items: center;
 }
 
 .form-control {
 
     width: 100%;
     border-bottom: 1px solid black;
-    background-color: transparent;
-    border: none;
-    font-size: 16px;
 }
 
-input {
+form input {
     background-color: transparent;
     border: none;
     font-size: 16px;
-    border-bottom: 1px solid black;
 }
 
 .hr-email {
@@ -172,9 +176,12 @@ input {
     border: 1px solid #666;
 }
 
-.error-message {
+.error {
     color: red;
+    font-size: 14px;
 }
+
+
 
 .img-back {
     height: auto;
@@ -199,58 +206,90 @@ input {
 
     .body-content {
         width: 80vw;
-        height: 30vh;
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
     }
 
     .login-container {
         /* margin-top: 20vw; */
         width: 80vw;
-        height: 30vh;
+    }
+
+    .about-content {
+        width: 80vw;
+        margin-top: 6vw;
+
+    }
+
+    .option {
+        width: 55vw;
+        /* margin-left: 25vw; */
+        margin-top: 12vw;
+
+        /* font-size: 22px; */
+    }
+
+    .option p {
+
+        font-size: 28px;
+    }
+
+    .leave {
+        margin-top: 20px;
+        width: 18vw;
+        height: 2vh;
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    .leave p {
+
+        font-size: 30px;
+    }
+
+    textarea {
+        font-size: 30px;
+    }
+
+    .button-logo {
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
+        height: 80px;
+        font-size: 30px;
+        margin: none;
+    }
+
+    .logos {
+        height: 60px;
+        /* width: 250px; */
     }
 
     .button-next {
-        height: 60px;
-        width: 260px;
-        font-size: 25px;
-        border: none;
-        font-weight: 500;
+        height: 55px;
+        /* width: 260px; */
+        font-size: 30px;
+    }
+
+    .button-delete {
+        height: 45px;
+        width: 180px;
+        font-size: 22px;
+    }
+
+    .button-colaboradores {
+        font-size: 32px;
+    }
+
+    .button-pesquisar {
+        height: 45px;
+        width: 180px;
+        font-size: 30px;
     }
 
     img {
         width: 250px;
     }
 
-    .img-back {
-        height: auto;
-        width: 6%;
-        padding-left: 25px;
 
-    }
 
-    h2 {
-
-        font-family: Inter;
-        font-size: 30px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-    }
-
-    .form-control {
-        font-size: 25px;
-    }
-
-    p {
-        font-size: 24px;
-    }
 
 }

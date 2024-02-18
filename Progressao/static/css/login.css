@@ -101,6 +101,10 @@ a {
     font-size: 15px;
 }
 
+a.icon {
+    color: #161616;
+}
+
 p {
     font-size: 15px;
 }
@@ -232,8 +236,12 @@ form input {
     }
 
     img.icon {
-        width: 50px;
+        width: 40px;
 
+    }
+
+    a.icon {
+        color: #161616;
     }
 
 }
