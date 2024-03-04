@@ -185,10 +185,10 @@ form input {
 }
 
 .fac-e-manual span {
-    text-decoration: underline;
+    text-decoration: underline;  
 }
 
-.fac-e-manual span:hover {
+.fac-e-manual span:hover{
     font-weight: bold;
 }
 

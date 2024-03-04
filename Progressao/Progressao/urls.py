@@ -6,6 +6,7 @@ from paginas import views
 #from paginas.views import CustomPasswordResetView
 # from paginas.views import CustomPasswordResetConfirmView
 from django.shortcuts import redirect
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', lambda request: redirect('login'), name='login'),
@@ -16,6 +17,7 @@ urlpatterns = [
     path('signup/name/', views.signup_name, name='signup_name'),
     path('signup/password/', views.signup_password, name='signup_password'),
     path('accounts/logout/', views.logout_view, name='logout_view'),
+    path('manual_de_uso/', TemplateView.as_view(template_name="manual_de_uso.html"), name='manual_de_uso'),
     path('login/email/', views.email_login, name='login'),
     path('login/senha/', views.senha_login, name='senha_login'),
     path('conheca_mais/', views.conheca_mais, name='conheca_mais'),
