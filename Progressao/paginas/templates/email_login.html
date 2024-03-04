@@ -2,8 +2,10 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="/static/css/login.css"/>
+
 </head>
 <body>
     <div class="body-content">
@@ -59,6 +61,25 @@
             </button>
             
         </div> 
+
+        <div class="fac-e-manual">
+               
+            <button class="fac-button" type="submit"> 
+                <a href="{% url 'conheca_mais' %}">
+                   
+                    &nbsp &nbsp &nbsp <span>FAC</span>
+                </a>
+            </button>
+
+            <button class="use_manual-button" type="submit"> 
+                <a href="{% url 'conheca_mais' %}">
+                    {% comment %} <iframe src="http://docs.google.com/viewer?url=http%3A%2F%2Fmeudominio.com%2Farquivo.pdf&embedded=true"></iframe> {% endcomment %}
+                    &nbsp &nbsp &nbsp <span>Manual de Uso</span>
+                </a>
+            </button>
+        </div>
+        
     </div>
+    
 </body>
 </html>

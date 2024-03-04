@@ -153,7 +153,44 @@ form input {
     align-items: top;
 }
 
+.fac-e-manual {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 5px;
+    margin-left: 20px;
 
+
+}
+
+.fac-e-manual button {
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+    /* position: absolute;
+    bottom: 0; */
+
+
+}
+
+.fac-e-manual a {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+
+}
+
+.fac-e-manual span {
+    text-decoration: underline;
+}
+
+.fac-e-manual span:hover {
+    font-weight: bold;
+}
 
 @media (max-aspect-ratio: 4/3) {
     body {
