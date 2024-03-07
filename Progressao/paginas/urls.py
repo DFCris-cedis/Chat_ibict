@@ -9,7 +9,7 @@ from paginas import views
 
 
 urlpatterns = [
-    # path('', views.home, name='home_root'),
+    path('', views.home, name='home_root'),
     path('', include('paginas.urls', namespace='home')),
     path('signup/email/', views.signup_email, name='signup_email'),
     path('signup/name/', views.signup_name, name='signup_name'),
