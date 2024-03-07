@@ -91,7 +91,9 @@ class StaffOnlyMiddleware:
             'signup_password',
             'signup_name',
             'signup_email',
-            'senha_login'
+            'senha_login',
+            'contate_nos',
+            'conheca_mais'
 
         ]
 
