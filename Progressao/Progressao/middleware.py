@@ -85,6 +85,14 @@ class StaffOnlyMiddleware:
             'password_reset_done',
             'password_reset_confirm',
             'password_reset_complete',
+            'manual_de_uso',
+            'sucesso_cadastro',
+            'duvidas_frequentes',
+            'signup_password',
+            'signup_name',
+            'signup_email',
+            'senha_login'
+
         ]
 
         # Verifica se o usuário está autenticado
