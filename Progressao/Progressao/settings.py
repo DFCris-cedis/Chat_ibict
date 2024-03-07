@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     # 'nomedoapp.apps.NomedoappConfig'
 ]
 AUTH_USER_MODEL = 'paginas.CustomUser'
-LOGIN_URL = 'login'
+LOGIN_URL = 'login/email/'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 
