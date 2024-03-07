@@ -1,7 +1,7 @@
 import sys
 
-#sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
-sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
+sys.path.append('/home/milenasilva/Chat_ibict/Progressao/')
+#sys.path.append('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao')
 
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
@@ -113,13 +113,13 @@ def signup_password(request):
             user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, password=password)
             
             del request.session['email_for_signup'], request.session['first_name'], request.session['last_name']
-            return redirect('home')
+            return redirect('sucesso_cadastro')
     else:
         form = UserPasswordCreationForm()
 
     return render(request, 'signup_password.html', {'form': form})
 
-
+@login_required
 def home(request):
     if request.method == 'POST':
         phrase = request.POST.get('phrase', '')
@@ -392,10 +392,10 @@ def get_best_models(area, quant):
                 """
         cursor.execute(query)
 
-        # Recupera os resultados da consulta como uma lista de tuplas
+        # Recupera os #resultados da consulta como uma lista de tuplas
         results = cursor.fetchall()
 
-        # Cria um DataFrame pandas com os resultados
+        # Cria um DataFrame pandas com os #resultados
         df_modelos = pd.DataFrame(results, columns=[desc[0] for desc in cursor.description])
 
         # Fecha o cursor e a conexão
@@ -415,38 +415,38 @@ def get_prevision(row, entrada):
     modelo = row[1]
 
     if modelo == "Random Forest" :
-        #resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevRF(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevRF(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'AdaBoost':
-        #resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevADA(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevADA(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'XGBoost':
-        #resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevXGB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevXGB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'CatBoost':
-        #resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevCAT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevCAT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Decision Tree':
-        #resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevDT(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevDT(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'GaussianNB':
-        #resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevGNB(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevGNB(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
     if modelo == 'Logistic Regression':
-        #resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevLOG(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevLOG(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
         
     if modelo == 'SVC':
-        #resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
-        resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        resultado = prevSVC(entrada, ('/home/milenasilva/Chat_ibict/Progressao/static/Modelos/' + row[0]))
+        #resultado = prevSVC(entrada, ('C:/Users/milen/OneDrive/Documentos/GitHub/Chat_ibict/Progressao/static/Modelos/' + row[0]))
 
-    return resultado
+    return #resultado
 
 def prevH2O(abstract):
     #model = h2o.load_model('/home/milenasilva/Chat_ibict/Progressao/static/modelos/DeepLearning_model_R_1670582405235_1')
@@ -634,6 +634,7 @@ output = process()
 print(output,'aqui')  # You can replace this with the function you want to return the result to
 nlp = spacy.load("pt_core_news_lg")
 
+@login_required
 def home(request):
     show_prevrf = False
     if request.method == 'POST':
@@ -687,13 +688,13 @@ def home(request):
                 
                 resultado = process()
                 if resultado:
-                    print(f"Resultado de process: {resultado}")
-                    # cleaned_string = re.sub(r"^\['c\(\"|\"\)\']$", '', resultado)
-                    # resultados = re.split(r'",\s*"', cleaned_string)
-                    # print(type(resultado_limpo))
-                    # partes = resultado_limpo.split(',')
-                    # subarea = resultado[0].strip()
-                    # area = resultado[1].strip()
+                    print(f"#resultado de process: {resultado}")
+                    # cleaned_string = re.sub(r"^\['c\(\"|\"\)\']$", '', #resultado)
+                    # #resultados = re.split(r'",\s*"', cleaned_string)
+                    # print(type(#resultado_limpo))
+                    # partes = #resultado_limpo.split(',')
+                    # subarea = #resultado[0].strip()
+                    # area = #resultado[1].strip()
                     
                     subarea = resultado[0]
                     area = resultado[1]
@@ -704,13 +705,21 @@ def home(request):
             # context = {'area': area}
             return render(request, 'result.html', context)
         else:
-            print("process não retornou resultado válido.")
+            print("process não retornou #resultado válido.")
 
     else:
         form = MeuForm()
 
     context = {'form': form, 'show_prevrf': show_prevrf}
     return render(request, 'home.html', context)
+
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = 'home.html'
+    login_url = '/login/'  # Substitua '/login/' pela sua URL de login, se for diferente
+    redirect_field_name = 'redirect_to'
 
 def conheca_mais(request):
     return render(request, 'conheca_mais.html')

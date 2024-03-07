@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('', lambda request: redirect('login'), name='login'),
+    # path('', lambda request: redirect('login'), name='login'),
     path('admin/', admin.site.urls),
     path('home/', views.home, name='home'),
     path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='auth')),
@@ -18,6 +18,8 @@ urlpatterns = [
     path('signup/password/', views.signup_password, name='signup_password'),
     path('accounts/logout/', views.logout_view, name='logout_view'),
     path('manual_de_uso/', TemplateView.as_view(template_name="manual_de_uso.html"), name='manual_de_uso'),
+    path('sucesso_cadastro/', TemplateView.as_view(template_name="sucesso_cadastro.html"), name='sucesso_cadastro'),
+    path('duvidas_frequentes/', TemplateView.as_view(template_name="duvidas_frequentes.html"), name='duvidas_frequentes'),
     path('login/email/', views.email_login, name='login'),
     path('login/senha/', views.senha_login, name='senha_login'),
     path('conheca_mais/', views.conheca_mais, name='conheca_mais'),

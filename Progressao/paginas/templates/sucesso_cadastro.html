@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/password_reset_done.css"/>
+
+    <!-- Adicione aqui qualquer CSS ou frameworks que você esteja usando -->
+</head>
+<body>
+    
+    <div class="body-content">
+        
+            <a href="{% url 'login' %}"><img src="/static/img/back.png" class="img-back"></a>
+       
+        
+        <div class="login-container">
+            
+            <div class="login-content">  
+                <img src="/static/img/logo.png"  class="logo"/>   
+                    <div class="login-email">
+                    <br/> 
+                    <h2>Conta criada com sucesso!</h2>
+                    <br/> 
+                    
+                    <form method="post">
+                    {% block content %}
+
+                      <p class="mensagem">Clique no botão abaixo e faça o login para acessar o Contextus</p>
+                    {% endblock %}
+
+                      {% csrf_token %}
+                      {{ form.as_p }}
+                    </br></br>
+                      {% comment %} <div class="button-container"> 
+                      
+                        <a class="button-button" href="{% url 'login' %}"><button class="button-next"> Fazer login </button></a>
+                     
+                    </div> {% endcomment %}
+                    <div class="button-container">
+                      <a href="{% url 'login' %}" class="button-button"><span>Fazer login</span></a>
+                  </div>
+                  
+                  
+                      
+                      
+
+                    </form>
+                    </div>
+  
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
