@@ -185,10 +185,10 @@ form input {
 }
 
 .fac-e-manual span {
-    text-decoration: underline;  
+    text-decoration: underline;
 }
 
-.fac-e-manual span:hover{
+.fac-e-manual span:hover {
     font-weight: bold;
 }
 
@@ -207,8 +207,9 @@ form input {
 
 
     .login-container {
-        margin-top: 20vw;
+        margin-top: 10vw;
         width: 80vw;
+
     }
 
     .about-content {
@@ -220,7 +221,7 @@ form input {
     .option {
         width: 55vw;
         margin-left: 25vw;
-        margin-top: 12vw;
+        margin-top: 8vw;
 
         /* font-size: 22px; */
     }
@@ -251,12 +252,13 @@ form input {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 90px;
+        height: 120px;
         font-size: 30px;
         margin: none;
     }
 
     .button-history {
+        height: 40px;
         font-size: 32px;
     }
 
@@ -268,17 +270,22 @@ form input {
     }
 
     img.logo {
-        width: 250px;
+        width: 100px;
 
     }
 
     img.icon {
-        width: 40px;
+        width: 30px;
 
     }
 
     a.icon {
         color: #161616;
+    }
+
+    a {
+        font-size: 14px;
+
     }
 
 }
